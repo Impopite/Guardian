@@ -1,0 +1,14 @@
+# Plugin developed by zImpoo [Telegram: @tentava | Discord: Impopite]
+
+prefix: "<#00B4EE>DEFAULT PROJECT<#3C3C3C>» "
+
+vars:
+  normal: "<#9A9A9A>"
+  error: "<#CE0000>"
+  success: "<#06BB00>"
+
+message:
+  no-permission: "<error>You don't have enough permissions!"
+  console-cant-do-command: "<error>Only players can execute this command"
+  unknown-command: "<error>Unknown command."
+  player-not-found: "<error>Player not found."

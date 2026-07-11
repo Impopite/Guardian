@@ -1,0 +1,12 @@
+# Plugin developed by zImpoo [Telegram: @tentava | Discord: Impopite]
+
+generic:
+  lang: IT_it # AVAILABLE ( EN_us, IT_it )
+
+database:
+  host: "localhost"
+  username: "root"
+  password: ""
+  port: 3306
+  name: "ImpooProjects"
+  ssl: false

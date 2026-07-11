@@ -1,0 +1,19 @@
+plugins {
+    id("com.gradleup.shadow") version "8.3.0"
+}
+
+
+dependencies {
+    implementation(project(':api'))
+
+}
+
+tasks {
+    assemble {
+        dependsOn(shadowJar)
+    }
+
+    shadowJar {
+        archiveFileName = 'DefaultProject.jar'
+    }
+}
