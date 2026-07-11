@@ -1,14 +1,14 @@
 package it.impo.protect.api.data.Action;
 
-public enum ContainerAction {
+public enum Interaction {
 
-    ADD("Item added from container", "Item added from container"),
-    REMOVE("Item removed from container", "Item removed from container");
+    OPEN("Opened", "Opened"),
+    CLOSE("Closed", "Closed");
 
     private final String description;
     private final String displayName;
 
-    ContainerAction(String description, String displayName) {
+    Interaction(String description, String displayName) {
         this.description = description;
         this.displayName = displayName;
     }

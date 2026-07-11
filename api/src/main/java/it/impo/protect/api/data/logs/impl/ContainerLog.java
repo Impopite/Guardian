@@ -13,24 +13,21 @@ public class ContainerLog extends Logs {
     private final byte[] item;
     private final int amount;
     private final ContainerAction action;
-    private final boolean glove;
     private final ContainerType containerType;
 
-    public ContainerLog(Player player, byte[] item, LocalDateTime date, int amount, boolean staff, String action, boolean glove, BasicLocation location, ContainerType containerType) {
+    public ContainerLog(Player player, byte[] item, LocalDateTime date, int amount, boolean staff, String action, BasicLocation location, ContainerType containerType) {
         super(player, date, staff, location);
         this.item = item;
         this.amount = amount;
         this.action = ContainerAction.valueOf(action.toUpperCase());
-        this.glove = glove;
         this.containerType = containerType;
     }
 
-    public ContainerLog(Player player, byte[] item, LocalDateTime date, int amount, boolean staff, ContainerAction action, boolean glove, BasicLocation location, ContainerType containerType) {
+    public ContainerLog(Player player, byte[] item, LocalDateTime date, int amount, boolean staff, ContainerAction action, BasicLocation location, ContainerType containerType) {
         super(player, date, staff, location);
         this.item = item;
         this.amount = amount;
         this.action = action;
-        this.glove = glove;
         this.containerType = containerType;
     }
 

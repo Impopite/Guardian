@@ -1,14 +1,14 @@
 package it.impo.protect.api.data.Action;
 
-public enum ContainerAction {
+public enum ItemAction {
 
-    ADD("Item added from container", "Item added from container"),
-    REMOVE("Item removed from container", "Item removed from container");
+    PICKUP("Item picked up", "Item picked up"),
+    DROP("Item dropped", "Item dropped");
 
     private final String description;
     private final String displayName;
 
-    ContainerAction(String description, String displayName) {
+    ItemAction(String description, String displayName) {
         this.description = description;
         this.displayName = displayName;
     }
