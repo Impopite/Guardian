@@ -1,4 +1,4 @@
-package it.impo.defaultProject.config.constant;
+package it.impo.protect.config.constant;
 
 public enum ConfigKey {
 

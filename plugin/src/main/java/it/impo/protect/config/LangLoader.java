@@ -1,7 +1,7 @@
-package it.impo.defaultProject.config;
+package it.impo.protect.config;
 
-import it.impo.defaultProject.config.base.FileHandler;
-import it.impo.defaultProject.config.constant.LangKey;
+import it.impo.protect.config.base.FileHandler;
+import it.impo.protect.config.constant.LangKey;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;

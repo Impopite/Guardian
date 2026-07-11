@@ -1,8 +1,8 @@
-package it.impo.defaultProject.api.database;
+package it.impo.protect.api.database;
 
 import java.sql.SQLException;
 
-public abstract class DefaultTable {
+public abstract class ProtectTable {
 
     /**
      * Creates the table in the database if it does not already exist.

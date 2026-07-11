@@ -1,6 +1,6 @@
-package it.impo.defaultProject.config;
+package it.impo.protect.config;
 
-import it.impo.defaultProject.config.constant.ConfigKey;
+import it.impo.protect.config.constant.ConfigKey;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;

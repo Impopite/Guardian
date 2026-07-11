@@ -1,7 +1,7 @@
-package it.impo.defaultProject.database.utils;
+package it.impo.protect.database.utils;
 
-import it.impo.defaultProject.DefaultProject;
-import it.impo.defaultProject.config.constant.ConfigKey;
+import it.impo.protect.Protect;
+import it.impo.protect.config.constant.ConfigKey;
 
 public class DatabaseCredentials {
 
@@ -12,7 +12,7 @@ public class DatabaseCredentials {
     private final int port;
     private final boolean ssl;
 
-    public DatabaseCredentials(DefaultProject plugin) {
+    public DatabaseCredentials(Protect plugin) {
         var config = plugin.getConfigLoader();
         this.host = config.get(ConfigKey.DATABASE_HOST, "localhost");
         this.database = config.get(ConfigKey.DATABASE_NAME, "DefaultDatabaseName");

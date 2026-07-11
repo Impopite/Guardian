@@ -14,6 +14,6 @@ tasks {
     }
 
     shadowJar {
-        archiveFileName = 'DefaultProject.jar'
+        archiveFileName = 'Protect.jar'
     }
 }

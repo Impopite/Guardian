@@ -1,4 +1,4 @@
-rootProject.name = "DefaultProject"
+rootProject.name = "Protect"
 
 include("api")
 include("plugin")

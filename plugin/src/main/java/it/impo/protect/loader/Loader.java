@@ -1,18 +1,18 @@
-package it.impo.defaultProject.loader;
+package it.impo.protect.loader;
 
-import it.impo.defaultProject.DefaultProject;
-import it.impo.defaultProject.api.database.DefaultTable;
+import it.impo.protect.Protect;
+import it.impo.protect.api.database.ProtectTable;
 
 import java.sql.SQLException;
 
 public class Loader extends PluginLoader {
 
-    public Loader(DefaultProject plugin) {
+    public Loader(Protect plugin) {
         super(plugin);
     }
 
     @Override
-    protected void setupDatabase(DefaultTable table) throws SQLException {
+    protected void setupDatabase(ProtectTable table) throws SQLException {
         table.createTable();
     }
 

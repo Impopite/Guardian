@@ -1,17 +1,17 @@
-package it.impo.defaultProject;
+package it.impo.protect;
 
-import it.impo.defaultProject.api.DefaultProjectApi;
-import it.impo.defaultProject.api.database.DefaultTable;
-import it.impo.defaultProject.config.ConfigLoader;
-import it.impo.defaultProject.config.LangLoader;
-import it.impo.defaultProject.database.BaseDefaultTable;
-import it.impo.defaultProject.database.utils.DatabaseCredentials;
-import it.impo.defaultProject.database.utils.HikariCP;
-import it.impo.defaultProject.loader.Loader;
+import it.impo.protect.api.ProtectApi;
+import it.impo.protect.api.database.ProtectTable;
+import it.impo.protect.config.ConfigLoader;
+import it.impo.protect.config.LangLoader;
+import it.impo.protect.database.BaseProtectTable;
+import it.impo.protect.database.utils.DatabaseCredentials;
+import it.impo.protect.database.utils.HikariCP;
+import it.impo.protect.loader.Loader;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class DefaultProject extends JavaPlugin implements DefaultProjectApi {
+public final class Protect extends JavaPlugin implements ProtectApi {
 
     private final String projectName = getDescription().getName();
 
@@ -19,7 +19,7 @@ public final class DefaultProject extends JavaPlugin implements DefaultProjectAp
     private LangLoader langLoader;
 
     private HikariCP hikariCP;
-    private DefaultTable defaultTable;
+    private ProtectTable protectTable;
 
     @Override
     public void onEnable() {
@@ -38,10 +38,10 @@ public final class DefaultProject extends JavaPlugin implements DefaultProjectAp
 
         DatabaseCredentials databaseCredentials = new DatabaseCredentials(this);
         this.hikariCP = new HikariCP(this, databaseCredentials);
-        this.defaultTable = new BaseDefaultTable();
+        this.protectTable = new BaseProtectTable();
 
         Loader loader = new Loader(this);
-        loader.load(defaultTable);
+        loader.load(protectTable);
 
         long took = System.currentTimeMillis() - start;
 

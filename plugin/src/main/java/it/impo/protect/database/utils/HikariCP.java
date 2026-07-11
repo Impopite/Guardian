@@ -1,14 +1,14 @@
-package it.impo.defaultProject.database.utils;
+package it.impo.protect.database.utils;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import it.impo.defaultProject.DefaultProject;
+import it.impo.protect.Protect;
 
 public class HikariCP {
 
     private final HikariDataSource dataSource;
 
-    public HikariCP(DefaultProject plugin, DatabaseCredentials credentials) {
+    public HikariCP(Protect plugin, DatabaseCredentials credentials) {
         HikariConfig config = new HikariConfig();
 
         config.setJdbcUrl(String.format("jdbc:mysql://%s:%s/%s",

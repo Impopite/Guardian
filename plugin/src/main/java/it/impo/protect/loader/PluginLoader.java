@@ -1,8 +1,8 @@
-package it.impo.defaultProject.loader;
+package it.impo.protect.loader;
 
 import dev.jorel.commandapi.CommandAPICommand;
-import it.impo.defaultProject.DefaultProject;
-import it.impo.defaultProject.api.database.DefaultTable;
+import it.impo.protect.Protect;
+import it.impo.protect.api.database.ProtectTable;
 import org.bukkit.event.Listener;
 
 import java.sql.SQLException;
@@ -12,16 +12,16 @@ import java.util.List;
 
 public abstract class PluginLoader {
 
-    protected final DefaultProject plugin;
+    protected final Protect plugin;
 
     private final List<CommandAPICommand> commands = new ArrayList<>();
     private final List<Listener> listeners = new ArrayList<>();
 
-    public PluginLoader(DefaultProject plugin) {
+    public PluginLoader(Protect plugin) {
         this.plugin = plugin;
     }
 
-    public final void load(DefaultTable table) {
+    public final void load(ProtectTable table) {
         try {
             setupDatabase(table);
         } catch (SQLException e) {
@@ -41,7 +41,7 @@ public abstract class PluginLoader {
         plugin.getLogger().info("Plugin loaded successfully.");
     }
 
-    protected abstract void setupDatabase(DefaultTable table) throws SQLException;
+    protected abstract void setupDatabase(ProtectTable table) throws SQLException;
 
     protected void setupListeners() {}
 
