@@ -25,8 +25,6 @@ public class BaseProtectTable extends ProtectTable {
         this.containerLogTable = new BaseContainerLogTable(dataSource);
         this.interactLogTable = new BaseInteractLogTable(dataSource);
         this.itemLogTable = new BaseItemLogTable(dataSource);
-
-
     }
 
     @Override

@@ -1,13 +1,14 @@
 package it.impo.protect.database.impl;
 
 import com.zaxxer.hikari.HikariDataSource;
+import it.impo.protect.api.data.BasicLocation;
+import it.impo.protect.api.data.logs.impl.BlockLog;
 import it.impo.protect.api.database.impl.BlockLogTable;
 import org.intellij.lang.annotations.Language;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
@@ -66,20 +67,20 @@ public class BaseBlockLogTable extends BlockLogTable {
     }
 
     @Override
-    public CompletableFuture<Boolean> addLog(UUID userUuid, String username, String world, int x, int y, int z, String blockType, String blockData, String action, boolean staff) {
+    public CompletableFuture<Boolean> addLog(BlockLog log) {
         return supplyAsync(() -> {
             try (Connection c = dataSource.getConnection();
                  PreparedStatement ps = c.prepareStatement(ADD_BLOCK_LOG)) {
-                ps.setString(1, userUuid.toString());
-                ps.setString(2, username);
-                ps.setString(3, world);
-                ps.setInt(4, x);
-                ps.setInt(5, y);
-                ps.setInt(6, z);
-                ps.setString(7, blockType);
-                ps.setString(8, blockData);
-                ps.setString(9, action);
-                ps.setBoolean(10, staff);
+                ps.setString(1, log.getPlayer().getUniqueId().toString());
+                ps.setString(2, log.getPlayer().getName());
+                ps.setString(3, log.getLocation().world());
+                ps.setInt(4, log.getLocation().x());
+                ps.setInt(5, log.getLocation().y());
+                ps.setInt(6, log.getLocation().z());
+                ps.setString(7, log.getBlockType());
+                ps.setString(8, log.getBlockData());
+                ps.setString(9, log.getAction().toString());
+                ps.setBoolean(10, log.isStaff());
                 return ps.executeUpdate() > 0;
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -117,14 +118,14 @@ public class BaseBlockLogTable extends BlockLogTable {
     }
 
     @Override
-    public CompletableFuture<Integer> countLog(String world, int x, int y, int z) {
+    public CompletableFuture<Integer> countLog(BasicLocation location) {
         return supplyAsync(() -> {
             try (Connection c = dataSource.getConnection();
                  PreparedStatement ps = c.prepareStatement(COUNT_BLOCK_LOG)) {
-                ps.setString(1, world);
-                ps.setInt(2, x);
-                ps.setInt(3, y);
-                ps.setInt(4, z);
+                ps.setString(1, location.world());
+                ps.setInt(2, location.x());
+                ps.setInt(3, location.y());
+                ps.setInt(4, location.z());
                 try (var rs = ps.executeQuery()) {
                     return rs.next() ? rs.getInt(1) : 0;
                 }

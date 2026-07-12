@@ -1,4 +1,4 @@
 package it.impo.protect.api.data;
 
-public record BasicLocation(String world, double x, double y, double z) {
+public record BasicLocation(String world, int x, int y, int z) {
 }

@@ -13,7 +13,7 @@ public class Loader extends PluginLoader {
 
     @Override
     protected void setupDatabase(ProtectTable table) throws SQLException {
-
+        table.createTables();
     }
 
     @Override

@@ -38,7 +38,7 @@ public final class Protect extends JavaPlugin implements ProtectApi {
 
         DatabaseCredentials databaseCredentials = new DatabaseCredentials(this);
         this.hikariCP = new HikariCP(this, databaseCredentials);
-        this.protectTable = new BaseProtectTable();
+        this.protectTable = new BaseProtectTable(hikariCP.getDataSource());
 
         Loader loader = new Loader(this);
         loader.load(protectTable);
@@ -77,6 +77,11 @@ public final class Protect extends JavaPlugin implements ProtectApi {
 
     public String getProjectName() {
         return projectName;
+    }
+
+    @Override
+    public ProtectTable getProtectTable() {
+        return protectTable;
     }
 
     private static final String RESET = "\u001B[0m";

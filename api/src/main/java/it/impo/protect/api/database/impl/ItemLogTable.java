@@ -1,5 +1,8 @@
 package it.impo.protect.api.database.impl;
 
+import it.impo.protect.api.data.BasicLocation;
+import it.impo.protect.api.data.logs.impl.ItemLog;
+
 import java.sql.SQLException;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -14,12 +17,12 @@ public abstract class ItemLogTable {
      */
     public abstract void createTable() throws SQLException;
 
-    public abstract CompletableFuture<Boolean> addLog(UUID userUuid, String username, String world, int x, int y, int z, byte[] item, int amount, String action, boolean staff);
+    public abstract CompletableFuture<Boolean> addLog(ItemLog log);
 
     public abstract CompletableFuture<Boolean> removeLog(int id);
 
     public abstract CompletableFuture<Boolean> removeOldLog(int days);
 
-    public abstract CompletableFuture<Integer> countLog(String world, int x, int y, int z);
+    public abstract CompletableFuture<Integer> countLog(BasicLocation location);
 }
 

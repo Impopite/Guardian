@@ -1,6 +1,8 @@
 package it.impo.protect.database.impl;
 
 import com.zaxxer.hikari.HikariDataSource;
+import it.impo.protect.api.data.BasicLocation;
+import it.impo.protect.api.data.logs.impl.ContainerLog;
 import it.impo.protect.api.database.impl.ContainerLogTable;
 import org.intellij.lang.annotations.Language;
 
@@ -67,21 +69,21 @@ public class BaseContainerLogTable extends ContainerLogTable {
     }
 
     @Override
-    public CompletableFuture<Boolean> addLog(UUID userUuid, String username, String world, int x, int y, int z, String containerType, byte[] item, int amount, String action, boolean staff) {
+    public CompletableFuture<Boolean> addLog(ContainerLog log) {
         return supplyAsync(() -> {
             try (Connection c = dataSource.getConnection();
                  PreparedStatement ps = c.prepareStatement(ADD_CONTAINER_LOG)) {
-                ps.setString(1, userUuid.toString());
-                ps.setString(2, username);
-                ps.setString(3, world);
-                ps.setInt(4, x);
-                ps.setInt(5, y);
-                ps.setInt(6, z);
-                ps.setString(7, containerType);
-                ps.setBytes(8, item);
-                ps.setInt(9, amount);
-                ps.setString(10, action);
-                ps.setBoolean(11, staff);
+                ps.setString(1, log.getPlayer().getUniqueId().toString());
+                ps.setString(2, log.getPlayer().getName());
+                ps.setString(3, log.getLocation().world());
+                ps.setInt(4, log.getLocation().x());
+                ps.setInt(5, log.getLocation().y());
+                ps.setInt(6, log.getLocation().z());
+                ps.setString(7, log.getContainerType().name());
+                ps.setBytes(8, log.getItem());
+                ps.setInt(9, log.getAmount());
+                ps.setString(10, log.getAction().name());
+                ps.setBoolean(11, log.isStaff());
                 return ps.executeUpdate() > 0;
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -119,14 +121,14 @@ public class BaseContainerLogTable extends ContainerLogTable {
     }
 
     @Override
-    public CompletableFuture<Integer> countLog(String world, int x, int y, int z) {
+    public CompletableFuture<Integer> countLog(BasicLocation location) {
         return supplyAsync(() -> {
             try (Connection c = dataSource.getConnection();
                  PreparedStatement ps = c.prepareStatement(COUNT_CONTAINER_LOG)) {
-                ps.setString(1, world);
-                ps.setInt(2, x);
-                ps.setInt(3, y);
-                ps.setInt(4, z);
+                ps.setString(1, location.world());
+                ps.setInt(2, location.x());
+                ps.setInt(3, location.y());
+                ps.setInt(4, location.z());
                 try (var rs = ps.executeQuery()) {
                     return rs.next() ? rs.getInt(1) : 0;
                 }

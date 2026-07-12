@@ -31,4 +31,20 @@ public class ContainerLog extends Logs {
         this.containerType = containerType;
     }
 
+    public byte[] getItem() {
+        return item;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public ContainerAction getAction() {
+        return action;
+    }
+
+    public ContainerType getContainerType() {
+        return containerType;
+    }
+
 }
