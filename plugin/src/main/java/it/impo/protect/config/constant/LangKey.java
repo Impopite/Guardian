@@ -7,8 +7,9 @@ public enum LangKey {
     CONSOLE_CANT_DO("message.console-cant-do-command"),
     PLAYER_NOT_FOUND("message.player-not-found"),
 
-    PREFIX("prefix"),
-    PREFIX_CHAT("prefix-chat");
+    NO_INTERACTION("inspect.no-interaction"),
+
+    PREFIX("prefix");
 
     private final String path;
 

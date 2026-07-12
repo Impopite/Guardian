@@ -135,6 +135,4 @@ public class BaseBlockLogTable extends BlockLogTable {
             }
         });
     }
-
-
 }

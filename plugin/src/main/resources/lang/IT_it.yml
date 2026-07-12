@@ -12,3 +12,6 @@ message:
   console-cant-do-command: "<error>Solo un player può eseguire questo comando"
   unknown-command: "<error>Comando sconosciuto."
   player-not-found: "<error>Player non trovato."
+
+inspect:
+  no-interaction: "<error>Non ci sono interazioni con questo blocco."

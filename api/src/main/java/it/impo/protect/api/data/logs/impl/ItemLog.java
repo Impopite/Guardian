@@ -13,13 +13,6 @@ public class ItemLog extends Logs {
     private final int amount;
     private final ItemAction action;
 
-    public ItemLog(Player player, LocalDateTime date, boolean staff, byte[] item, int amount, String action, BasicLocation location) {
-        super(player, date, staff, location);
-        this.item = item;
-        this.amount = amount;
-        this.action = ItemAction.valueOf(action.toUpperCase());
-    }
-
     public ItemLog(Player player, LocalDateTime date, boolean staff, byte[] item, int amount, ItemAction action, BasicLocation location) {
         super(player, date, staff, location);
         this.item = item;

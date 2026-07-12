@@ -13,12 +13,6 @@ public class InteractLog extends Logs {
     private final Interaction action;
 
 
-    public InteractLog(Player player, BasicLocation location, LocalDateTime date, boolean staff, String blockType, String action) {
-        super(player, date, staff, location);
-        this.blockType = blockType;
-        this.action = Interaction.valueOf(action.toUpperCase());
-    }
-
     public InteractLog(Player player, BasicLocation location, LocalDateTime date, boolean staff, String blockType, Interaction action) {
         super(player, date, staff, location);
         this.blockType = blockType;

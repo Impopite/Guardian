@@ -10,3 +10,7 @@ database:
   port: 3306
   name: "ImpooProjects"
   ssl: false
+
+inspect:
+  page-number: 10
+  page-size: 10

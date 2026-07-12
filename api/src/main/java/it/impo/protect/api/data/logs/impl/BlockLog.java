@@ -13,15 +13,11 @@ public class BlockLog extends Logs {
     private final String blockData;
     private final Action action;
 
-    public BlockLog(Player player, BasicLocation location, LocalDateTime date, boolean staff, String blockType, String action) {
-        this(player, location, date, staff, blockType, null, action);
-    }
-
-    public BlockLog(Player player, BasicLocation location, LocalDateTime date, boolean staff, String blockType, String blockData, String action) {
+    public BlockLog(Player player, BasicLocation location, LocalDateTime date, boolean staff, String blockType, String blockData, Action action) {
         super(player, date, staff, location);
         this.blockType = blockType;
         this.blockData = blockData;
-        this.action = Action.valueOf(action.toUpperCase());
+        this.action = action;
     }
 
     public String getBlockType() {
