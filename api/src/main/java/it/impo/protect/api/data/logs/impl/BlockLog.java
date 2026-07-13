@@ -6,6 +6,7 @@ import it.impo.protect.api.data.logs.Logs;
 import org.bukkit.entity.Player;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class BlockLog extends Logs {
 
@@ -13,8 +14,8 @@ public class BlockLog extends Logs {
     private final String blockData;
     private final Action action;
 
-    public BlockLog(Player player, BasicLocation location, LocalDateTime date, boolean staff, String blockType, String blockData, Action action) {
-        super(player, date, staff, location);
+    public BlockLog(UUID uuid, String playerName, BasicLocation location, LocalDateTime date, boolean staff, String blockType, String blockData, Action action) {
+        super(uuid, playerName, date, staff, location);
         this.blockType = blockType;
         this.blockData = blockData;
         this.action = action;

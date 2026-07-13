@@ -1,26 +1,33 @@
 package it.impo.protect.api.data.logs;
 
 import it.impo.protect.api.data.BasicLocation;
-import org.bukkit.entity.Player;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public abstract class Logs {
 
     private int id;
-    private final Player player;
+    private final UUID uuid;
+    private final String playerName;
     private final LocalDateTime date;
     private final boolean staff;
     private final BasicLocation location;
 
-    protected Logs(Player player, LocalDateTime date, boolean staff, BasicLocation location) {
-        this.player = player;
+    protected Logs(UUID uuid, String playerName, LocalDateTime date, boolean staff, BasicLocation location) {
+        this.uuid = uuid;
+        this.playerName = playerName;
         this.date = date;
         this.staff = staff;
         this.location = location;
     }
-    public Player getPlayer() {
-        return player;
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 
     public LocalDateTime getDate() {
@@ -42,7 +49,4 @@ public abstract class Logs {
     public void setId(int id) {
         this.id = id;
     }
-
-
-
 }
