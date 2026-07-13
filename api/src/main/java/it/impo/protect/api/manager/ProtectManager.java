@@ -16,13 +16,13 @@ public abstract class ProtectManager {
 
     public abstract void saveLogs(Logs logs);
 
-    public abstract void saveBlockLog(Player player, boolean staff, Block block, Action action, BasicLocation location);
+    public abstract void saveBlockLog(Player player, Block block, Action action, BasicLocation location);
 
-    public abstract void saveContainerLog(Player player, boolean staff, Block block, ItemStack itemStack, int amount, ContainerAction action, BasicLocation location) throws IOException;
+    public abstract void saveContainerLog(Player player, Block block, ItemStack itemStack, int amount, ContainerAction action, BasicLocation location);
 
-    public abstract void saveItemLog(Player player, boolean staff, ItemStack itemStack, int amount, ItemAction action, BasicLocation location) throws IOException;
+    public abstract void saveItemLog(Player player, ItemStack itemStack, int amount, ItemAction action, BasicLocation location);
 
-    public abstract void saveInteractLog(Player player, boolean staff, Block block, Interaction interaction, BasicLocation location);
+    public abstract void saveInteractLog(Player player, Block block, Interaction interaction, BasicLocation location);
 
     public abstract void toggleInspect(Player player);
 
