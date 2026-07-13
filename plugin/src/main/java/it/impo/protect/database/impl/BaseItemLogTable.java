@@ -1,6 +1,7 @@
 package it.impo.protect.database.impl;
 
 import com.zaxxer.hikari.HikariDataSource;
+import it.impo.protect.api.data.Action.ItemAction;
 import it.impo.protect.api.data.BasicLocation;
 import it.impo.protect.api.data.logs.impl.ItemLog;
 import it.impo.protect.api.database.impl.ItemLogTable;
@@ -9,6 +10,9 @@ import org.intellij.lang.annotations.Language;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -55,6 +59,15 @@ public class BaseItemLogTable extends ItemLogTable {
     @Language("SQL")
     private static final String COUNT_ITEM_LOG = "SELECT COUNT(*) FROM protect_item_log WHERE world = ? AND x = ? AND y = ? AND z = ?";
 
+    @Language("SQL")
+    private static final String INSPECT_ITEM_LOGS = """
+        SELECT id, user_uuid, username, world, x, y, z, item, amount, action, staff, date
+        FROM protect_item_log
+        WHERE world = ? AND x = ? AND y = ? AND z = ?
+        ORDER BY date DESC
+        LIMIT ? OFFSET ?
+        """;
+
     public BaseItemLogTable(HikariDataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -72,8 +85,8 @@ public class BaseItemLogTable extends ItemLogTable {
         return supplyAsync(() -> {
             try (Connection c = dataSource.getConnection();
                  PreparedStatement ps = c.prepareStatement(ADD_ITEM_LOG)) {
-                ps.setString(1, log.getPlayer().getUniqueId().toString());
-                ps.setString(2, log.getPlayer().getName());
+                ps.setString(1, log.getUuid().toString());
+                ps.setString(2, log.getPlayerName());
                 ps.setString(3, log.getLocation().world());
                 ps.setInt(4, log.getLocation().x());
                 ps.setInt(5, log.getLocation().y());
@@ -137,4 +150,50 @@ public class BaseItemLogTable extends ItemLogTable {
         });
     }
 
+    @Override
+    public CompletableFuture<List<ItemLog>> inspectLog(BasicLocation location, int limit, int offset) {
+        return supplyAsync(() -> {
+            List<ItemLog> logs = new ArrayList<>();
+            try (Connection c = dataSource.getConnection();
+                 PreparedStatement ps = c.prepareStatement(INSPECT_ITEM_LOGS)) {
+                ps.setString(1, location.world());
+                ps.setInt(2, location.x());
+                ps.setInt(3, location.y());
+                ps.setInt(4, location.z());
+                ps.setInt(5, limit);
+                ps.setInt(6, offset);
+                try (var rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        UUID uuid = UUID.fromString(rs.getString("user_uuid"));
+
+                        BasicLocation logLocation = new BasicLocation(
+                                rs.getString("world"),
+                                rs.getInt("x"),
+                                rs.getInt("y"),
+                                rs.getInt("z")
+                        );
+
+                        LocalDateTime date = rs.getTimestamp("date").toLocalDateTime();
+                        ItemAction action = ItemAction.valueOf(rs.getString("action"));
+
+                        ItemLog log = new ItemLog(
+                                uuid,
+                                rs.getString("username"),
+                                date,
+                                rs.getBoolean("staff"),
+                                rs.getBytes("item"),
+                                rs.getInt("amount"),
+                                action,
+                                logLocation
+                        );
+                        log.setId(rs.getInt("id"));
+                        logs.add(log);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return logs;
+        });
+    }
 }

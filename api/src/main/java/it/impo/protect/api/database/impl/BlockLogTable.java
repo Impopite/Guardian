@@ -4,6 +4,7 @@ import it.impo.protect.api.data.BasicLocation;
 import it.impo.protect.api.data.logs.impl.BlockLog;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -24,4 +25,6 @@ public abstract class BlockLogTable {
     public abstract CompletableFuture<Boolean> removeOldLog(int days);
 
     public abstract CompletableFuture<Integer> countLog(BasicLocation location);
+
+    public abstract CompletableFuture<List<BlockLog>> inspectLog(BasicLocation location, int limit, int offset);
 }
