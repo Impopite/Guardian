@@ -8,6 +8,7 @@ public enum LangKey {
     PLAYER_NOT_FOUND("message.player-not-found"),
 
     NO_INTERACTION("inspect.no-interaction"),
+    NOT_VALID("inspect.not-valid"),
 
     PREFIX("prefix");
 

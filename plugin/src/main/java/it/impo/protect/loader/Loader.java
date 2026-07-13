@@ -2,6 +2,10 @@ package it.impo.protect.loader;
 
 import it.impo.protect.Protect;
 import it.impo.protect.api.database.ProtectTable;
+import it.impo.protect.server.listeners.BlockListener;
+import it.impo.protect.server.listeners.ContainerListener;
+import it.impo.protect.server.listeners.InspectListener;
+import it.impo.protect.server.listeners.ItemListener;
 
 import java.sql.SQLException;
 
@@ -19,7 +23,10 @@ public class Loader extends PluginLoader {
     @Override
     protected void setupListeners() {
         registerListeners(
-                // new Listener(plugin) ecc....
+                new BlockListener(plugin),
+                new ContainerListener(plugin),
+                new InspectListener(plugin),
+                new ItemListener(plugin)
         );
     }
 
