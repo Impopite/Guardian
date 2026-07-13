@@ -1,5 +1,19 @@
 package it.impo.protect.api.utils;
 
+import it.impo.protect.api.data.Action.Action;
+import it.impo.protect.api.data.Action.ContainerAction;
+import it.impo.protect.api.data.Action.Interaction;
+import it.impo.protect.api.data.Action.ItemAction;
+import it.impo.protect.api.data.logs.Logs;
+import it.impo.protect.api.data.logs.impl.BlockLog;
+import it.impo.protect.api.data.logs.impl.ContainerLog;
+import it.impo.protect.api.data.logs.impl.InteractLog;
+import it.impo.protect.api.data.logs.impl.ItemLog;
+import net.kyori.adventure.text.Component;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
+
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,5 +48,37 @@ public class LogUtils {
     public static boolean isValidTimeInput(String input) {
         if (input == null || input.isBlank()) return false;
         return STRICT_TIME_PATTERN.matcher(input.toLowerCase().trim()).matches();
+    }
+
+    public static Component formatLogs(Logs logs, Plugin plugin) {
+        return switch(logs){
+            case BlockLog blockLog -> formatBlockLog(blockLog);
+            case ContainerLog containerLog -> formatContainerLog(containerLog, plugin);
+            case ItemLog itemLog -> formatItemLog(itemLog, plugin);
+            case InteractLog interactLog -> formatInteractLog(interactLog);
+            default -> Component.empty();
+        };
+    }
+
+    private static Component formatBlockLog(BlockLog blockLog){
+        String action = blockLog.getAction() == Action.PLACE ? "§a+" : "§c-";
+        return Component.text("§8[§b" + blockLog.getDate().format(FORMATTER) + "§8] §f" + blockLog.getPlayerName() + " §7" + action + " §f" + blockLog.getBlockType() + " §8(§f" + blockLog.getLocation().toString() + "§8)");
+    }
+
+    private static Component formatContainerLog(ContainerLog containerLog, Plugin plugin){
+        String action = containerLog.getAction() == ContainerAction.ADD ? "§a+" : "§c-";
+        ItemStack item = ItemSerializer.safeItemFromBytes(containerLog.getItem(), plugin);
+        return Component.text("§8[§b" + containerLog.getDate().format(FORMATTER) + "§8] §f" + containerLog.getPlayerName() + " §7" + action + " §f" + item.getItemMeta().getDisplayName() + " §8(§f" + containerLog.getLocation().toString() + "§8)");
+    }
+
+    private static Component formatItemLog(ItemLog itemLog, Plugin plugin) {
+        String action = itemLog.getAction() == ItemAction.PICKUP ? "§a+" : "§c-";
+        ItemStack item = ItemSerializer.safeItemFromBytes(itemLog.getItem(), plugin);
+        return Component.text("§8[§b" + itemLog.getDate().format(FORMATTER) + "§8] §f" + itemLog.getPlayerName() + " §7" + action + " §f" + item.getItemMeta().getDisplayName() + " §8(§f" + itemLog.getLocation().toString() + "§8)");
+    }
+
+    private static Component formatInteractLog(InteractLog interactLog){
+        String action = interactLog.getAction() == Interaction.OPEN ? "§aOPEN" : "§cCLOSE";
+        return Component.text("§8[§b" + interactLog.getDate().format(FORMATTER) + "§8] §f" + interactLog.getPlayerName() + " §7" + action + " §f" + interactLog.getBlockType() + " §8(§f" + interactLog.getLocation().toString() + "§8)");
     }
 }
