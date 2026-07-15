@@ -10,6 +10,10 @@ public enum LangKey {
     NO_INTERACTION("inspect.no-interaction"),
     NOT_VALID("inspect.not-valid"),
 
+    INSPECT_ENABLED("inspect.enabled"),
+    INSPECT_DISABLED("inspect.disabled"),
+    INSPECT_COMMAND_USAGE("command-usage.inspect"),
+
     PREFIX("prefix");
 
     private final String path;

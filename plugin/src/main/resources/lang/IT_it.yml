@@ -16,3 +16,8 @@ message:
 inspect:
   no-interaction: "<error>Non ci sono interazioni con questo blocco."
   not-valid: "<error>Interagisci con un blocco o un contenitore per consultare i log."
+  enabled: "<success>Inspect abilitato."
+  disabled: "<error>Inspect disabilitato."
+
+command-usage:
+  inspect: "<normal>/inspect - Abilita o disabilita l'inspect."

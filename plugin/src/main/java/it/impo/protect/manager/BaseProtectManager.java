@@ -97,13 +97,14 @@ public class BaseProtectManager extends ProtectManager {
         saveLogs(interactLog);
     }
 
-    // TODO -> see if @return boolean is better for inspect command
     @Override
-    public void toggleInspect(Player player) {
+    public boolean toggleInspect(Player player) {
         UUID uuid = player.getUniqueId();
 
-        if(inspectors.remove(uuid)) return;
+        if(inspectors.remove(uuid)) return false;
         inspectors.add(uuid);
+
+        return true;
     }
 
     @Override

@@ -24,7 +24,7 @@ public abstract class ProtectManager {
 
     public abstract void saveInteractLog(Player player, Block block, Interaction interaction, BasicLocation location);
 
-    public abstract void toggleInspect(Player player);
+    public abstract boolean toggleInspect(Player player);
 
     public abstract void showBlockLogs(Player player, BasicLocation location);
 
