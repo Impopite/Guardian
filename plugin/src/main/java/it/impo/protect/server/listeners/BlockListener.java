@@ -21,7 +21,7 @@ public class BlockListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         if (event.isCancelled() || event.getBlock().getType().isAir()) return;
         Location loc = event.getBlock().getLocation();
-        BasicLocation location = new BasicLocation(loc.getWorld().toString(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        BasicLocation location = new BasicLocation(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 
         plugin.getProtectManager().saveBlockLog(event.getPlayer(), event.getBlock(), Action.PLACE, location);
     }
@@ -30,8 +30,8 @@ public class BlockListener implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         if (event.isCancelled() || event.getBlock().getType().isAir()) return;
         Location loc = event.getBlock().getLocation();
-        BasicLocation location = new BasicLocation(loc.getWorld().toString(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        BasicLocation location = new BasicLocation(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 
-        plugin.getProtectManager().saveBlockLog(event.getPlayer(), event.getBlock(),  Action.PLACE, location);
+        plugin.getProtectManager().saveBlockLog(event.getPlayer(), event.getBlock(),  Action.BREAK, location);
     }
 }

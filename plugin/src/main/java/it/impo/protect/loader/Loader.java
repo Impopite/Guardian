@@ -2,6 +2,7 @@ package it.impo.protect.loader;
 
 import it.impo.protect.Protect;
 import it.impo.protect.api.database.ProtectTable;
+import it.impo.protect.hook.FaweHook;
 import it.impo.protect.server.listeners.BlockListener;
 import it.impo.protect.server.listeners.ContainerListener;
 import it.impo.protect.server.listeners.InspectListener;
@@ -28,6 +29,11 @@ public class Loader extends PluginLoader {
                 new InspectListener(plugin),
                 new ItemListener(plugin)
         );
+
+        if (plugin.getServer().getPluginManager().isPluginEnabled("FastAsyncWorldEdit")) {
+            new FaweHook(plugin).register();
+            plugin.getLogger().info("FAWE hook enabled.");
+        }
     }
 
     @Override
