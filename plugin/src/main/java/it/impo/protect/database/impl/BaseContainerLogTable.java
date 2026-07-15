@@ -87,7 +87,7 @@ public class BaseContainerLogTable extends ContainerLogTable {
         return supplyAsync(() -> {
             try (Connection c = dataSource.getConnection();
                  PreparedStatement ps = c.prepareStatement(ADD_CONTAINER_LOG)) {
-                ps.setString(1, log.getUuid().toString());
+                ps.setObject(1, log.getUuid());
                 ps.setString(2, log.getPlayerName());
                 ps.setString(3, log.getLocation().world());
                 ps.setInt(4, log.getLocation().x());

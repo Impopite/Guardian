@@ -84,7 +84,7 @@ public class BaseInteractLogTable extends InteractLogTable {
         return supplyAsync(() -> {
             try (Connection c = dataSource.getConnection();
                  PreparedStatement ps = c.prepareStatement(ADD_INTERACT_LOG)) {
-                ps.setString(1, log.getUuid().toString());
+                ps.setObject(1, log.getUuid());
                 ps.setString(2, log.getPlayerName());
                 ps.setString(3, log.getLocation().world());
                 ps.setInt(4, log.getLocation().x());
