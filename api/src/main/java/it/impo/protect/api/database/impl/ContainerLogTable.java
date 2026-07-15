@@ -5,7 +5,6 @@ import it.impo.protect.api.data.logs.impl.ContainerLog;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public abstract class ContainerLogTable {

@@ -10,8 +10,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.IOException;
-
 public abstract class ProtectManager {
 
     public abstract void saveLogs(Logs logs);

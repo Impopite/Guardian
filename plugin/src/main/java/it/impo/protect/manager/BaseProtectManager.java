@@ -43,7 +43,6 @@ public class BaseProtectManager extends ProtectManager {
     private final LangLoader lang;
 
     private static final int PAGE_SIZE = ConfigKey.PAGE_SIZE.ordinal();
-    private static final int PAGE_NUMBER = ConfigKey.PAGE_NUMBER.ordinal();
 
     public BaseProtectManager(Protect plugin) {
         this.plugin = plugin;
@@ -129,6 +128,7 @@ public class BaseProtectManager extends ProtectManager {
     }
 
     private void showBlockLogs(Player player, BasicLocation location, int page) {
+        int pageNumber = Math.max(page, 1);
         ProtectTable table = plugin.getProtectTable();
 
         table.getBlockLogTable().countLog(location).thenCompose(total -> {
@@ -138,7 +138,7 @@ public class BaseProtectManager extends ProtectManager {
             }
 
             int maxPage = Math.max(1, (int) Math.ceil((double) total / PAGE_SIZE));
-            int clampedPage = Math.min(PAGE_NUMBER, maxPage);
+            int clampedPage = Math.min(pageNumber, maxPage);
             int offset = (clampedPage - 1) * PAGE_SIZE;
 
             return table.getBlockLogTable().inspectLog(location, PAGE_SIZE, offset)
@@ -154,6 +154,7 @@ public class BaseProtectManager extends ProtectManager {
     }
 
     private void showContainerLogs(Player player, BasicLocation location, int page) {
+        int pageNumber = Math.max(page, 1);
         ProtectTable table = plugin.getProtectTable();
 
         table.getContainerLogTable().countLog(location).thenCompose(total -> {
@@ -163,7 +164,7 @@ public class BaseProtectManager extends ProtectManager {
             }
 
             int maxPage = Math.max(1, (int) Math.ceil((double) total / PAGE_SIZE));
-            int clampedPage = Math.min(PAGE_NUMBER, maxPage);
+            int clampedPage = Math.min(pageNumber, maxPage);
             int offset = (clampedPage - 1) * PAGE_SIZE;
 
             return table.getContainerLogTable().inspectLog(location, PAGE_SIZE, offset)
@@ -179,6 +180,7 @@ public class BaseProtectManager extends ProtectManager {
     }
 
     private void showInteractLogs(Player player, BasicLocation location, int page) {
+        int pageNumber = Math.max(page, 1);
         ProtectTable table = plugin.getProtectTable();
 
         table.getInteractLogTable().countLog(location).thenCompose(total -> {
@@ -188,7 +190,7 @@ public class BaseProtectManager extends ProtectManager {
             }
 
             int maxPage = Math.max(1, (int) Math.ceil((double) total / PAGE_SIZE));
-            int clampedPage = Math.min(PAGE_NUMBER, maxPage);
+            int clampedPage = Math.min(pageNumber, maxPage);
             int offset = (clampedPage - 1) * PAGE_SIZE;
 
             return table.getInteractLogTable().inspectLog(location, PAGE_SIZE, offset)

@@ -2,6 +2,7 @@ package it.impo.protect.server.command;
 
 import dev.jorel.commandapi.CommandAPICommand;
 import it.impo.protect.Protect;
+import it.impo.protect.api.utils.Permission;
 import it.impo.protect.config.LangLoader;
 import it.impo.protect.config.constant.LangKey;
 import it.impo.protect.server.command.subcommands.InspectCommand;
@@ -26,6 +27,7 @@ public class ProtectCommand {
                 .withSubcommands(
                         new InspectCommand(plugin).get()
                 )
+                .withPermission(Permission.PROTECT_INSPECT.getPermission())
                 .executesPlayer((player, args) -> {
                     lang.send(player, LangKey.INSPECT_COMMAND_USAGE);
                 });

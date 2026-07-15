@@ -12,5 +12,4 @@ database:
   ssl: false
 
 inspect:
-  page-number: 10
   page-size: 10
