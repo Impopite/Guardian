@@ -12,3 +12,24 @@ message:
   console-cant-do-command: "<error>Only players can execute this command"
   unknown-command: "<error>Unknown command."
   player-not-found: "<error>Player not found."
+
+inspect:
+  no-interaction: "<error>No interactions with this block."
+  not-valid: "<error>Interact with a block or container to view logs."
+  enabled: "<success>Inspect enabled."
+  disabled: "<error>Inspect disabled."
+
+command-usage:
+  inspect: "<normal>/inspect - Toggle inspect mode."
+  rollback: "<normal>/protect rollback <blocks|containers> <radius> <time> - Rollback changes."
+
+rollback:
+  invalid-time: "<error>Invalid time. Use formats like <white>15m<error>, <white>2h<error>, <white>1d<error> or <white>1h30m<error>."
+  no-blocks: "<error>No block changes to undo in the selected radius."
+  no-containers: "<error>No container movements to undo in the selected radius."
+  blocks-success: "<success>Rollback <bold>blocks</bold> » <normal>Reverted <white><applied> <normal>changes out of <white><total> <normal>logs found."
+  blocks-success-skipped: "<success>Rollback <bold>blocks</bold> » <normal>Reverted <white><applied> <normal>changes. <white><skipped> <normal>logs were skipped."
+  containers-success: "<success>Rollback <bold>containers</bold> » <normal>Reverted <white><applied> <normal>movements out of <white><total> <normal>logs found."
+  containers-success-skipped: "<success>Rollback <bold>containers</bold> » <normal>Reverted <white><applied> <normal>movements. <white><skipped> <normal>logs were skipped."
+  containers-success-partial: "<success>Rollback <bold>containers</bold> » <normal>Reverted <white><applied> <normal>movements. <white><partial> <normal>partial restores."
+  containers-success-all: "<success>Rollback <bold>containers</bold> » <normal>Reverted <white><applied> <normal>movements. <white><skipped> <normal>logs skipped and <white><partial> <normal>partial restores."

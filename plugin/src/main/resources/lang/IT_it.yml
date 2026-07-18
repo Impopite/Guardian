@@ -21,3 +21,15 @@ inspect:
 
 command-usage:
   inspect: "<normal>/inspect - Abilita o disabilita l'inspect."
+  rollback: "<normal>/protect rollback <blocks|containers> <raggio> <tempo> - Rollback delle modifiche."
+
+rollback:
+  invalid-time: "<error>Tempo non valido. Usa formati come <white>15m<error>, <white>2h<error>, <white>1d<error> o <white>1h30m<error>."
+  no-blocks: "<error>Non ci sono modifiche ai blocchi da annullare nel raggio selezionato."
+  no-containers: "<error>Non ci sono movimenti da annullare nei contenitori del raggio selezionato."
+  blocks-success: "<success>Sono state rollbackate <white><applied> <success>modifiche su <white><total> <success>log trovati."
+  blocks-success-skipped: "<success>Sono state rollbackate <white><applied> <success>modifiche. <white><skipped> <success>log sono stati saltati."
+  containers-success: "<success>Sono stati rollbackati <white><applied> <success>movimenti su <white><total> <success>log trovati."
+  containers-success-skipped: "<success>Sono stati rollbackati <white><applied> <success>movimenti. <white><skipped> <success>log saltati."
+  containers-success-partial: "<success>Sono stati rollbackati <white><applied> <success>movimenti. <white><partial> <success>ripristini parziali."
+  containers-success-all: "<success>Sono stati rollbackati <white><applied> <success>movimenti. <white><skipped> <success>log saltati e <white><partial> <success>ripristini parziali."

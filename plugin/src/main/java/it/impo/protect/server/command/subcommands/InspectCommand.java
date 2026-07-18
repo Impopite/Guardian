@@ -15,15 +15,22 @@ public class InspectCommand {
     }
 
     public CommandAPICommand get() {
+        LangLoader lang = plugin.getLangLoader();
         return new CommandAPICommand("inspect")
                 .withPermission(Permission.PROTECT_INSPECT.getPermission())
-                .executesPlayer((player, args) -> {
-                    LangLoader lang = plugin.getLangLoader();
-                    if(plugin.getProtectManager().toggleInspect(player)){
+                .executes((sender, args) -> {
+                    if (!sender.hasPermission(Permission.PROTECT_INSPECT.getPermission())) {
+                        lang.send(sender, LangKey.NO_PERMISSION);
+                        return;
+                    }
+                    if (!(sender instanceof org.bukkit.entity.Player player)) {
+                        lang.send(sender, LangKey.CONSOLE_CANT_DO);
+                        return;
+                    }
+                    if (plugin.getProtectManager().toggleInspect(player)) {
                         lang.send(player, LangKey.INSPECT_ENABLED);
                         return;
                     }
-
                     lang.send(player, LangKey.INSPECT_DISABLED);
                 });
     }

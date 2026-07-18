@@ -68,6 +68,18 @@ public class BaseBlockLogTable extends BlockLogTable {
         LIMIT ? OFFSET ?
         """;
 
+    @Language("SQL")
+    private static final String ROLLBACK_BLOCK_LOGS = """
+        SELECT id, user_uuid, username, world, x, y, z, block_type, block_data, action, staff, date
+        FROM protect_block_log
+        WHERE world = ?
+          AND date >= ?
+          AND x BETWEEN ? AND ?
+          AND y BETWEEN ? AND ?
+          AND z BETWEEN ? AND ?
+        ORDER BY date DESC, id DESC
+        """;
+
     public BaseBlockLogTable(HikariDataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -162,6 +174,61 @@ public class BaseBlockLogTable extends BlockLogTable {
                 ps.setInt(4, location.z());
                 ps.setInt(5, limit);
                 ps.setInt(6, offset);
+                try (var rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        BasicLocation logLocation = new BasicLocation(
+                                rs.getString("world"),
+                                rs.getInt("x"),
+                                rs.getInt("y"),
+                                rs.getInt("z")
+                        );
+
+                        LocalDateTime date = rs.getTimestamp("date").toLocalDateTime();
+                        Action action = Action.valueOf(rs.getString("action"));
+
+                        BlockLog log = new BlockLog(
+                                UUID.fromString(rs.getString("user_uuid")),
+                                rs.getString("username"),
+                                logLocation,
+                                date,
+                                rs.getBoolean("staff"),
+                                rs.getString("block_type"),
+                                rs.getString("block_data"),
+                                action
+                        );
+                        log.setId(rs.getInt("id"));
+                        logs.add(log);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return logs;
+        });
+    }
+
+    @Override
+    public CompletableFuture<List<BlockLog>> rollbackLogs(BasicLocation center, int radius, LocalDateTime since) {
+        return supplyAsync(() -> {
+            List<BlockLog> logs = new ArrayList<>();
+            try (Connection c = dataSource.getConnection();
+                 PreparedStatement ps = c.prepareStatement(ROLLBACK_BLOCK_LOGS)) {
+                int minX = center.x() - radius;
+                int maxX = center.x() + radius;
+                int minY = center.y() - radius;
+                int maxY = center.y() + radius;
+                int minZ = center.z() - radius;
+                int maxZ = center.z() + radius;
+
+                ps.setString(1, center.world());
+                ps.setObject(2, since);
+                ps.setInt(3, minX);
+                ps.setInt(4, maxX);
+                ps.setInt(5, minY);
+                ps.setInt(6, maxY);
+                ps.setInt(7, minZ);
+                ps.setInt(8, maxZ);
+
                 try (var rs = ps.executeQuery()) {
                     while (rs.next()) {
                         BasicLocation logLocation = new BasicLocation(

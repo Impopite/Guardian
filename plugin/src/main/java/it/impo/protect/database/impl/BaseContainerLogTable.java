@@ -70,6 +70,18 @@ public class BaseContainerLogTable extends ContainerLogTable {
         LIMIT ? OFFSET ?
         """;
 
+    @Language("SQL")
+    private static final String ROLLBACK_CONTAINER_LOGS = """
+        SELECT id, user_uuid, username, world, x, y, z, container_type, item, amount, action, staff, date
+        FROM protect_container_log
+        WHERE world = ?
+          AND date >= ?
+          AND x BETWEEN ? AND ?
+          AND y BETWEEN ? AND ?
+          AND z BETWEEN ? AND ?
+        ORDER BY date DESC, id DESC
+        """;
+
     public BaseContainerLogTable(HikariDataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -165,6 +177,65 @@ public class BaseContainerLogTable extends ContainerLogTable {
                 ps.setInt(4, location.z());
                 ps.setInt(5, limit);
                 ps.setInt(6, offset);
+                try (var rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        UUID uuid = UUID.fromString(rs.getString("user_uuid"));
+
+                        BasicLocation logLocation = new BasicLocation(
+                                rs.getString("world"),
+                                rs.getInt("x"),
+                                rs.getInt("y"),
+                                rs.getInt("z")
+                        );
+
+                        LocalDateTime date = rs.getTimestamp("date").toLocalDateTime();
+                        ContainerAction action = ContainerAction.valueOf(rs.getString("action"));
+                        ContainerType containerType = ContainerType.valueOf(rs.getString("container_type"));
+
+                        ContainerLog log = new ContainerLog(
+                                uuid,
+                                rs.getString("username"),
+                                rs.getBytes("item"),
+                                date,
+                                rs.getInt("amount"),
+                                rs.getBoolean("staff"),
+                                action,
+                                logLocation,
+                                containerType
+                        );
+                        log.setId(rs.getInt("id"));
+                        logs.add(log);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return logs;
+        });
+    }
+
+    @Override
+    public CompletableFuture<List<ContainerLog>> rollbackLogs(BasicLocation center, int radius, LocalDateTime since) {
+        return supplyAsync(() -> {
+            List<ContainerLog> logs = new ArrayList<>();
+            try (Connection c = dataSource.getConnection();
+                 PreparedStatement ps = c.prepareStatement(ROLLBACK_CONTAINER_LOGS)) {
+                int minX = center.x() - radius;
+                int maxX = center.x() + radius;
+                int minY = center.y() - radius;
+                int maxY = center.y() + radius;
+                int minZ = center.z() - radius;
+                int maxZ = center.z() + radius;
+
+                ps.setString(1, center.world());
+                ps.setObject(2, since);
+                ps.setInt(3, minX);
+                ps.setInt(4, maxX);
+                ps.setInt(5, minY);
+                ps.setInt(6, maxY);
+                ps.setInt(7, minZ);
+                ps.setInt(8, maxZ);
+
                 try (var rs = ps.executeQuery()) {
                     while (rs.next()) {
                         UUID uuid = UUID.fromString(rs.getString("user_uuid"));

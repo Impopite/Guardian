@@ -3,6 +3,7 @@ package it.impo.protect;
 import it.impo.protect.api.ProtectApi;
 import it.impo.protect.api.database.ProtectTable;
 import it.impo.protect.api.manager.ProtectManager;
+import it.impo.protect.api.manager.RollbackManager;
 import it.impo.protect.config.ConfigLoader;
 import it.impo.protect.config.LangLoader;
 import it.impo.protect.database.BaseProtectTable;
@@ -10,6 +11,7 @@ import it.impo.protect.database.utils.DatabaseCredentials;
 import it.impo.protect.database.utils.HikariCP;
 import it.impo.protect.loader.Loader;
 import it.impo.protect.manager.BaseProtectManager;
+import it.impo.protect.manager.BaseRollbackManager;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,6 +26,7 @@ public final class Protect extends JavaPlugin implements ProtectApi {
     private ProtectTable protectTable;
 
     private ProtectManager protectManager;
+    private RollbackManager rollbackManager;
 
     @Override
     public void onEnable() {
@@ -45,6 +48,7 @@ public final class Protect extends JavaPlugin implements ProtectApi {
         this.protectTable = new BaseProtectTable(hikariCP.getDataSource());
 
         this.protectManager = new BaseProtectManager(this);
+        this.rollbackManager = new BaseRollbackManager(this);
         Loader loader = new Loader(this);
         loader.load(protectTable);
 
@@ -92,6 +96,11 @@ public final class Protect extends JavaPlugin implements ProtectApi {
     @Override
     public ProtectManager getProtectManager() {
         return protectManager;
+    }
+
+    @Override
+    public RollbackManager getRollbackManager() {
+        return rollbackManager;
     }
 
     private static final String RESET = "\u001B[0m";

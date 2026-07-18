@@ -3,6 +3,7 @@ package it.impo.protect.api.utils;
 public enum Permission {
     PROTECT_STAFF("staff"),
     PROTECT_INSPECT("inspect"),
+    PROTECT_ROLLBACK("rollback"),
     ;
 
     private final String permission;

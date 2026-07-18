@@ -14,6 +14,17 @@ public enum LangKey {
     INSPECT_DISABLED("inspect.disabled"),
     INSPECT_COMMAND_USAGE("command-usage.inspect"),
 
+    ROLLBACK_COMMAND_USAGE("command-usage.rollback"),
+    ROLLBACK_INVALID_TIME("rollback.invalid-time"),
+    ROLLBACK_NO_BLOCKS("rollback.no-blocks"),
+    ROLLBACK_NO_CONTAINERS("rollback.no-containers"),
+    ROLLBACK_BLOCKS_SUCCESS("rollback.blocks-success"),
+    ROLLBACK_BLOCKS_SUCCESS_SKIPPED("rollback.blocks-success-skipped"),
+    ROLLBACK_CONTAINERS_SUCCESS("rollback.containers-success"),
+    ROLLBACK_CONTAINERS_SUCCESS_SKIPPED("rollback.containers-success-skipped"),
+    ROLLBACK_CONTAINERS_SUCCESS_PARTIAL("rollback.containers-success-partial"),
+    ROLLBACK_CONTAINERS_SUCCESS_ALL("rollback.containers-success-all"),
+
     PREFIX("prefix");
 
     private final String path;
