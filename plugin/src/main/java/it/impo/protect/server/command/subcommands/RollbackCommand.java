@@ -19,7 +19,6 @@ public class RollbackCommand {
     public CommandAPICommand get() {
         LangLoader lang = plugin.getLangLoader();
         return new CommandAPICommand("rollback")
-                .withPermission(Permission.PROTECT_ROLLBACK.getPermission())
                 .withSubcommands(
                         new BlocksRollbackCommand(plugin).get(),
                         new ContainersRollbackCommand(plugin).get()

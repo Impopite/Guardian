@@ -29,7 +29,6 @@ public class InspectListener implements Listener {
         this.lang = plugin.getLangLoader();
     }
 
-
     @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null) return;

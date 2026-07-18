@@ -5,6 +5,7 @@ import it.impo.protect.Protect;
 import it.impo.protect.api.utils.Permission;
 import it.impo.protect.config.LangLoader;
 import it.impo.protect.config.constant.LangKey;
+import org.bukkit.entity.Player;
 
 public class InspectCommand {
 
@@ -17,16 +18,17 @@ public class InspectCommand {
     public CommandAPICommand get() {
         LangLoader lang = plugin.getLangLoader();
         return new CommandAPICommand("inspect")
-                .withPermission(Permission.PROTECT_INSPECT.getPermission())
                 .executes((sender, args) -> {
+                    if (!(sender instanceof Player player)) {
+                        lang.send(sender, LangKey.CONSOLE_CANT_DO);
+                        return;
+                    }
+
                     if (!sender.hasPermission(Permission.PROTECT_INSPECT.getPermission())) {
                         lang.send(sender, LangKey.NO_PERMISSION);
                         return;
                     }
-                    if (!(sender instanceof org.bukkit.entity.Player player)) {
-                        lang.send(sender, LangKey.CONSOLE_CANT_DO);
-                        return;
-                    }
+
                     if (plugin.getProtectManager().toggleInspect(player)) {
                         lang.send(player, LangKey.INSPECT_ENABLED);
                         return;

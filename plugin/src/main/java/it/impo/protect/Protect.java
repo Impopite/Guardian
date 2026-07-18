@@ -40,7 +40,6 @@ public final class Protect extends JavaPlugin implements ProtectApi {
 
         BukkitAudiences adventure = BukkitAudiences.create(this);
         this.configLoader = new ConfigLoader(this, adventure).load();
-        configLoader.load();
         this.langLoader = configLoader.getLangLoader();
 
         DatabaseCredentials databaseCredentials = new DatabaseCredentials(this);

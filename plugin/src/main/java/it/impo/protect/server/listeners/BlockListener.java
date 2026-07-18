@@ -32,6 +32,6 @@ public class BlockListener implements Listener {
         Location loc = event.getBlock().getLocation();
         BasicLocation location = new BasicLocation(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 
-        plugin.getProtectManager().saveBlockLog(event.getPlayer(), event.getBlock(),  Action.BREAK, location);
+        plugin.getProtectManager().saveBlockLog(event.getPlayer(), event.getBlock(), Action.BREAK, location);
     }
 }

@@ -3,7 +3,6 @@ package it.impo.protect.api.data.logs.impl;
 import it.impo.protect.api.data.Action.Action;
 import it.impo.protect.api.data.BasicLocation;
 import it.impo.protect.api.data.logs.Logs;
-import org.bukkit.entity.Player;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

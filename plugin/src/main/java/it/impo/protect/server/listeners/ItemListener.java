@@ -23,7 +23,7 @@ public class ItemListener implements Listener {
     public void onItemPickup(EntityPickupItemEvent event) {
         if (event.isCancelled()) return;
         if (!(event.getEntity() instanceof Player player)) return;
-        ItemStack itemStack =  event.getItem().getItemStack();
+        ItemStack itemStack = event.getItem().getItemStack();
         if (itemStack.getType().isAir()) return;
 
         Location loc = event.getItem().getLocation();
@@ -35,7 +35,7 @@ public class ItemListener implements Listener {
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event) {
         if (event.isCancelled()) return;
-        ItemStack itemStack =  event.getItemDrop().getItemStack();
+        ItemStack itemStack = event.getItemDrop().getItemStack();
         if (itemStack.getType().isAir()) return;
 
         Location loc = event.getItemDrop().getLocation();
@@ -43,6 +43,4 @@ public class ItemListener implements Listener {
 
         plugin.getProtectManager().saveItemLog(event.getPlayer(), itemStack, itemStack.getAmount(), ItemAction.DROP, location);
     }
-
-
 }

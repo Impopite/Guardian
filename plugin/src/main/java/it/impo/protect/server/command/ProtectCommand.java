@@ -7,6 +7,7 @@ import it.impo.protect.config.LangLoader;
 import it.impo.protect.config.constant.LangKey;
 import it.impo.protect.server.command.subcommands.InspectCommand;
 import it.impo.protect.server.command.subcommands.RollbackCommand;
+import org.bukkit.entity.Player;
 
 public class ProtectCommand {
 
@@ -29,16 +30,17 @@ public class ProtectCommand {
                         new InspectCommand(plugin).get(),
                         new RollbackCommand(plugin).get()
                 )
-                .withPermission(Permission.PROTECT_STAFF.getPermission())
                 .executes((sender, args) -> {
+                    if (!(sender instanceof Player player)) {
+                        lang.send(sender, LangKey.CONSOLE_CANT_DO);
+                        return;
+                    }
+
                     if (!sender.hasPermission(Permission.PROTECT_STAFF.getPermission())) {
                         lang.send(sender, LangKey.NO_PERMISSION);
                         return;
                     }
-                    if (!(sender instanceof org.bukkit.entity.Player player)) {
-                        lang.send(sender, LangKey.CONSOLE_CANT_DO);
-                        return;
-                    }
+
                     lang.send(player, LangKey.INSPECT_COMMAND_USAGE);
                 });
     }

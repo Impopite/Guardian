@@ -85,7 +85,6 @@ public class ContainerListener implements Listener {
         Location loc = block.getLocation();
         BasicLocation location = new BasicLocation(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 
-
         plugin.getProtectManager().saveContainerLog(player, block, oldCursor, amount, ContainerAction.ADD, location);
     }
 
@@ -100,7 +99,6 @@ public class ContainerListener implements Listener {
 
         Location loc = block.getLocation();
         BasicLocation location = new BasicLocation(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-
 
         Player player = event.getPlayer();
         boolean wasOpen = openable.isOpen();
