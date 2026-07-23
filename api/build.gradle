@@ -10,11 +10,18 @@ tasks.register('sourceJar', Jar) {
     archiveClassifier = "sources"
 }
 
+tasks.register('javadocJar', Jar) {
+    from javadoc
+    archiveClassifier = "javadoc"
+}
+
 publishing {
     publications {
         library(MavenPublication) {
             from components.java
             artifact sourceJar
+            artifact javadocJar
         }
     }
 }
+
