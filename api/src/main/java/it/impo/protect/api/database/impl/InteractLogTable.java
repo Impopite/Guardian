@@ -26,5 +26,9 @@ public abstract class InteractLogTable {
     public abstract CompletableFuture<Integer> countLog(BasicLocation location);
 
     public abstract CompletableFuture<List<InteractLog>> inspectLog(BasicLocation location, int limit, int offset);
+
+    public abstract CompletableFuture<Integer> countLogsByPlayer(String playerName);
+
+    public abstract CompletableFuture<List<InteractLog>> searchByPlayer(String playerName, int limit, int offset);
 }
 

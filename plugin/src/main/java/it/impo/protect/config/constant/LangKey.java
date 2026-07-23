@@ -25,6 +25,23 @@ public enum LangKey {
     ROLLBACK_CONTAINERS_SUCCESS_PARTIAL("rollback.containers-success-partial"),
     ROLLBACK_CONTAINERS_SUCCESS_ALL("rollback.containers-success-all"),
 
+    RELOAD_COMMAND_USAGE("command-usage.reload"),
+    RELOAD_SUCCESS("reload.success"),
+
+    LOOKUP_COMMAND_USAGE("command-usage.lookup"),
+    LOOKUP_NO_LOGS("lookup.no-logs"),
+    LOOKUP_HEADER("lookup.header"),
+
+    STATS_COMMAND_USAGE("command-usage.stats"),
+    STATS_NO_LOGS("stats.no-logs"),
+    STATS_HEADER("stats.header"),
+    STATS_BLOCKS("stats.blocks"),
+    STATS_CONTAINERS("stats.containers"),
+    STATS_ITEMS("stats.items"),
+    STATS_INTERACTS("stats.interacts"),
+    STATS_FIRST_SEEN("stats.first-seen"),
+    STATS_LAST_SEEN("stats.last-seen"),
+
     PREFIX("prefix");
 
     private final String path;

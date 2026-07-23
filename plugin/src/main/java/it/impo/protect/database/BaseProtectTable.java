@@ -36,6 +36,14 @@ public class BaseProtectTable extends ProtectTable {
     }
 
     @Override
+    public void removeOldLogsAll(int days) {
+        this.blockLogTable.removeOldLog(days);
+        this.containerLogTable.removeOldLog(days);
+        this.interactLogTable.removeOldLog(days);
+        this.itemLogTable.removeOldLog(days);
+    }
+
+    @Override
     public BlockLogTable getBlockLogTable() {
         return blockLogTable;
     }

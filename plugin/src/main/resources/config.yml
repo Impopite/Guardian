@@ -13,3 +13,7 @@ database:
 
 inspect:
   page-size: 10
+
+cleanup:
+  interval-hours: 24
+  retention-days: 60

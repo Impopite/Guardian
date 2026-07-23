@@ -12,6 +12,9 @@ public enum ConfigKey {
     PAGE_NUMBER("inspect.page-number"),
     PAGE_SIZE("inspect.page-size"),
 
+    CLEANUP_INTERVAL_HOURS("cleanup.interval-hours"),
+    CLEANUP_RETENTION_DAYS("cleanup.retention-days"),
+
     LANG_FILE("generic.lang");
 
     private final String path;

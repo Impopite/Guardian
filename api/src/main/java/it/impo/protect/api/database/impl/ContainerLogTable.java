@@ -29,4 +29,8 @@ public abstract class ContainerLogTable {
     public abstract CompletableFuture<List<ContainerLog>> inspectLog(BasicLocation location, int limit, int offset);
 
     public abstract CompletableFuture<List<ContainerLog>> rollbackLogs(BasicLocation center, int radius, LocalDateTime since);
+
+    public abstract CompletableFuture<Integer> countLogsByPlayer(String playerName);
+
+    public abstract CompletableFuture<List<ContainerLog>> searchByPlayer(String playerName, int limit, int offset);
 }

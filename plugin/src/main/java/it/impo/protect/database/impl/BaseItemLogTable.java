@@ -68,6 +68,18 @@ public class BaseItemLogTable extends ItemLogTable {
         LIMIT ? OFFSET ?
         """;
 
+    @Language("SQL")
+    private static final String COUNT_ITEM_LOG_BY_PLAYER = "SELECT COUNT(*) FROM protect_item_log WHERE username = ?";
+
+    @Language("SQL")
+    private static final String SEARCH_ITEM_LOG_BY_PLAYER = """
+        SELECT id, user_uuid, username, world, x, y, z, item, amount, action, staff, date
+        FROM protect_item_log
+        WHERE username = ?
+        ORDER BY date DESC
+        LIMIT ? OFFSET ?
+        """;
+
     public BaseItemLogTable(HikariDataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -162,6 +174,66 @@ public class BaseItemLogTable extends ItemLogTable {
                 ps.setInt(4, location.z());
                 ps.setInt(5, limit);
                 ps.setInt(6, offset);
+                try (var rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        UUID uuid = UUID.fromString(rs.getString("user_uuid"));
+
+                        BasicLocation logLocation = new BasicLocation(
+                                rs.getString("world"),
+                                rs.getInt("x"),
+                                rs.getInt("y"),
+                                rs.getInt("z")
+                        );
+
+                        LocalDateTime date = rs.getTimestamp("date").toLocalDateTime();
+                        ItemAction action = ItemAction.valueOf(rs.getString("action"));
+
+                        ItemLog log = new ItemLog(
+                                uuid,
+                                rs.getString("username"),
+                                date,
+                                rs.getBoolean("staff"),
+                                rs.getBytes("item"),
+                                rs.getInt("amount"),
+                                action,
+                                logLocation
+                        );
+                        log.setId(rs.getInt("id"));
+                        logs.add(log);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return logs;
+        });
+    }
+
+    @Override
+    public CompletableFuture<Integer> countLogsByPlayer(String playerName) {
+        return supplyAsync(() -> {
+            try (Connection c = dataSource.getConnection();
+                 PreparedStatement ps = c.prepareStatement(COUNT_ITEM_LOG_BY_PLAYER)) {
+                ps.setString(1, playerName);
+                try (var rs = ps.executeQuery()) {
+                    return rs.next() ? rs.getInt(1) : 0;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return 0;
+            }
+        });
+    }
+
+    @Override
+    public CompletableFuture<List<ItemLog>> searchByPlayer(String playerName, int limit, int offset) {
+        return supplyAsync(() -> {
+            List<ItemLog> logs = new ArrayList<>();
+            try (Connection c = dataSource.getConnection();
+                 PreparedStatement ps = c.prepareStatement(SEARCH_ITEM_LOG_BY_PLAYER)) {
+                ps.setString(1, playerName);
+                ps.setInt(2, limit);
+                ps.setInt(3, offset);
                 try (var rs = ps.executeQuery()) {
                     while (rs.next()) {
                         UUID uuid = UUID.fromString(rs.getString("user_uuid"));

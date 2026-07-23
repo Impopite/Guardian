@@ -22,6 +22,9 @@ inspect:
 command-usage:
   inspect: "<normal>/inspect - Toggle inspect mode."
   rollback: "<normal>/protect rollback <blocks|containers> <radius> <time> - Rollback changes."
+  reload: "<normal>/protect reload - Reload the configuration."
+  lookup: "<normal>/protect lookup <player> - View a player's logs."
+  stats: "<normal>/protect stats <player> - Player statistics."
 
 rollback:
   invalid-time: "<error>Invalid time. Use formats like <white>15m<error>, <white>2h<error>, <white>1d<error> or <white>1h30m<error>."
@@ -33,3 +36,20 @@ rollback:
   containers-success-skipped: "<success>Reverted <white><applied> <success>movements. <white><skipped> <success>logs were skipped."
   containers-success-partial: "<success>Reverted <white><applied> <success>movements. <white><partial> <success>partial restores."
   containers-success-all: "<success>Reverted <white><applied> <success>movements. <white><skipped> <success>logs skipped and <white><partial> <success>partial restores."
+
+reload:
+  success: "<success>Configuration reloaded successfully."
+
+lookup:
+  no-logs: "<error>No logs found for this player."
+  header: "<normal>Logs for <white><player><normal>:"
+
+stats:
+  no-logs: "<error>No logs found for this player."
+  header: "<normal>Statistics for <white><player><normal>:"
+  blocks: "<normal>Blocks: <white><count>"
+  containers: "<normal>Containers: <white><count>"
+  items: "<normal>Items: <white><count>"
+  interacts: "<normal>Interactions: <white><count>"
+  first-seen: "<normal>First activity: <white><date>"
+  last-seen: "<normal>Last activity: <white><date>"

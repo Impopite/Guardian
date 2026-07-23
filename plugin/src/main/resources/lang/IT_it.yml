@@ -22,6 +22,9 @@ inspect:
 command-usage:
   inspect: "<normal>/inspect - Abilita o disabilita l'inspect."
   rollback: "<normal>/protect rollback <blocks|containers> <raggio> <tempo> - Rollback delle modifiche."
+  reload: "<normal>/protect reload - Ricarica la configurazione."
+  lookup: "<normal>/protect lookup <player> - Visualizza i log di un giocatore."
+  stats: "<normal>/protect stats <player> - Statistiche di un giocatore."
 
 rollback:
   invalid-time: "<error>Tempo non valido. Usa formati come <white>15m<error>, <white>2h<error>, <white>1d<error> o <white>1h30m<error>."
@@ -33,3 +36,20 @@ rollback:
   containers-success-skipped: "<success>Sono stati rollbackati <white><applied> <success>movimenti. <white><skipped> <success>log saltati."
   containers-success-partial: "<success>Sono stati rollbackati <white><applied> <success>movimenti. <white><partial> <success>ripristini parziali."
   containers-success-all: "<success>Sono stati rollbackati <white><applied> <success>movimenti. <white><skipped> <success>log saltati e <white><partial> <success>ripristini parziali."
+
+reload:
+  success: "<success>Configurazione ricaricata con successo."
+
+lookup:
+  no-logs: "<error>Nessun log trovato per questo giocatore."
+  header: "<normal>Log di <white><player><normal>:"
+
+stats:
+  no-logs: "<error>Nessun log trovato per questo giocatore."
+  header: "<normal>Statistiche di <white><player><normal>:"
+  blocks: "<normal>Blocchi: <white><count>"
+  containers: "<normal>Contenitori: <white><count>"
+  items: "<normal>Items: <white><count>"
+  interacts: "<normal>Interazioni: <white><count>"
+  first-seen: "<normal>Prima activity: <white><date>"
+  last-seen: "<normal>Ultima activity: <white><date>"

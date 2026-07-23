@@ -29,4 +29,8 @@ public abstract class BlockLogTable {
     public abstract CompletableFuture<List<BlockLog>> inspectLog(BasicLocation location, int limit, int offset);
 
     public abstract CompletableFuture<List<BlockLog>> rollbackLogs(BasicLocation center, int radius, LocalDateTime since);
+
+    public abstract CompletableFuture<Integer> countLogsByPlayer(String playerName);
+
+    public abstract CompletableFuture<List<BlockLog>> searchByPlayer(String playerName, int limit, int offset);
 }

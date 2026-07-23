@@ -24,4 +24,9 @@ public abstract class ProtectTable {
      * @throws SQLException if the table creation query fails
      */
     public abstract void createTables() throws SQLException;
+
+    /**
+     * Deletes logs older than the specified number of days from all tables.
+     */
+    public abstract void removeOldLogsAll(int days);
 }

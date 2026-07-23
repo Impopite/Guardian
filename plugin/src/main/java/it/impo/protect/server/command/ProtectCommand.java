@@ -6,7 +6,10 @@ import it.impo.protect.api.utils.Permission;
 import it.impo.protect.config.LangLoader;
 import it.impo.protect.config.constant.LangKey;
 import it.impo.protect.server.command.subcommands.InspectCommand;
+import it.impo.protect.server.command.subcommands.LookupCommand;
+import it.impo.protect.server.command.subcommands.ReloadCommand;
 import it.impo.protect.server.command.subcommands.RollbackCommand;
+import it.impo.protect.server.command.subcommands.StatsCommand;
 import org.bukkit.entity.Player;
 
 public class ProtectCommand {
@@ -28,7 +31,10 @@ public class ProtectCommand {
         return new CommandAPICommand("protect")
                 .withSubcommands(
                         new InspectCommand(plugin).get(),
-                        new RollbackCommand(plugin).get()
+                        new RollbackCommand(plugin).get(),
+                        new ReloadCommand(plugin).get(),
+                        new LookupCommand(plugin).get(),
+                        new StatsCommand(plugin).get()
                 )
                 .executes((sender, args) -> {
                     if (!(sender instanceof Player player)) {

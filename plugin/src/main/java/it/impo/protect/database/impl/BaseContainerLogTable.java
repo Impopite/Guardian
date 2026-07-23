@@ -82,6 +82,18 @@ public class BaseContainerLogTable extends ContainerLogTable {
         ORDER BY date DESC, id DESC
         """;
 
+    @Language("SQL")
+    private static final String COUNT_CONTAINER_LOG_BY_PLAYER = "SELECT COUNT(*) FROM protect_container_log WHERE username = ?";
+
+    @Language("SQL")
+    private static final String SEARCH_CONTAINER_LOG_BY_PLAYER = """
+        SELECT id, user_uuid, username, world, x, y, z, container_type, item, amount, action, staff, date
+        FROM protect_container_log
+        WHERE username = ?
+        ORDER BY date DESC
+        LIMIT ? OFFSET ?
+        """;
+
     public BaseContainerLogTable(HikariDataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -236,6 +248,68 @@ public class BaseContainerLogTable extends ContainerLogTable {
                 ps.setInt(7, minZ);
                 ps.setInt(8, maxZ);
 
+                try (var rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        UUID uuid = UUID.fromString(rs.getString("user_uuid"));
+
+                        BasicLocation logLocation = new BasicLocation(
+                                rs.getString("world"),
+                                rs.getInt("x"),
+                                rs.getInt("y"),
+                                rs.getInt("z")
+                        );
+
+                        LocalDateTime date = rs.getTimestamp("date").toLocalDateTime();
+                        ContainerAction action = ContainerAction.valueOf(rs.getString("action"));
+                        ContainerType containerType = ContainerType.valueOf(rs.getString("container_type"));
+
+                        ContainerLog log = new ContainerLog(
+                                uuid,
+                                rs.getString("username"),
+                                rs.getBytes("item"),
+                                date,
+                                rs.getInt("amount"),
+                                rs.getBoolean("staff"),
+                                action,
+                                logLocation,
+                                containerType
+                        );
+                        log.setId(rs.getInt("id"));
+                        logs.add(log);
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return logs;
+        });
+    }
+
+    @Override
+    public CompletableFuture<Integer> countLogsByPlayer(String playerName) {
+        return supplyAsync(() -> {
+            try (Connection c = dataSource.getConnection();
+                 PreparedStatement ps = c.prepareStatement(COUNT_CONTAINER_LOG_BY_PLAYER)) {
+                ps.setString(1, playerName);
+                try (var rs = ps.executeQuery()) {
+                    return rs.next() ? rs.getInt(1) : 0;
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return 0;
+            }
+        });
+    }
+
+    @Override
+    public CompletableFuture<List<ContainerLog>> searchByPlayer(String playerName, int limit, int offset) {
+        return supplyAsync(() -> {
+            List<ContainerLog> logs = new ArrayList<>();
+            try (Connection c = dataSource.getConnection();
+                 PreparedStatement ps = c.prepareStatement(SEARCH_CONTAINER_LOG_BY_PLAYER)) {
+                ps.setString(1, playerName);
+                ps.setInt(2, limit);
+                ps.setInt(3, offset);
                 try (var rs = ps.executeQuery()) {
                     while (rs.next()) {
                         UUID uuid = UUID.fromString(rs.getString("user_uuid"));

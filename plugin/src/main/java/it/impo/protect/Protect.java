@@ -6,12 +6,14 @@ import it.impo.protect.api.manager.ProtectManager;
 import it.impo.protect.api.manager.RollbackManager;
 import it.impo.protect.config.ConfigLoader;
 import it.impo.protect.config.LangLoader;
+import it.impo.protect.config.constant.ConfigKey;
 import it.impo.protect.database.BaseProtectTable;
 import it.impo.protect.database.utils.DatabaseCredentials;
 import it.impo.protect.database.utils.HikariCP;
 import it.impo.protect.loader.Loader;
 import it.impo.protect.manager.BaseProtectManager;
 import it.impo.protect.manager.BaseRollbackManager;
+import it.impo.protect.task.CleanupTask;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -27,6 +29,7 @@ public final class Protect extends JavaPlugin implements ProtectApi {
 
     private ProtectManager protectManager;
     private RollbackManager rollbackManager;
+    private CleanupTask cleanupTask;
 
     @Override
     public void onEnable() {
@@ -51,6 +54,10 @@ public final class Protect extends JavaPlugin implements ProtectApi {
         Loader loader = new Loader(this);
         loader.load(protectTable);
 
+        int cleanupInterval = configLoader.get(ConfigKey.CLEANUP_INTERVAL_HOURS, 24);
+        this.cleanupTask = new CleanupTask(this);
+        cleanupTask.runTaskTimer(this, cleanupInterval * 20L * 60L * 60L, cleanupInterval * 20L * 60L * 60L);
+
         long took = System.currentTimeMillis() - start;
 
         getLogger().info(GREEN + "Commands loaded" + RESET);
@@ -59,11 +66,13 @@ public final class Protect extends JavaPlugin implements ProtectApi {
         getLogger().info("");
         getLogger().info(GREEN +  "enabled successfully in " + took + "ms" + RESET);
         getLogger().info(CYAN + "====================================" + RESET);
-
     }
 
     @Override
     public void onDisable() {
+        if (cleanupTask != null) {
+            cleanupTask.cancel();
+        }
         hikariCP.close();
 
         getLogger().info("");
