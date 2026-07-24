@@ -61,10 +61,10 @@ public class LogUtils {
 
     public static Component formatHistory(Logs logs, Plugin plugin) {
         return switch(logs){
-            case BlockLog blockLog -> formatBlockHistory(blockLog);
-            case ContainerLog containerLog -> formatContainerHistory(containerLog, plugin);
-            case ItemLog itemLog -> formatItemHistory(itemLog, plugin);
-            case InteractLog interactLog -> formatInteractHistory(interactLog);
+            case BlockLog log -> formatBlockHistory(log);
+            case ContainerLog log -> formatItemStackHistory(log, plugin);
+            case ItemLog log -> formatItemStackHistory(log, plugin);
+            case InteractLog log -> formatInteractHistory(log);
             default -> Component.empty();
         };
     }
@@ -95,13 +95,13 @@ public class LogUtils {
         return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + log.getBlockType() + " §8(§f" + log.getLocation().toString() + "§8)");
     }
 
-    private static Component formatContainerHistory(ContainerLog log, Plugin plugin) {
+    private static Component formatItemStackHistory(ContainerLog log, Plugin plugin) {
         ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
         String name = item != null ? item.getType().name() : "Unknown";
         return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + name + " x" + log.getAmount() + " §8(§f" + log.getLocation().toString() + "§8)");
     }
 
-    private static Component formatItemHistory(ItemLog log, Plugin plugin) {
+    private static Component formatItemStackHistory(ItemLog log, Plugin plugin) {
         ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
         String name = item != null ? item.getType().name() : "Unknown";
         return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + name + " x" + log.getAmount() + " §8(§f" + log.getLocation().toString() + "§8)");
