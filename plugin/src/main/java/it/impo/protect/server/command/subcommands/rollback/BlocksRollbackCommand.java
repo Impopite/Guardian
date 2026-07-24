@@ -24,7 +24,6 @@ public class BlocksRollbackCommand {
     public CommandAPICommand get() {
         LangLoader lang = plugin.getLangLoader();
         return new CommandAPICommand("blocks")
-                .withPermission(Permission.PROTECT_ROLLBACK.getPermission())
                 .withArguments(new IntegerArgument("raggio", 1, 100))
                 .withArguments(new StringArgument("tempo").replaceSuggestions(ArgumentSuggestions.strings("15m", "30m", "1h", "6h", "1d")))
                 .executes((sender, args) -> {

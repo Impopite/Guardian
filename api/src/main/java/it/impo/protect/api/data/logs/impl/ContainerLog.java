@@ -38,5 +38,4 @@ public class ContainerLog extends Logs {
     public ContainerType getContainerType() {
         return containerType;
     }
-
 }

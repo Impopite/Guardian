@@ -13,7 +13,7 @@ public class ItemLog extends Logs {
     private final int amount;
     private final ItemAction action;
 
-    public ItemLog(UUID uuid,String playerName, LocalDateTime date, boolean staff, byte[] item, int amount, ItemAction action, BasicLocation location) {
+    public ItemLog(UUID uuid, String playerName, LocalDateTime date, boolean staff, byte[] item, int amount, ItemAction action, BasicLocation location) {
         super(uuid, playerName, date, staff, location);
         this.item = item;
         this.amount = amount;
@@ -31,5 +31,4 @@ public class ItemLog extends Logs {
     public ItemAction getAction() {
         return action;
     }
-
 }

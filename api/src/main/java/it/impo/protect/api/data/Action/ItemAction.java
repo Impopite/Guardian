@@ -2,22 +2,16 @@ package it.impo.protect.api.data.Action;
 
 public enum ItemAction {
 
-    PICKUP("Item picked up", "Item picked up"),
-    DROP("Item dropped", "Item dropped");
+    PICKUP("Item picked up"),
+    DROP("Item dropped");
 
-    private final String description;
-    private final String displayName;
+    private final String label;
 
-    ItemAction(String description, String displayName) {
-        this.description = description;
-        this.displayName = displayName;
+    ItemAction(String label) {
+        this.label = label;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getDisplayName() {
-        return displayName;
+    public String getLabel() {
+        return label;
     }
 }

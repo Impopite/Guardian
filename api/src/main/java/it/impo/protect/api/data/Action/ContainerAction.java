@@ -2,22 +2,16 @@ package it.impo.protect.api.data.Action;
 
 public enum ContainerAction {
 
-    ADD("Item added from container", "Item added from container"),
-    REMOVE("Item removed from container", "Item removed from container");
+    ADD("Item added from container"),
+    REMOVE("Item removed from container");
 
-    private final String description;
-    private final String displayName;
+    private final String label;
 
-    ContainerAction(String description, String displayName) {
-        this.description = description;
-        this.displayName = displayName;
+    ContainerAction(String label) {
+        this.label = label;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getDisplayName() {
-        return displayName;
+    public String getLabel() {
+        return label;
     }
 }

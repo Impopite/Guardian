@@ -10,7 +10,6 @@ vars:
 message:
   no-permission: "<error>You don't have enough permissions!"
   console-cant-do-command: "<error>Only players can execute this command"
-  unknown-command: "<error>Unknown command."
   player-not-found: "<error>Player not found."
 
 inspect:

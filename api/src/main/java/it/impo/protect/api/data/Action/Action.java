@@ -2,22 +2,16 @@ package it.impo.protect.api.data.Action;
 
 public enum Action {
 
-    PLACE("Block placed", "Block placed"),
-    BREAK("Block breaked", "Block breaked");
+    PLACE("Block placed"),
+    BREAK("Block breaked");
 
-    private final String description;
-    private final String displayName;
+    private final String label;
 
-    Action(String description, String displayName) {
-        this.description = description;
-        this.displayName = displayName;
+    Action(String label) {
+        this.label = label;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getDisplayName() {
-        return displayName;
+    public String getLabel() {
+        return label;
     }
 }

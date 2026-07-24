@@ -10,7 +10,6 @@ import it.impo.protect.server.command.subcommands.LookupCommand;
 import it.impo.protect.server.command.subcommands.ReloadCommand;
 import it.impo.protect.server.command.subcommands.RollbackCommand;
 import it.impo.protect.server.command.subcommands.StatsCommand;
-import org.bukkit.entity.Player;
 
 public class ProtectCommand {
 
@@ -37,17 +36,15 @@ public class ProtectCommand {
                         new StatsCommand(plugin).get()
                 )
                 .executes((sender, args) -> {
-                    if (!(sender instanceof Player player)) {
-                        lang.send(sender, LangKey.CONSOLE_CANT_DO);
-                        return;
-                    }
-
                     if (!sender.hasPermission(Permission.PROTECT_STAFF.getPermission())) {
                         lang.send(sender, LangKey.NO_PERMISSION);
                         return;
                     }
-
-                    lang.send(player, LangKey.INSPECT_COMMAND_USAGE);
+                    lang.send(sender, LangKey.INSPECT_COMMAND_USAGE);
+                    lang.send(sender, LangKey.ROLLBACK_COMMAND_USAGE);
+                    lang.send(sender, LangKey.RELOAD_COMMAND_USAGE);
+                    lang.send(sender, LangKey.LOOKUP_COMMAND_USAGE);
+                    lang.send(sender, LangKey.STATS_COMMAND_USAGE);
                 });
     }
 }

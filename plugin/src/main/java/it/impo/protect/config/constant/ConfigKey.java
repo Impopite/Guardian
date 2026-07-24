@@ -9,7 +9,6 @@ public enum ConfigKey {
     DATABASE_PORT("database.port"),
     DATABASE_SSL("database.ssl"),
 
-    PAGE_NUMBER("inspect.page-number"),
     PAGE_SIZE("inspect.page-size"),
 
     CLEANUP_INTERVAL_HOURS("cleanup.interval-hours"),
