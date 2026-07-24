@@ -24,6 +24,7 @@ command-usage:
   reload: "<normal>/protect reload - Reload the configuration."
   lookup: "<normal>/protect lookup <player> - View a player's logs."
   stats: "<normal>/protect stats <player> - Player statistics."
+  history: "<normal>/protect history <player> - Full player timeline."
 
 rollback:
   invalid-time: "<error>Invalid time. Use formats like <white>15m<error>, <white>2h<error>, <white>1d<error> or <white>1h30m<error>."
@@ -52,3 +53,7 @@ stats:
   interacts: "<normal>Interactions: <white><count>"
   first-seen: "<normal>First activity: <white><date>"
   last-seen: "<normal>Last activity: <white><date>"
+
+history:
+  no-logs: "<error>No logs found for this player."
+  header: "<normal>History for <white><player><normal>:"

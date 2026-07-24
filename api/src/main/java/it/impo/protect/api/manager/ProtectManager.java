@@ -34,6 +34,8 @@ public abstract class ProtectManager {
 
     public abstract void showPlayerLogs(Player sender, String playerName, int page);
 
+    public abstract void showPlayerHistory(Player sender, String playerName, int page);
+
     public abstract void showPlayerStats(Player sender, String playerName);
 
     public abstract void purgeOldLogs(int days);

@@ -59,6 +59,16 @@ public class LogUtils {
         };
     }
 
+    public static Component formatHistory(Logs logs, Plugin plugin) {
+        return switch(logs){
+            case BlockLog blockLog -> formatBlockHistory(blockLog);
+            case ContainerLog containerLog -> formatContainerHistory(containerLog, plugin);
+            case ItemLog itemLog -> formatItemHistory(itemLog, plugin);
+            case InteractLog interactLog -> formatInteractHistory(interactLog);
+            default -> Component.empty();
+        };
+    }
+
     private static Component formatBlockLog(BlockLog blockLog){
         String action = blockLog.getAction() == Action.PLACE ? "§a+" : "§c-";
         return Component.text("§8[§b" + blockLog.getDate().format(FORMATTER) + "§8] §f" + blockLog.getPlayerName() + " §7" + action + " §f" + blockLog.getBlockType() + " §8(§f" + blockLog.getLocation().toString() + "§8)");
@@ -79,5 +89,25 @@ public class LogUtils {
     private static Component formatInteractLog(InteractLog interactLog){
         String action = interactLog.getAction() == Interaction.OPEN ? "§aOPEN" : "§cCLOSE";
         return Component.text("§8[§b" + interactLog.getDate().format(FORMATTER) + "§8] §f" + interactLog.getPlayerName() + " §7" + action + " §f" + interactLog.getBlockType() + " §8(§f" + interactLog.getLocation().toString() + "§8)");
+    }
+
+    private static Component formatBlockHistory(BlockLog log) {
+        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + log.getBlockType() + " §8(§f" + log.getLocation().toString() + "§8)");
+    }
+
+    private static Component formatContainerHistory(ContainerLog log, Plugin plugin) {
+        ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
+        String name = item != null ? item.getType().name() : "Unknown";
+        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + name + " x" + log.getAmount() + " §8(§f" + log.getLocation().toString() + "§8)");
+    }
+
+    private static Component formatItemHistory(ItemLog log, Plugin plugin) {
+        ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
+        String name = item != null ? item.getType().name() : "Unknown";
+        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + name + " x" + log.getAmount() + " §8(§f" + log.getLocation().toString() + "§8)");
+    }
+
+    private static Component formatInteractHistory(InteractLog log) {
+        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + log.getBlockType() + " §8(§f" + log.getLocation().toString() + "§8)");
     }
 }

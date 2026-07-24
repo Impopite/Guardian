@@ -41,6 +41,10 @@ public enum LangKey {
     STATS_FIRST_SEEN("stats.first-seen"),
     STATS_LAST_SEEN("stats.last-seen"),
 
+    HISTORY_COMMAND_USAGE("command-usage.history"),
+    HISTORY_NO_LOGS("history.no-logs"),
+    HISTORY_HEADER("history.header"),
+
     PREFIX("prefix");
 
     private final String path;
