@@ -5,6 +5,7 @@ public enum LangKey {
     NO_PERMISSION("message.no-permission"),
     CONSOLE_CANT_DO("message.console-cant-do-command"),
     PLAYER_NOT_FOUND("message.player-not-found"),
+    UPDATE_AVAILABLE("message.update-available"),
 
     NO_INTERACTION("inspect.no-interaction"),
     NOT_VALID("inspect.not-valid"),

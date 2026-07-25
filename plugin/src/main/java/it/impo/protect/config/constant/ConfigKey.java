@@ -14,7 +14,8 @@ public enum ConfigKey {
     CLEANUP_INTERVAL_HOURS("cleanup.interval-hours"),
     CLEANUP_RETENTION_DAYS("cleanup.retention-days"),
 
-    LANG_FILE("generic.lang");
+    LANG_FILE("generic.lang"),
+    UPDATE_CHECKER("generic.update-checker");
 
     private final String path;
 

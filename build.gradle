@@ -43,6 +43,7 @@ subprojects {
     dependencies {
         implementation("org.jetbrains:annotations:24.0.0")
         implementation 'com.zaxxer:HikariCP:5.0.1'
+        implementation 'org.json:json:20250107'
 
         implementation("net.kyori:adventure-platform-bukkit:4.3.1")
         compileOnly "io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT"

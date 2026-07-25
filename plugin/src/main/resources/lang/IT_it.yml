@@ -11,6 +11,7 @@ message:
   no-permission: "<error>Non hai abbastanza permessi!"
   console-cant-do-command: "<error>Solo un player può eseguire questo comando"
   player-not-found: "<error>Player non trovato."
+  update-available: "<success>Una nuova versione è disponibile! (<latest_version>) - <normal>https://modrinth.com/plugin/protect"
 
 inspect:
   no-interaction: "<error>Non ci sono interazioni con questo blocco."
