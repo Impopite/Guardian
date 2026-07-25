@@ -43,13 +43,11 @@ public class BaseProtectManager extends ProtectManager {
 
     private final Protect plugin;
     private final Set<UUID> inspectors;
-    private final LangLoader lang;
     private final int pageSize;
 
     public BaseProtectManager(Protect plugin) {
         this.plugin = plugin;
         inspectors = ConcurrentHashMap.newKeySet();
-        this.lang = plugin.getLangLoader();
         this.pageSize = plugin.getConfigLoader().get(ConfigKey.PAGE_SIZE, 10);
     }
 
@@ -136,7 +134,7 @@ public class BaseProtectManager extends ProtectManager {
 
         table.getBlockLogTable().countLog(location).thenCompose(total -> {
             if (total == 0) {
-                lang.send(player, LangKey.NO_INTERACTION);
+                plugin.getLangLoader().send(player, LangKey.NO_INTERACTION);
                 return CompletableFuture.completedFuture(null);
             }
 
@@ -162,7 +160,7 @@ public class BaseProtectManager extends ProtectManager {
 
         table.getContainerLogTable().countLog(location).thenCompose(total -> {
             if (total == 0) {
-                lang.send(player, LangKey.NO_INTERACTION);
+                plugin.getLangLoader().send(player, LangKey.NO_INTERACTION);
                 return CompletableFuture.completedFuture(null);
             }
 
@@ -188,7 +186,7 @@ public class BaseProtectManager extends ProtectManager {
 
         table.getInteractLogTable().countLog(location).thenCompose(total -> {
             if (total == 0) {
-                lang.send(player, LangKey.NO_INTERACTION);
+                plugin.getLangLoader().send(player, LangKey.NO_INTERACTION);
                 return CompletableFuture.completedFuture(null);
             }
 
@@ -254,11 +252,11 @@ public class BaseProtectManager extends ProtectManager {
             int total = blockCount.join() + containerCount.join() + itemCount.join() + interactCount.join();
 
             if (total == 0) {
-                lang.send(sender, LangKey.LOOKUP_NO_LOGS);
+                plugin.getLangLoader().send(sender, LangKey.LOOKUP_NO_LOGS);
                 return;
             }
 
-            lang.send(sender, LangKey.LOOKUP_HEADER, Placeholder.parsed("player", playerName));
+            plugin.getLangLoader().send(sender, LangKey.LOOKUP_HEADER, Placeholder.parsed("player", playerName));
 
             int maxPage = Math.max(1, (int) Math.ceil((double) total / pageSize));
             int clampedPage = Math.min(pageNumber, maxPage);
@@ -319,24 +317,24 @@ public class BaseProtectManager extends ProtectManager {
             int interacts = interactCount.join();
 
             if (blocks + containers + items + interacts == 0) {
-                lang.sendRaw(sender, LangKey.STATS_NO_LOGS);
+                plugin.getLangLoader().sendRaw(sender, LangKey.STATS_NO_LOGS);
                 return;
             }
 
-            lang.send(sender, LangKey.STATS_HEADER, Placeholder.parsed("player", playerName));
-            lang.sendRaw(sender, LangKey.STATS_BLOCKS, Placeholder.parsed("count", String.valueOf(blocks)));
-            lang.sendRaw(sender, LangKey.STATS_CONTAINERS, Placeholder.parsed("count", String.valueOf(containers)));
-            lang.sendRaw(sender, LangKey.STATS_ITEMS, Placeholder.parsed("count", String.valueOf(items)));
-            lang.sendRaw(sender, LangKey.STATS_INTERACTS, Placeholder.parsed("count", String.valueOf(interacts)));
+            plugin.getLangLoader().send(sender, LangKey.STATS_HEADER, Placeholder.parsed("player", playerName));
+            plugin.getLangLoader().sendRaw(sender, LangKey.STATS_BLOCKS, Placeholder.parsed("count", String.valueOf(blocks)));
+            plugin.getLangLoader().sendRaw(sender, LangKey.STATS_CONTAINERS, Placeholder.parsed("count", String.valueOf(containers)));
+            plugin.getLangLoader().sendRaw(sender, LangKey.STATS_ITEMS, Placeholder.parsed("count", String.valueOf(items)));
+            plugin.getLangLoader().sendRaw(sender, LangKey.STATS_INTERACTS, Placeholder.parsed("count", String.valueOf(interacts)));
 
             table.getBlockLogTable().searchByPlayer(playerName, 1, 0).thenAccept(first -> {
                 if (!first.isEmpty()) {
-                    lang.sendRaw(sender, LangKey.STATS_FIRST_SEEN, Placeholder.parsed("date", first.getLast().getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"))));
+                    plugin.getLangLoader().sendRaw(sender, LangKey.STATS_FIRST_SEEN, Placeholder.parsed("date", first.getLast().getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"))));
                 }
             });
             table.getBlockLogTable().searchByPlayer(playerName, 1, 0).thenAccept(last -> {
                 if (!last.isEmpty()) {
-                    lang.sendRaw(sender, LangKey.STATS_LAST_SEEN, Placeholder.parsed("date", last.getFirst().getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"))));
+                    plugin.getLangLoader().sendRaw(sender, LangKey.STATS_LAST_SEEN, Placeholder.parsed("date", last.getFirst().getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"))));
                 }
             });
         });

@@ -2,7 +2,6 @@ package it.impo.protect.server.listeners;
 
 import it.impo.protect.Protect;
 import it.impo.protect.api.data.BasicLocation;
-import it.impo.protect.config.LangLoader;
 import it.impo.protect.config.constant.LangKey;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -22,11 +21,9 @@ import org.bukkit.inventory.EquipmentSlot;
 public class InspectListener implements Listener {
 
     private final Protect plugin;
-    private final LangLoader lang;
 
     public InspectListener(Protect plugin) {
         this.plugin = plugin;
-        this.lang = plugin.getLangLoader();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -39,7 +36,7 @@ public class InspectListener implements Listener {
 
         Action action = event.getAction();
         if (action != Action.LEFT_CLICK_BLOCK && action != Action.RIGHT_CLICK_BLOCK) {
-            lang.send(player, LangKey.NOT_VALID);
+            plugin.getLangLoader().send(player, LangKey.NOT_VALID);
             return;
         }
         event.setCancelled(true);

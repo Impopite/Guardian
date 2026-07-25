@@ -22,7 +22,6 @@ public final class Protect extends JavaPlugin implements ProtectApi {
     private final String projectName = getDescription().getName();
 
     private ConfigLoader configLoader;
-    private LangLoader langLoader;
 
     private HikariCP hikariCP;
     private ProtectTable protectTable;
@@ -43,7 +42,6 @@ public final class Protect extends JavaPlugin implements ProtectApi {
 
         BukkitAudiences adventure = BukkitAudiences.create(this);
         this.configLoader = new ConfigLoader(this, adventure).load();
-        this.langLoader = configLoader.getLangLoader();
 
         DatabaseCredentials databaseCredentials = new DatabaseCredentials(this);
         this.hikariCP = new HikariCP(this, databaseCredentials);
@@ -89,7 +87,7 @@ public final class Protect extends JavaPlugin implements ProtectApi {
     }
 
     public LangLoader getLangLoader() {
-        return langLoader;
+        return configLoader.getLangLoader();
     }
 
     public String getProjectName() {
