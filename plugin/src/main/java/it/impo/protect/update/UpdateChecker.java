@@ -45,7 +45,7 @@ public class UpdateChecker {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(API_URL))
                     .timeout(Duration.ofSeconds(10))
-                    .header("User-Agent", "AuthSystem-" + plugin.getDescription().getVersion())
+                    .header("User-Agent", "Protect-" + plugin.getDescription().getVersion())
                     .header("Accept", "application/json")
                     .GET()
                     .build();
@@ -53,7 +53,7 @@ public class UpdateChecker {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
-                plugin.getLogger().log(Level.WARNING,"[UpdateChecker] Modrinth API returned status: " + response.statusCode());
+                plugin.getLogger().log(Level.WARNING, "[UpdateChecker] Modrinth API returned status: " + response.statusCode());
                 return;
             }
 

@@ -15,10 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
 
 public class BaseItemLogTable extends ItemLogTable {
+
+    private static final Logger LOGGER = Logger.getLogger(BaseItemLogTable.class.getName());
 
     private final HikariDataSource dataSource;
 
@@ -109,7 +113,7 @@ public class BaseItemLogTable extends ItemLogTable {
                 ps.setBoolean(10, log.isStaff());
                 return ps.executeUpdate() > 0;
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.SEVERE, "[Protect] Database error", e);
                 return false;
             }
         });
@@ -123,7 +127,7 @@ public class BaseItemLogTable extends ItemLogTable {
                 ps.setInt(1, id);
                 return ps.executeUpdate() > 0;
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.SEVERE, "[Protect] Database error", e);
                 return false;
             }
         });
@@ -137,7 +141,7 @@ public class BaseItemLogTable extends ItemLogTable {
                 ps.setInt(1, days);
                 return ps.executeUpdate() > 0;
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.SEVERE, "[Protect] Database error", e);
                 return false;
             }
         });
@@ -156,7 +160,7 @@ public class BaseItemLogTable extends ItemLogTable {
                     return rs.next() ? rs.getInt(1) : 0;
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.SEVERE, "[Protect] Database error", e);
                 return 0;
             }
         });
@@ -203,7 +207,7 @@ public class BaseItemLogTable extends ItemLogTable {
                     }
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.SEVERE, "[Protect] Database error", e);
             }
             return logs;
         });
@@ -219,7 +223,7 @@ public class BaseItemLogTable extends ItemLogTable {
                     return rs.next() ? rs.getInt(1) : 0;
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.SEVERE, "[Protect] Database error", e);
                 return 0;
             }
         });
@@ -263,7 +267,7 @@ public class BaseItemLogTable extends ItemLogTable {
                     }
                 }
             } catch (SQLException e) {
-                e.printStackTrace();
+                LOGGER.log(Level.SEVERE, "[Protect] Database error", e);
             }
             return logs;
         });

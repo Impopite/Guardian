@@ -17,7 +17,6 @@ import it.impo.protect.api.manager.ProtectManager;
 import it.impo.protect.api.utils.ItemSerializer;
 import it.impo.protect.api.utils.LogUtils;
 import it.impo.protect.api.utils.Permission;
-import it.impo.protect.config.LangLoader;
 import it.impo.protect.config.constant.ConfigKey;
 import it.impo.protect.config.constant.LangKey;
 import net.kyori.adventure.text.Component;
@@ -53,10 +52,10 @@ public class BaseProtectManager extends ProtectManager {
 
     @Override
     public void saveLogs(Logs logs) {
-        if(logs == null) return;
+        if (logs == null) return;
         ProtectTable table = plugin.getProtectTable();
 
-        switch(logs){
+        switch (logs) {
             case BlockLog blockLog -> table.getBlockLogTable().addLog(blockLog);
             case ContainerLog containerLog -> table.getContainerLogTable().addLog(containerLog);
             case ItemLog itemLog -> table.getItemLogTable().addLog(itemLog);
@@ -68,7 +67,7 @@ public class BaseProtectManager extends ProtectManager {
     @Override
     public void saveBlockLog(Player player, Block block, Action action, BasicLocation location) {
         boolean staff = player.hasPermission(Permission.PROTECT_STAFF.getPermission());
-        BlockLog blockLog = new BlockLog(player.getUniqueId(), player.getName(), location, LocalDateTime.now(), staff, block.getType().toString(), block.getBlockData().toString() ,action);
+        BlockLog blockLog = new BlockLog(player.getUniqueId(), player.getName(), location, LocalDateTime.now(), staff, block.getType().toString(), block.getBlockData().toString(), action);
 
         saveLogs(blockLog);
     }
@@ -101,7 +100,7 @@ public class BaseProtectManager extends ProtectManager {
     public boolean toggleInspect(Player player) {
         UUID uuid = player.getUniqueId();
 
-        if(inspectors.remove(uuid)) return false;
+        if (inspectors.remove(uuid)) return false;
         inspectors.add(uuid);
 
         return true;
@@ -124,7 +123,7 @@ public class BaseProtectManager extends ProtectManager {
 
     @Override
     public boolean isInspecting(Player player) {
-        if(player == null) return false;
+        if (player == null) return false;
         return inspectors.contains(player.getUniqueId());
     }
 
@@ -327,14 +326,18 @@ public class BaseProtectManager extends ProtectManager {
             plugin.getLangLoader().sendRaw(sender, LangKey.STATS_ITEMS, Placeholder.parsed("count", String.valueOf(items)));
             plugin.getLangLoader().sendRaw(sender, LangKey.STATS_INTERACTS, Placeholder.parsed("count", String.valueOf(interacts)));
 
-            table.getBlockLogTable().searchByPlayer(playerName, 1, 0).thenAccept(first -> {
-                if (!first.isEmpty()) {
-                    plugin.getLangLoader().sendRaw(sender, LangKey.STATS_FIRST_SEEN, Placeholder.parsed("date", first.getLast().getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"))));
+            table.getBlockLogTable().countLogsByPlayer(playerName).thenAccept(total -> {
+                if (total > 0) {
+                    table.getBlockLogTable().searchByPlayer(playerName, 1, total - 1).thenAccept(oldest -> {
+                        if (!oldest.isEmpty()) {
+                            plugin.getLangLoader().sendRaw(sender, LangKey.STATS_FIRST_SEEN, Placeholder.parsed("date", oldest.getFirst().getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"))));
+                        }
+                    });
                 }
             });
-            table.getBlockLogTable().searchByPlayer(playerName, 1, 0).thenAccept(last -> {
-                if (!last.isEmpty()) {
-                    plugin.getLangLoader().sendRaw(sender, LangKey.STATS_LAST_SEEN, Placeholder.parsed("date", last.getFirst().getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"))));
+            table.getBlockLogTable().searchByPlayer(playerName, 1, 0).thenAccept(newest -> {
+                if (!newest.isEmpty()) {
+                    plugin.getLangLoader().sendRaw(sender, LangKey.STATS_LAST_SEEN, Placeholder.parsed("date", newest.getFirst().getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"))));
                 }
             });
         });

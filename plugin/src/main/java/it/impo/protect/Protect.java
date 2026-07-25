@@ -14,6 +14,7 @@ import it.impo.protect.loader.Loader;
 import it.impo.protect.manager.BaseProtectManager;
 import it.impo.protect.manager.BaseRollbackManager;
 import it.impo.protect.task.CleanupTask;
+import it.impo.protect.update.UpdateChecker;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -56,6 +57,9 @@ public final class Protect extends JavaPlugin implements ProtectApi {
         this.cleanupTask = new CleanupTask(this);
         cleanupTask.runTaskTimer(this, cleanupInterval * 20L * 60L * 60L, cleanupInterval * 20L * 60L * 60L);
 
+        UpdateChecker updateChecker = new UpdateChecker(this);
+        updateChecker.checkAsync();
+
         long took = System.currentTimeMillis() - start;
 
         getLogger().info(GREEN + "Commands loaded" + RESET);
@@ -81,6 +85,13 @@ public final class Protect extends JavaPlugin implements ProtectApi {
         getLogger().info(RED + "Plugin disabled safely." + RESET);
         getLogger().info(RED + "====================================" + RESET);
     }
+
+    private static final String RESET = "\u001B[0m";
+    private static final String RED = "\u001B[31m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String CYAN = "\u001B[36m";
+    private static final String GRAY = "\u001B[37m";
+    private static final String WHITE = "\u001B[97m";
 
     public ConfigLoader getConfigLoader() {
         return configLoader;
@@ -108,11 +119,4 @@ public final class Protect extends JavaPlugin implements ProtectApi {
     public RollbackManager getRollbackManager() {
         return rollbackManager;
     }
-
-    private static final String RESET = "\u001B[0m";
-    private static final String RED = "\u001B[31m";
-    private static final String GREEN = "\u001B[32m";
-    private static final String CYAN = "\u001B[36m";
-    private static final String GRAY = "\u001B[37m";
-    private static final String WHITE = "\u001B[97m";
 }

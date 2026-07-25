@@ -3,7 +3,7 @@ package it.impo.protect.api.data.Action;
 public enum Action {
 
     PLACE("Block placed"),
-    BREAK("Block breaked");
+    BREAK("Block broken");
 
     private final String label;
 

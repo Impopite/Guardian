@@ -174,7 +174,7 @@ public class ContainerListener implements Listener {
     }
 
     private Block resolveClickedBlock(DoubleChest doubleChest, Player player) {
-        Block left = doubleChest.getLeftSide()  instanceof Container c ? c.getBlock() : null;
+        Block left = doubleChest.getLeftSide() instanceof Container c ? c.getBlock() : null;
         Block right = doubleChest.getRightSide() instanceof Container c ? c.getBlock() : null;
 
         if (left == null) return right;

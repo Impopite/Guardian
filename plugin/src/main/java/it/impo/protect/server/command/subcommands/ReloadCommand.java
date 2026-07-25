@@ -2,6 +2,7 @@ package it.impo.protect.server.command.subcommands;
 
 import dev.jorel.commandapi.CommandAPICommand;
 import it.impo.protect.Protect;
+import it.impo.protect.api.utils.Permission;
 import it.impo.protect.config.LangLoader;
 import it.impo.protect.config.constant.LangKey;
 
@@ -17,7 +18,7 @@ public class ReloadCommand {
         return new CommandAPICommand("reload")
                 .executes((sender, args) -> {
                     LangLoader lang = plugin.getLangLoader();
-                    if (!sender.hasPermission("protect.staff")) {
+                    if (!sender.hasPermission(Permission.PROTECT_STAFF.getPermission())) {
                         lang.send(sender, LangKey.NO_PERMISSION);
                         return;
                     }
