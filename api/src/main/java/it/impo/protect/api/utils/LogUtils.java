@@ -20,6 +20,16 @@ import java.util.regex.Pattern;
 public class LogUtils {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
+
+    private static String prettyName(String materialName) {
+        StringBuilder sb = new StringBuilder();
+        for (String part : materialName.split("_")) {
+            if (!sb.isEmpty()) sb.append(" ");
+            sb.append(Character.toUpperCase(part.charAt(0)));
+            sb.append(part.substring(1).toLowerCase());
+        }
+        return sb.toString();
+    }
     private static final Pattern TIME_PATTERN = Pattern.compile("(\\d+)([smhd])");
     private static final Pattern STRICT_TIME_PATTERN = Pattern.compile("^(\\d+[smhd])+$");
 
@@ -71,43 +81,43 @@ public class LogUtils {
 
     private static Component formatBlockLog(BlockLog blockLog){
         String action = blockLog.getAction() == Action.PLACE ? "§a+" : "§c-";
-        return Component.text("§8[§b" + blockLog.getDate().format(FORMATTER) + "§8] §f" + blockLog.getPlayerName() + " §7" + action + " §f" + blockLog.getBlockType() + " §8(§f" + blockLog.getLocation().toString() + "§8)");
+        return Component.text("§8[§b" + blockLog.getDate().format(FORMATTER) + "§8] §f" + blockLog.getPlayerName() + " §7" + action + " §f" + prettyName(blockLog.getBlockType()) + " §8(§f" + blockLog.getLocation() + "§8)");
     }
 
     private static Component formatContainerLog(ContainerLog containerLog, Plugin plugin){
         String action = containerLog.getAction() == ContainerAction.ADD ? "§a+" : "§c-";
         ItemStack item = ItemSerializer.safeItemFromBytes(containerLog.getItem(), plugin);
-        return Component.text("§8[§b" + containerLog.getDate().format(FORMATTER) + "§8] §f" + containerLog.getPlayerName() + " §7" + action + " §f" + item.getItemMeta().getDisplayName() + " §8(§f" + containerLog.getLocation().toString() + "§8)");
+        return Component.text("§8[§b" + containerLog.getDate().format(FORMATTER) + "§8] §f" + containerLog.getPlayerName() + " §7" + action + " §f" + item.getItemMeta().getDisplayName() + " §8(§f" + containerLog.getLocation() + "§8)");
     }
 
     private static Component formatItemLog(ItemLog itemLog, Plugin plugin) {
         String action = itemLog.getAction() == ItemAction.PICKUP ? "§a+" : "§c-";
         ItemStack item = ItemSerializer.safeItemFromBytes(itemLog.getItem(), plugin);
-        return Component.text("§8[§b" + itemLog.getDate().format(FORMATTER) + "§8] §f" + itemLog.getPlayerName() + " §7" + action + " §f" + item.getItemMeta().getDisplayName() + " §8(§f" + itemLog.getLocation().toString() + "§8)");
+        return Component.text("§8[§b" + itemLog.getDate().format(FORMATTER) + "§8] §f" + itemLog.getPlayerName() + " §7" + action + " §f" + item.getItemMeta().getDisplayName() + " §8(§f" + itemLog.getLocation() + "§8)");
     }
 
     private static Component formatInteractLog(InteractLog interactLog){
         String action = interactLog.getAction() == Interaction.OPEN ? "§aOPEN" : "§cCLOSE";
-        return Component.text("§8[§b" + interactLog.getDate().format(FORMATTER) + "§8] §f" + interactLog.getPlayerName() + " §7" + action + " §f" + interactLog.getBlockType() + " §8(§f" + interactLog.getLocation().toString() + "§8)");
+        return Component.text("§8[§b" + interactLog.getDate().format(FORMATTER) + "§8] §f" + interactLog.getPlayerName() + " §7" + action + " §f" + prettyName(interactLog.getBlockType()) + " §8(§f" + interactLog.getLocation() + "§8)");
     }
 
     private static Component formatBlockHistory(BlockLog log) {
-        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + log.getBlockType() + " §8(§f" + log.getLocation().toString() + "§8)");
+        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + prettyName(log.getBlockType()) + " §8(§f" + log.getLocation() + "§8)");
     }
 
     private static Component formatItemStackHistory(ContainerLog log, Plugin plugin) {
         ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
         String name = item != null ? item.getType().name() : "Unknown";
-        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + name + " x" + log.getAmount() + " §8(§f" + log.getLocation().toString() + "§8)");
+        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + name + " x" + log.getAmount() + " §8(§f" + log.getLocation() + "§8)");
     }
 
     private static Component formatItemStackHistory(ItemLog log, Plugin plugin) {
         ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
         String name = item != null ? item.getType().name() : "Unknown";
-        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + name + " x" + log.getAmount() + " §8(§f" + log.getLocation().toString() + "§8)");
+        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + name + " x" + log.getAmount() + " §8(§f" + log.getLocation() + "§8)");
     }
 
     private static Component formatInteractHistory(InteractLog log) {
-        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + log.getBlockType() + " §8(§f" + log.getLocation().toString() + "§8)");
+        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + prettyName(log.getBlockType()) + " §8(§f" + log.getLocation() + "§8)");
     }
 }
