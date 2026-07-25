@@ -48,12 +48,12 @@ public class InspectListener implements Listener {
         Location loc = block.getLocation();
         BasicLocation location = new BasicLocation(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 
+        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.0f);
+
         if (action == Action.LEFT_CLICK_BLOCK) {
             plugin.getProtectManager().showBlockLogs(player, location);
             return;
         }
-
-        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.0f);
 
         if (!(block.getState() instanceof Container)) {
             if (block.getBlockData() instanceof Openable) {
