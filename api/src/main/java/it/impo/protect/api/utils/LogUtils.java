@@ -16,6 +16,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -87,19 +88,15 @@ public class LogUtils {
         };
     }
 
-    // --- Helpers ---
-
     private static Component dateComponent(String date) {
-        return Component.text("[DATE]")
-                .color(NamedTextColor.DARK_AQUA)
+        return Component.text("§8[§bDATE§8]")
                 .hoverEvent(HoverEvent.showText(Component.text(date)));
     }
 
     private static Component locationComponent(String world, int x, int y, int z, Player player) {
-        return Component.text("(" + x + ", " + y + ", " + z + ")")
-                .color(NamedTextColor.GRAY)
+        return Component.text("§8(§7" + x + ", " + y + ", " + z + "§8)")
                 .clickEvent(ClickEvent.callback(audience -> {
-                    org.bukkit.World w = Bukkit.getWorld(world);
+                    World w = Bukkit.getWorld(world);
                     if (w != null) player.teleport(new Location(w, x + 0.5, y, z + 0.5));
                 }))
                 .hoverEvent(HoverEvent.showText(
@@ -133,125 +130,148 @@ public class LogUtils {
                 .hoverEvent(hover);
     }
 
-    // --- Inspect format (action: +/-/OPEN/CLOSE) ---
+    private static Component line(Component... parts) {
+        Component root = Component.empty();
+        for (Component part : parts) root = root.append(part);
+        return root;
+    }
+
+    private static Component space() {
+        return Component.text(" ");
+    }
+
 
     private static Component formatBlockLog(BlockLog log, Player player) {
         String action = log.getAction() == Action.PLACE ? "+" : "-";
         NamedTextColor actionColor = log.getAction() == Action.PLACE ? NamedTextColor.GREEN : NamedTextColor.RED;
-        return dateComponent(log.getDate().format(FORMATTER))
-                .append(Component.text(" "))
-                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
-                .append(Component.text(" "))
-                .append(Component.text(action).color(actionColor))
-                .append(Component.text(" "))
-                .append(itemComponent(null, prettyName(log.getBlockType()), player))
-                .append(Component.text(" "))
-                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
+        return line(
+                dateComponent(log.getDate().format(FORMATTER)),
+                space(),
+                Component.text(log.getPlayerName()).color(NamedTextColor.WHITE),
+                space(),
+                Component.text(action).color(actionColor),
+                space(),
+                itemComponent(null, prettyName(log.getBlockType()), player),
+                space(),
+                locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player)
+        );
     }
 
     private static Component formatContainerLog(ContainerLog log, Player player, Plugin plugin) {
         String action = log.getAction() == ContainerAction.ADD ? "+" : "-";
         NamedTextColor actionColor = log.getAction() == ContainerAction.ADD ? NamedTextColor.GREEN : NamedTextColor.RED;
         ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
-        String itemName = item != null && item.getItemMeta() != null && item.getItemMeta().hasDisplayName()
-                ? item.getItemMeta().displayName().toString()
-                : prettyName(item != null ? item.getType().name() : "Unknown");
-        return dateComponent(log.getDate().format(FORMATTER))
-                .append(Component.text(" "))
-                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
-                .append(Component.text(" "))
-                .append(Component.text(action).color(actionColor))
-                .append(Component.text(" "))
-                .append(itemComponent(item, itemName, player))
-                .append(Component.text(" "))
-                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
+        String itemName = item != null ? prettyName(item.getType().name()) : "Unknown";
+        return line(
+                dateComponent(log.getDate().format(FORMATTER)),
+                space(),
+                Component.text(log.getPlayerName()).color(NamedTextColor.WHITE),
+                space(),
+                Component.text(action).color(actionColor),
+                space(),
+                itemComponent(item, itemName, player),
+                space(),
+                locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player)
+        );
     }
 
     private static Component formatItemLog(ItemLog log, Player player, Plugin plugin) {
         String action = log.getAction() == ItemAction.PICKUP ? "+" : "-";
         NamedTextColor actionColor = log.getAction() == ItemAction.PICKUP ? NamedTextColor.GREEN : NamedTextColor.RED;
         ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
-        String itemName = item != null && item.getItemMeta() != null && item.getItemMeta().hasDisplayName()
-                ? item.getItemMeta().displayName().toString()
-                : prettyName(item != null ? item.getType().name() : "Unknown");
-        return dateComponent(log.getDate().format(FORMATTER))
-                .append(Component.text(" "))
-                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
-                .append(Component.text(" "))
-                .append(Component.text(action).color(actionColor))
-                .append(Component.text(" "))
-                .append(itemComponent(item, itemName, player))
-                .append(Component.text(" "))
-                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
+        String itemName = item != null ? prettyName(item.getType().name()) : "Unknown";
+        return line(
+                dateComponent(log.getDate().format(FORMATTER)),
+                space(),
+                Component.text(log.getPlayerName()).color(NamedTextColor.WHITE),
+                space(),
+                Component.text(action).color(actionColor),
+                space(),
+                itemComponent(item, itemName, player),
+                space(),
+                locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player)
+        );
     }
 
     private static Component formatInteractLog(InteractLog log, Player player) {
         String action = log.getAction() == Interaction.OPEN ? "OPEN" : "CLOSE";
         NamedTextColor actionColor = log.getAction() == Interaction.OPEN ? NamedTextColor.GREEN : NamedTextColor.RED;
-        return dateComponent(log.getDate().format(FORMATTER))
-                .append(Component.text(" "))
-                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
-                .append(Component.text(" "))
-                .append(Component.text(action).color(actionColor))
-                .append(Component.text(" "))
-                .append(itemComponent(null, prettyName(log.getBlockType()), player))
-                .append(Component.text(" "))
-                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
+        return line(
+                dateComponent(log.getDate().format(FORMATTER)),
+                space(),
+                Component.text(log.getPlayerName()).color(NamedTextColor.WHITE),
+                space(),
+                Component.text(action).color(actionColor),
+                space(),
+                itemComponent(null, prettyName(log.getBlockType()), player),
+                space(),
+                locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player)
+        );
     }
 
     // --- History format (action: label) ---
 
     private static Component formatBlockHistory(BlockLog log, Player player) {
-        return dateComponent(log.getDate().format(FORMATTER))
-                .append(Component.text(" "))
-                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
-                .append(Component.text(" "))
-                .append(Component.text(log.getAction().getLabel()).color(NamedTextColor.GRAY))
-                .append(Component.text(" "))
-                .append(itemComponent(null, prettyName(log.getBlockType()), player))
-                .append(Component.text(" "))
-                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
+        return line(
+                dateComponent(log.getDate().format(FORMATTER)),
+                space(),
+                Component.text(log.getPlayerName()).color(NamedTextColor.WHITE),
+                space(),
+                Component.text(log.getAction().getLabel()).color(NamedTextColor.GRAY),
+                space(),
+                itemComponent(null, prettyName(log.getBlockType()), player),
+                space(),
+                locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player)
+        );
     }
 
     private static Component formatItemStackHistory(ContainerLog log, Player player, Plugin plugin) {
         ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
         String name = item != null ? prettyName(item.getType().name()) : "Unknown";
-        return dateComponent(log.getDate().format(FORMATTER))
-                .append(Component.text(" "))
-                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
-                .append(Component.text(" "))
-                .append(Component.text(log.getAction().getLabel()).color(NamedTextColor.GRAY))
-                .append(Component.text(" "))
-                .append(itemComponent(item, name, player))
-                .append(Component.text(" x" + log.getAmount()))
-                .append(Component.text(" "))
-                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
+        return line(
+                dateComponent(log.getDate().format(FORMATTER)),
+                space(),
+                Component.text(log.getPlayerName()).color(NamedTextColor.WHITE),
+                space(),
+                Component.text(log.getAction().getLabel()).color(NamedTextColor.GRAY),
+                space(),
+                itemComponent(item, name, player),
+                space(),
+                Component.text("x" + log.getAmount()).color(NamedTextColor.WHITE),
+                space(),
+                locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player)
+        );
     }
 
     private static Component formatItemStackHistory(ItemLog log, Player player, Plugin plugin) {
         ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
         String name = item != null ? prettyName(item.getType().name()) : "Unknown";
-        return dateComponent(log.getDate().format(FORMATTER))
-                .append(Component.text(" "))
-                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
-                .append(Component.text(" "))
-                .append(Component.text(log.getAction().getLabel()).color(NamedTextColor.GRAY))
-                .append(Component.text(" "))
-                .append(itemComponent(item, name, player))
-                .append(Component.text(" x" + log.getAmount()))
-                .append(Component.text(" "))
-                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
+        return line(
+                dateComponent(log.getDate().format(FORMATTER)),
+                space(),
+                Component.text(log.getPlayerName()).color(NamedTextColor.WHITE),
+                space(),
+                Component.text(log.getAction().getLabel()).color(NamedTextColor.GRAY),
+                space(),
+                itemComponent(item, name, player),
+                space(),
+                Component.text("x" + log.getAmount()).color(NamedTextColor.WHITE),
+                space(),
+                locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player)
+        );
     }
 
     private static Component formatInteractHistory(InteractLog log, Player player) {
-        return dateComponent(log.getDate().format(FORMATTER))
-                .append(Component.text(" "))
-                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
-                .append(Component.text(" "))
-                .append(Component.text(log.getAction().getLabel()).color(NamedTextColor.GRAY))
-                .append(Component.text(" "))
-                .append(itemComponent(null, prettyName(log.getBlockType()), player))
-                .append(Component.text(" "))
-                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
+        return line(
+                dateComponent(log.getDate().format(FORMATTER)),
+                space(),
+                Component.text(log.getPlayerName()).color(NamedTextColor.WHITE),
+                space(),
+                Component.text(log.getAction().getLabel()).color(NamedTextColor.GRAY),
+                space(),
+                itemComponent(null, prettyName(log.getBlockType()), player),
+                space(),
+                locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player)
+        );
     }
 }
