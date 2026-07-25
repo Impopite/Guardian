@@ -30,6 +30,7 @@ public final class Protect extends JavaPlugin implements ProtectApi {
     private ProtectManager protectManager;
     private RollbackManager rollbackManager;
     private CleanupTask cleanupTask;
+    private UpdateChecker updateChecker;
 
     @Override
     public void onEnable() {
@@ -57,7 +58,7 @@ public final class Protect extends JavaPlugin implements ProtectApi {
         this.cleanupTask = new CleanupTask(this);
         cleanupTask.runTaskTimer(this, cleanupInterval * 20L * 60L * 60L, cleanupInterval * 20L * 60L * 60L);
 
-        UpdateChecker updateChecker = new UpdateChecker(this);
+        this.updateChecker = new UpdateChecker(this);
         updateChecker.checkAsync();
 
         long took = System.currentTimeMillis() - start;
@@ -118,5 +119,9 @@ public final class Protect extends JavaPlugin implements ProtectApi {
     @Override
     public RollbackManager getRollbackManager() {
         return rollbackManager;
+    }
+
+    public UpdateChecker getUpdateChecker() {
+        return updateChecker;
     }
 }

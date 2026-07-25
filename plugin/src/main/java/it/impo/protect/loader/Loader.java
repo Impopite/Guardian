@@ -8,6 +8,7 @@ import it.impo.protect.server.listeners.BlockListener;
 import it.impo.protect.server.listeners.ContainerListener;
 import it.impo.protect.server.listeners.InspectListener;
 import it.impo.protect.server.listeners.ItemListener;
+import it.impo.protect.server.listeners.JoinListener;
 
 import java.sql.SQLException;
 
@@ -28,7 +29,8 @@ public class Loader extends PluginLoader {
                 new BlockListener(plugin),
                 new ContainerListener(plugin),
                 new InspectListener(plugin),
-                new ItemListener(plugin)
+                new ItemListener(plugin),
+                new JoinListener(plugin)
         );
 
         if (plugin.getServer().getPluginManager().isPluginEnabled("FastAsyncWorldEdit")) {
