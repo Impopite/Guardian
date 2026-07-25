@@ -321,7 +321,7 @@ public class BaseProtectManager extends ProtectManager {
                 return;
             }
 
-            plugin.getLangLoader().send(sender, LangKey.STATS_HEADER, Placeholder.parsed("player", playerName));
+            plugin.getLangLoader().sendRaw(sender, LangKey.STATS_HEADER, Placeholder.parsed("player", playerName));
             plugin.getLangLoader().sendRaw(sender, LangKey.STATS_BLOCKS, Placeholder.parsed("count", String.valueOf(blocks)));
             plugin.getLangLoader().sendRaw(sender, LangKey.STATS_CONTAINERS, Placeholder.parsed("count", String.valueOf(containers)));
             plugin.getLangLoader().sendRaw(sender, LangKey.STATS_ITEMS, Placeholder.parsed("count", String.valueOf(items)));

@@ -45,10 +45,10 @@ lookup:
 
 stats:
   no-logs: "<error>Nessun log trovato per questo giocatore."
-  header: "<normal>Statistiche di <white><player><normal>:"
-  blocks: "<normal>Blocchi: <white><count>"
-  containers: "<normal>Contenitori: <white><count>"
-  items: "<normal>Items: <white><count>"
-  interacts: "<normal>Interazioni: <white><count>"
-  first-seen: "<normal>Prima activity: <white><date>"
-  last-seen: "<normal>Ultima activity: <white><date>"
+  header: "<#00B4EE>ᴘʀᴏᴛᴇᴄᴛ <normal>- Statistiche di <white><player><normal>:"
+  blocks: " <normal>Blocchi: <white><count>"
+  containers: " <normal>Contenitori: <white><count>"
+  items: " <normal>Items: <white><count>"
+  interacts: " <normal>Interazioni: <white><count>"
+  first-seen: " <normal>Prima attività: <white><date>"
+  last-seen: " <normal>Ultima attività: <white><date>"
