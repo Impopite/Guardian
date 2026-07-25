@@ -38,7 +38,7 @@ A comprehensive grief protection and logging plugin for Minecraft servers, built
 
 ## Installation
 
-1. Download the latest `Protect.jar` from the [releases page](https://github.com/Impopite/Protect/releases)
+1. Download the latest `Protect.jar` from the [releases page](https://modrinth.com/plugin/protect)
 2. Place the JAR in your server's `plugins/` folder
 3. Start or restart the server
 4. Edit `plugins/Protect/config.yml` with your database credentials
