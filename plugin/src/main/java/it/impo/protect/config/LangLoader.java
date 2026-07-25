@@ -81,6 +81,14 @@ public class LangLoader {
         send(sender, key, TagResolver.empty());
     }
 
+    public void sendRaw(@NotNull CommandSender sender, @NotNull LangKey key, TagResolver... resolvers) {
+        adventure.sender(sender).sendMessage(component(key, resolvers));
+    }
+
+    public void sendRaw(@NotNull CommandSender sender, @NotNull LangKey key) {
+        sendRaw(sender, key, TagResolver.empty());
+    }
+
     public boolean isEmpty(@NotNull LangKey key) {
         return langConfig.getString(key.getPath(), "").isEmpty();
     }

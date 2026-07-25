@@ -16,9 +16,9 @@ public class InspectCommand {
     }
 
     public CommandAPICommand get() {
-        LangLoader lang = plugin.getLangLoader();
         return new CommandAPICommand("inspect")
                 .executes((sender, args) -> {
+                    LangLoader lang = plugin.getLangLoader();
                     if (!(sender instanceof Player player)) {
                         lang.send(sender, LangKey.CONSOLE_CANT_DO);
                         return;

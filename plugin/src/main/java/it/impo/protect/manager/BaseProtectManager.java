@@ -147,7 +147,7 @@ public class BaseProtectManager extends ProtectManager {
             return table.getBlockLogTable().inspectLog(location, pageSize, offset)
                     .thenAccept(results -> sendInspect(player,
                             results.stream()
-                                    .map(log -> LogUtils.formatLogs(log, plugin))
+                                    .map(log -> LogUtils.formatLogs(log, player, plugin))
                                     .collect(Collectors.toList()),
                             clampedPage,
                             maxPage,
@@ -173,7 +173,7 @@ public class BaseProtectManager extends ProtectManager {
             return table.getContainerLogTable().inspectLog(location, pageSize, offset)
                     .thenAccept(results -> sendInspect(player,
                             results.stream()
-                                    .map(log -> LogUtils.formatLogs(log, plugin))
+                                    .map(log -> LogUtils.formatLogs(log, player, plugin))
                                     .collect(Collectors.toList()),
                             clampedPage,
                             maxPage,
@@ -199,7 +199,7 @@ public class BaseProtectManager extends ProtectManager {
             return table.getInteractLogTable().inspectLog(location, pageSize, offset)
                     .thenAccept(results -> sendInspect(player,
                             results.stream()
-                                    .map(log -> LogUtils.formatLogs(log, plugin))
+                                    .map(log -> LogUtils.formatLogs(log, player, plugin))
                                     .collect(Collectors.toList()),
                             clampedPage,
                             maxPage,
@@ -264,69 +264,6 @@ public class BaseProtectManager extends ProtectManager {
             int clampedPage = Math.min(pageNumber, maxPage);
             int offset = (clampedPage - 1) * pageSize;
 
-            CompletableFuture<List<BlockLog>> blockLogs = table.getBlockLogTable().searchByPlayer(playerName, pageSize, 0);
-            CompletableFuture<List<ContainerLog>> containerLogs = table.getContainerLogTable().searchByPlayer(playerName, pageSize, 0);
-            CompletableFuture<List<ItemLog>> itemLogs = table.getItemLogTable().searchByPlayer(playerName, pageSize, 0);
-            CompletableFuture<List<InteractLog>> interactLogs = table.getInteractLogTable().searchByPlayer(playerName, pageSize, 0);
-
-            CompletableFuture.allOf(blockLogs, containerLogs, itemLogs, interactLogs).thenRun(() -> {
-                List<Logs> allLogs = new ArrayList<>();
-                allLogs.addAll(blockLogs.join());
-                allLogs.addAll(containerLogs.join());
-                allLogs.addAll(itemLogs.join());
-                allLogs.addAll(interactLogs.join());
-
-                allLogs.sort((a, b) -> b.getDate().compareTo(a.getDate()));
-
-                int start = Math.min(offset, allLogs.size());
-                int end = Math.min(offset + pageSize, allLogs.size());
-                List<Logs> pageLogs = allLogs.subList(start, end);
-
-                pageLogs.forEach(log -> sender.sendMessage(LogUtils.formatLogs(log, plugin)));
-
-                Component prev = Component.text("« Previous")
-                        .color(clampedPage > 1 ? NamedTextColor.GREEN : NamedTextColor.GRAY)
-                        .clickEvent(clampedPage > 1 ? ClickEvent.callback(audience -> showPlayerLogs(sender, playerName, clampedPage - 1)) : null);
-
-                Component next = Component.text("Next »")
-                        .color(clampedPage < maxPage ? NamedTextColor.GREEN : NamedTextColor.GRAY)
-                        .clickEvent(clampedPage < maxPage ? ClickEvent.callback(audience -> showPlayerLogs(sender, playerName, clampedPage + 1)) : null);
-
-                Component footer = Component.text("Page " + clampedPage + "/" + maxPage + "  ")
-                        .color(NamedTextColor.GRAY)
-                        .append(prev)
-                        .append(Component.text("  "))
-                        .append(next);
-
-                sender.sendMessage(footer);
-            });
-        });
-    }
-
-    @Override
-    public void showPlayerHistory(Player sender, String playerName, int page) {
-        int pageNumber = Math.max(page, 1);
-        ProtectTable table = plugin.getProtectTable();
-
-        CompletableFuture<Integer> blockCount = table.getBlockLogTable().countLogsByPlayer(playerName);
-        CompletableFuture<Integer> containerCount = table.getContainerLogTable().countLogsByPlayer(playerName);
-        CompletableFuture<Integer> itemCount = table.getItemLogTable().countLogsByPlayer(playerName);
-        CompletableFuture<Integer> interactCount = table.getInteractLogTable().countLogsByPlayer(playerName);
-
-        CompletableFuture.allOf(blockCount, containerCount, itemCount, interactCount).thenRun(() -> {
-            int total = blockCount.join() + containerCount.join() + itemCount.join() + interactCount.join();
-
-            if (total == 0) {
-                lang.send(sender, LangKey.HISTORY_NO_LOGS);
-                return;
-            }
-
-            lang.send(sender, LangKey.HISTORY_HEADER, Placeholder.parsed("player", playerName));
-
-            int maxPage = Math.max(1, (int) Math.ceil((double) total / pageSize));
-            int clampedPage = Math.min(pageNumber, maxPage);
-            int offset = (clampedPage - 1) * pageSize;
-
             CompletableFuture<List<BlockLog>> blockLogs = table.getBlockLogTable().searchByPlayer(playerName, total, 0);
             CompletableFuture<List<ContainerLog>> containerLogs = table.getContainerLogTable().searchByPlayer(playerName, total, 0);
             CompletableFuture<List<ItemLog>> itemLogs = table.getItemLogTable().searchByPlayer(playerName, total, 0);
@@ -345,15 +282,15 @@ public class BaseProtectManager extends ProtectManager {
                 int end = Math.min(offset + pageSize, allLogs.size());
                 List<Logs> pageLogs = allLogs.subList(start, end);
 
-                pageLogs.forEach(log -> sender.sendMessage(LogUtils.formatHistory(log, plugin)));
+                pageLogs.forEach(log -> sender.sendMessage(LogUtils.formatHistory(log, sender, plugin)));
 
                 Component prev = Component.text("« Previous")
                         .color(clampedPage > 1 ? NamedTextColor.GREEN : NamedTextColor.GRAY)
-                        .clickEvent(clampedPage > 1 ? ClickEvent.callback(audience -> showPlayerHistory(sender, playerName, clampedPage - 1)) : null);
+                        .clickEvent(clampedPage > 1 ? ClickEvent.callback(audience -> showPlayerLogs(sender, playerName, clampedPage - 1)) : null);
 
                 Component next = Component.text("Next »")
                         .color(clampedPage < maxPage ? NamedTextColor.GREEN : NamedTextColor.GRAY)
-                        .clickEvent(clampedPage < maxPage ? ClickEvent.callback(audience -> showPlayerHistory(sender, playerName, clampedPage + 1)) : null);
+                        .clickEvent(clampedPage < maxPage ? ClickEvent.callback(audience -> showPlayerLogs(sender, playerName, clampedPage + 1)) : null);
 
                 Component footer = Component.text("Page " + clampedPage + "/" + maxPage + "  ")
                         .color(NamedTextColor.GRAY)
@@ -382,24 +319,24 @@ public class BaseProtectManager extends ProtectManager {
             int interacts = interactCount.join();
 
             if (blocks + containers + items + interacts == 0) {
-                lang.send(sender, LangKey.STATS_NO_LOGS);
+                lang.sendRaw(sender, LangKey.STATS_NO_LOGS);
                 return;
             }
 
             lang.send(sender, LangKey.STATS_HEADER, Placeholder.parsed("player", playerName));
-            lang.send(sender, LangKey.STATS_BLOCKS, Placeholder.parsed("count", String.valueOf(blocks)));
-            lang.send(sender, LangKey.STATS_CONTAINERS, Placeholder.parsed("count", String.valueOf(containers)));
-            lang.send(sender, LangKey.STATS_ITEMS, Placeholder.parsed("count", String.valueOf(items)));
-            lang.send(sender, LangKey.STATS_INTERACTS, Placeholder.parsed("count", String.valueOf(interacts)));
+            lang.sendRaw(sender, LangKey.STATS_BLOCKS, Placeholder.parsed("count", String.valueOf(blocks)));
+            lang.sendRaw(sender, LangKey.STATS_CONTAINERS, Placeholder.parsed("count", String.valueOf(containers)));
+            lang.sendRaw(sender, LangKey.STATS_ITEMS, Placeholder.parsed("count", String.valueOf(items)));
+            lang.sendRaw(sender, LangKey.STATS_INTERACTS, Placeholder.parsed("count", String.valueOf(interacts)));
 
             table.getBlockLogTable().searchByPlayer(playerName, 1, 0).thenAccept(first -> {
                 if (!first.isEmpty()) {
-                    lang.send(sender, LangKey.STATS_FIRST_SEEN, Placeholder.parsed("date", first.getLast().getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"))));
+                    lang.sendRaw(sender, LangKey.STATS_FIRST_SEEN, Placeholder.parsed("date", first.getLast().getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"))));
                 }
             });
             table.getBlockLogTable().searchByPlayer(playerName, 1, 0).thenAccept(last -> {
                 if (!last.isEmpty()) {
-                    lang.send(sender, LangKey.STATS_LAST_SEEN, Placeholder.parsed("date", last.getFirst().getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"))));
+                    lang.sendRaw(sender, LangKey.STATS_LAST_SEEN, Placeholder.parsed("date", last.getFirst().getDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"))));
                 }
             });
         });

@@ -10,16 +10,27 @@ import it.impo.protect.api.data.logs.impl.ContainerLog;
 import it.impo.protect.api.data.logs.impl.InteractLog;
 import it.impo.protect.api.data.logs.impl.ItemLog;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LogUtils {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
+    private static final Pattern TIME_PATTERN = Pattern.compile("(\\d+)([smhd])");
+    private static final Pattern STRICT_TIME_PATTERN = Pattern.compile("^(\\d+[smhd])+$");
 
     private static String prettyName(String materialName) {
         StringBuilder sb = new StringBuilder();
@@ -30,9 +41,6 @@ public class LogUtils {
         }
         return sb.toString();
     }
-    private static final Pattern TIME_PATTERN = Pattern.compile("(\\d+)([smhd])");
-    private static final Pattern STRICT_TIME_PATTERN = Pattern.compile("^(\\d+[smhd])+$");
-
 
     public static long parseTime(String input) {
         if (input == null || input.isBlank()) return 0;
@@ -59,65 +67,191 @@ public class LogUtils {
         return STRICT_TIME_PATTERN.matcher(input.toLowerCase().trim()).matches();
     }
 
-    public static Component formatLogs(Logs logs, Plugin plugin) {
-        return switch(logs){
-            case BlockLog blockLog -> formatBlockLog(blockLog);
-            case ContainerLog containerLog -> formatContainerLog(containerLog, plugin);
-            case ItemLog itemLog -> formatItemLog(itemLog, plugin);
-            case InteractLog interactLog -> formatInteractLog(interactLog);
+    public static Component formatLogs(Logs logs, Player player, Plugin plugin) {
+        return switch (logs) {
+            case BlockLog log -> formatBlockLog(log, player);
+            case ContainerLog log -> formatContainerLog(log, player, plugin);
+            case ItemLog log -> formatItemLog(log, player, plugin);
+            case InteractLog log -> formatInteractLog(log, player);
             default -> Component.empty();
         };
     }
 
-    public static Component formatHistory(Logs logs, Plugin plugin) {
-        return switch(logs){
-            case BlockLog log -> formatBlockHistory(log);
-            case ContainerLog log -> formatItemStackHistory(log, plugin);
-            case ItemLog log -> formatItemStackHistory(log, plugin);
-            case InteractLog log -> formatInteractHistory(log);
+    public static Component formatHistory(Logs logs, Player player, Plugin plugin) {
+        return switch (logs) {
+            case BlockLog log -> formatBlockHistory(log, player);
+            case ContainerLog log -> formatItemStackHistory(log, player, plugin);
+            case ItemLog log -> formatItemStackHistory(log, player, plugin);
+            case InteractLog log -> formatInteractHistory(log, player);
             default -> Component.empty();
         };
     }
 
-    private static Component formatBlockLog(BlockLog blockLog){
-        String action = blockLog.getAction() == Action.PLACE ? "§a+" : "§c-";
-        return Component.text("§8[§b" + blockLog.getDate().format(FORMATTER) + "§8] §f" + blockLog.getPlayerName() + " §7" + action + " §f" + prettyName(blockLog.getBlockType()) + " §8(§f" + blockLog.getLocation() + "§8)");
+    // --- Helpers ---
+
+    private static Component dateComponent(String date) {
+        return Component.text("[DATE]")
+                .color(NamedTextColor.DARK_AQUA)
+                .hoverEvent(HoverEvent.showText(Component.text(date)));
     }
 
-    private static Component formatContainerLog(ContainerLog containerLog, Plugin plugin){
-        String action = containerLog.getAction() == ContainerAction.ADD ? "§a+" : "§c-";
-        ItemStack item = ItemSerializer.safeItemFromBytes(containerLog.getItem(), plugin);
-        return Component.text("§8[§b" + containerLog.getDate().format(FORMATTER) + "§8] §f" + containerLog.getPlayerName() + " §7" + action + " §f" + item.getItemMeta().getDisplayName() + " §8(§f" + containerLog.getLocation() + "§8)");
+    private static Component locationComponent(String world, int x, int y, int z, Player player) {
+        return Component.text("(" + x + ", " + y + ", " + z + ")")
+                .color(NamedTextColor.GRAY)
+                .clickEvent(ClickEvent.callback(audience -> {
+                    org.bukkit.World w = Bukkit.getWorld(world);
+                    if (w != null) player.teleport(new Location(w, x + 0.5, y, z + 0.5));
+                }))
+                .hoverEvent(HoverEvent.showText(
+                        Component.text("Click to teleport", NamedTextColor.YELLOW)
+                                .appendNewline()
+                                .append(Component.text(world + " " + x + " " + y + " " + z, NamedTextColor.WHITE))
+                ));
     }
 
-    private static Component formatItemLog(ItemLog itemLog, Plugin plugin) {
-        String action = itemLog.getAction() == ItemAction.PICKUP ? "§a+" : "§c-";
-        ItemStack item = ItemSerializer.safeItemFromBytes(itemLog.getItem(), plugin);
-        return Component.text("§8[§b" + itemLog.getDate().format(FORMATTER) + "§8] §f" + itemLog.getPlayerName() + " §7" + action + " §f" + item.getItemMeta().getDisplayName() + " §8(§f" + itemLog.getLocation() + "§8)");
+    private static Component itemComponent(ItemStack item, String fallbackName, Player player) {
+        if (item == null) {
+            return Component.text(fallbackName).color(NamedTextColor.WHITE);
+        }
+        ItemMeta meta = item.getItemMeta();
+        Component displayName = meta != null && meta.hasDisplayName()
+                ? meta.displayName()
+                : Component.text(prettyName(item.getType().name()));
+        List<Component> lore = meta != null ? meta.lore() : null;
+
+        HoverEvent<Component> hover = HoverEvent.showText(displayName);
+        if (lore != null && !lore.isEmpty()) {
+            Component loreText = Component.empty();
+            for (Component line : lore) {
+                loreText = loreText.appendNewline().append(line);
+            }
+            hover = HoverEvent.showText(displayName.appendNewline().append(loreText));
+        }
+
+        return Component.text(fallbackName)
+                .color(NamedTextColor.WHITE)
+                .hoverEvent(hover);
     }
 
-    private static Component formatInteractLog(InteractLog interactLog){
-        String action = interactLog.getAction() == Interaction.OPEN ? "§aOPEN" : "§cCLOSE";
-        return Component.text("§8[§b" + interactLog.getDate().format(FORMATTER) + "§8] §f" + interactLog.getPlayerName() + " §7" + action + " §f" + prettyName(interactLog.getBlockType()) + " §8(§f" + interactLog.getLocation() + "§8)");
+    // --- Inspect format (action: +/-/OPEN/CLOSE) ---
+
+    private static Component formatBlockLog(BlockLog log, Player player) {
+        String action = log.getAction() == Action.PLACE ? "+" : "-";
+        NamedTextColor actionColor = log.getAction() == Action.PLACE ? NamedTextColor.GREEN : NamedTextColor.RED;
+        return dateComponent(log.getDate().format(FORMATTER))
+                .append(Component.text(" "))
+                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
+                .append(Component.text(" "))
+                .append(Component.text(action).color(actionColor))
+                .append(Component.text(" "))
+                .append(itemComponent(null, prettyName(log.getBlockType()), player))
+                .append(Component.text(" "))
+                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
     }
 
-    private static Component formatBlockHistory(BlockLog log) {
-        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + prettyName(log.getBlockType()) + " §8(§f" + log.getLocation() + "§8)");
-    }
-
-    private static Component formatItemStackHistory(ContainerLog log, Plugin plugin) {
+    private static Component formatContainerLog(ContainerLog log, Player player, Plugin plugin) {
+        String action = log.getAction() == ContainerAction.ADD ? "+" : "-";
+        NamedTextColor actionColor = log.getAction() == ContainerAction.ADD ? NamedTextColor.GREEN : NamedTextColor.RED;
         ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
-        String name = item != null ? item.getType().name() : "Unknown";
-        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + name + " x" + log.getAmount() + " §8(§f" + log.getLocation() + "§8)");
+        String itemName = item != null && item.getItemMeta() != null && item.getItemMeta().hasDisplayName()
+                ? item.getItemMeta().displayName().toString()
+                : prettyName(item != null ? item.getType().name() : "Unknown");
+        return dateComponent(log.getDate().format(FORMATTER))
+                .append(Component.text(" "))
+                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
+                .append(Component.text(" "))
+                .append(Component.text(action).color(actionColor))
+                .append(Component.text(" "))
+                .append(itemComponent(item, itemName, player))
+                .append(Component.text(" "))
+                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
     }
 
-    private static Component formatItemStackHistory(ItemLog log, Plugin plugin) {
+    private static Component formatItemLog(ItemLog log, Player player, Plugin plugin) {
+        String action = log.getAction() == ItemAction.PICKUP ? "+" : "-";
+        NamedTextColor actionColor = log.getAction() == ItemAction.PICKUP ? NamedTextColor.GREEN : NamedTextColor.RED;
         ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
-        String name = item != null ? item.getType().name() : "Unknown";
-        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + name + " x" + log.getAmount() + " §8(§f" + log.getLocation() + "§8)");
+        String itemName = item != null && item.getItemMeta() != null && item.getItemMeta().hasDisplayName()
+                ? item.getItemMeta().displayName().toString()
+                : prettyName(item != null ? item.getType().name() : "Unknown");
+        return dateComponent(log.getDate().format(FORMATTER))
+                .append(Component.text(" "))
+                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
+                .append(Component.text(" "))
+                .append(Component.text(action).color(actionColor))
+                .append(Component.text(" "))
+                .append(itemComponent(item, itemName, player))
+                .append(Component.text(" "))
+                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
     }
 
-    private static Component formatInteractHistory(InteractLog log) {
-        return Component.text("§8[§b" + log.getDate().format(FORMATTER) + "§8] §f" + log.getPlayerName() + " §7" + log.getAction().getLabel() + " §f" + prettyName(log.getBlockType()) + " §8(§f" + log.getLocation() + "§8)");
+    private static Component formatInteractLog(InteractLog log, Player player) {
+        String action = log.getAction() == Interaction.OPEN ? "OPEN" : "CLOSE";
+        NamedTextColor actionColor = log.getAction() == Interaction.OPEN ? NamedTextColor.GREEN : NamedTextColor.RED;
+        return dateComponent(log.getDate().format(FORMATTER))
+                .append(Component.text(" "))
+                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
+                .append(Component.text(" "))
+                .append(Component.text(action).color(actionColor))
+                .append(Component.text(" "))
+                .append(itemComponent(null, prettyName(log.getBlockType()), player))
+                .append(Component.text(" "))
+                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
+    }
+
+    // --- History format (action: label) ---
+
+    private static Component formatBlockHistory(BlockLog log, Player player) {
+        return dateComponent(log.getDate().format(FORMATTER))
+                .append(Component.text(" "))
+                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
+                .append(Component.text(" "))
+                .append(Component.text(log.getAction().getLabel()).color(NamedTextColor.GRAY))
+                .append(Component.text(" "))
+                .append(itemComponent(null, prettyName(log.getBlockType()), player))
+                .append(Component.text(" "))
+                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
+    }
+
+    private static Component formatItemStackHistory(ContainerLog log, Player player, Plugin plugin) {
+        ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
+        String name = item != null ? prettyName(item.getType().name()) : "Unknown";
+        return dateComponent(log.getDate().format(FORMATTER))
+                .append(Component.text(" "))
+                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
+                .append(Component.text(" "))
+                .append(Component.text(log.getAction().getLabel()).color(NamedTextColor.GRAY))
+                .append(Component.text(" "))
+                .append(itemComponent(item, name, player))
+                .append(Component.text(" x" + log.getAmount()))
+                .append(Component.text(" "))
+                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
+    }
+
+    private static Component formatItemStackHistory(ItemLog log, Player player, Plugin plugin) {
+        ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
+        String name = item != null ? prettyName(item.getType().name()) : "Unknown";
+        return dateComponent(log.getDate().format(FORMATTER))
+                .append(Component.text(" "))
+                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
+                .append(Component.text(" "))
+                .append(Component.text(log.getAction().getLabel()).color(NamedTextColor.GRAY))
+                .append(Component.text(" "))
+                .append(itemComponent(item, name, player))
+                .append(Component.text(" x" + log.getAmount()))
+                .append(Component.text(" "))
+                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
+    }
+
+    private static Component formatInteractHistory(InteractLog log, Player player) {
+        return dateComponent(log.getDate().format(FORMATTER))
+                .append(Component.text(" "))
+                .append(Component.text(log.getPlayerName()).color(NamedTextColor.WHITE))
+                .append(Component.text(" "))
+                .append(Component.text(log.getAction().getLabel()).color(NamedTextColor.GRAY))
+                .append(Component.text(" "))
+                .append(itemComponent(null, prettyName(log.getBlockType()), player))
+                .append(Component.text(" "))
+                .append(locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player));
     }
 }

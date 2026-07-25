@@ -18,10 +18,10 @@ public class StatsCommand {
     }
 
     public CommandAPICommand get() {
-        LangLoader lang = plugin.getLangLoader();
         return new CommandAPICommand("stats")
                 .withArguments(new StringArgument("player"))
                 .executes((sender, args) -> {
+                    LangLoader lang = plugin.getLangLoader();
                     if (!sender.hasPermission(Permission.PROTECT_INSPECT.getPermission())) {
                         lang.send(sender, LangKey.NO_PERMISSION);
                         return;

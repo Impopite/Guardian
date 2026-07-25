@@ -14,14 +14,15 @@ public class ReloadCommand {
     }
 
     public CommandAPICommand get() {
-        LangLoader lang = plugin.getLangLoader();
         return new CommandAPICommand("reload")
                 .executes((sender, args) -> {
+                    LangLoader lang = plugin.getLangLoader();
                     if (!sender.hasPermission("protect.staff")) {
                         lang.send(sender, LangKey.NO_PERMISSION);
                         return;
                     }
                     plugin.getConfigLoader().reload();
+                    lang = plugin.getLangLoader();
                     lang.send(sender, LangKey.RELOAD_SUCCESS);
                 });
     }

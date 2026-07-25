@@ -1,6 +1,6 @@
 # Plugin developed by zImpoo [Telegram: @tentava | Discord: Impopite]
 
-prefix: "<#00B4EE>DEFAULT PROJECT<#3C3C3C>» "
+prefix: "<#00B4EE>ᴘʀᴏᴛᴇᴄᴛ<#3C3C3C>» "
 
 vars:
   normal: "<#9A9A9A>"
@@ -24,7 +24,6 @@ command-usage:
   reload: "<normal>/protect reload - Ricarica la configurazione."
   lookup: "<normal>/protect lookup <player> - Visualizza i log di un giocatore."
   stats: "<normal>/protect stats <player> - Statistiche di un giocatore."
-  history: "<normal>/protect history <player> - Cronologia completa di un giocatore."
 
 rollback:
   invalid-time: "<error>Tempo non valido. Usa formati come <white>15m<error>, <white>2h<error>, <white>1d<error> o <white>1h30m<error>."
@@ -53,7 +52,3 @@ stats:
   interacts: "<normal>Interazioni: <white><count>"
   first-seen: "<normal>Prima activity: <white><date>"
   last-seen: "<normal>Ultima activity: <white><date>"
-
-history:
-  no-logs: "<error>Nessun log trovato per questo giocatore."
-  header: "<normal>Cronologia di <white><player><normal>:"

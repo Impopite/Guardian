@@ -5,7 +5,6 @@ import it.impo.protect.Protect;
 import it.impo.protect.api.utils.Permission;
 import it.impo.protect.config.LangLoader;
 import it.impo.protect.config.constant.LangKey;
-import it.impo.protect.server.command.subcommands.HistoryCommand;
 import it.impo.protect.server.command.subcommands.InspectCommand;
 import it.impo.protect.server.command.subcommands.LookupCommand;
 import it.impo.protect.server.command.subcommands.ReloadCommand;
@@ -27,17 +26,16 @@ public class ProtectCommand {
     }
 
     protected CommandAPICommand create() {
-        LangLoader lang = plugin.getLangLoader();
         return new CommandAPICommand("protect")
                 .withSubcommands(
                         new InspectCommand(plugin).get(),
                         new RollbackCommand(plugin).get(),
                         new ReloadCommand(plugin).get(),
                         new LookupCommand(plugin).get(),
-                        new StatsCommand(plugin).get(),
-                        new HistoryCommand(plugin).get()
+                        new StatsCommand(plugin).get()
                 )
                 .executes((sender, args) -> {
+                    LangLoader lang = plugin.getLangLoader();
                     if (!sender.hasPermission(Permission.PROTECT_STAFF.getPermission())) {
                         lang.send(sender, LangKey.NO_PERMISSION);
                         return;
@@ -47,7 +45,6 @@ public class ProtectCommand {
                     lang.send(sender, LangKey.RELOAD_COMMAND_USAGE);
                     lang.send(sender, LangKey.LOOKUP_COMMAND_USAGE);
                     lang.send(sender, LangKey.STATS_COMMAND_USAGE);
-                    lang.send(sender, LangKey.HISTORY_COMMAND_USAGE);
                 });
     }
 }

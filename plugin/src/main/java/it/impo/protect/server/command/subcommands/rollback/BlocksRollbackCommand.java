@@ -22,11 +22,11 @@ public class BlocksRollbackCommand {
     }
 
     public CommandAPICommand get() {
-        LangLoader lang = plugin.getLangLoader();
         return new CommandAPICommand("blocks")
                 .withArguments(new IntegerArgument("raggio", 1, 100))
                 .withArguments(new StringArgument("tempo").replaceSuggestions(ArgumentSuggestions.strings("15m", "30m", "1h", "6h", "1d")))
                 .executes((sender, args) -> {
+                    LangLoader lang = plugin.getLangLoader();
                     if (!(sender instanceof Player player)) {
                         lang.send(sender, LangKey.CONSOLE_CANT_DO);
                         return;

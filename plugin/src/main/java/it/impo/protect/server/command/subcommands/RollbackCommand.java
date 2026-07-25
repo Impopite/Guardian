@@ -17,13 +17,13 @@ public class RollbackCommand {
     }
 
     public CommandAPICommand get() {
-        LangLoader lang = plugin.getLangLoader();
         return new CommandAPICommand("rollback")
                 .withSubcommands(
                         new BlocksRollbackCommand(plugin).get(),
                         new ContainersRollbackCommand(plugin).get()
                 )
                 .executes((sender, args) -> {
+                    LangLoader lang = plugin.getLangLoader();
                     if (!sender.hasPermission(Permission.PROTECT_ROLLBACK.getPermission())) {
                         lang.send(sender, LangKey.NO_PERMISSION);
                         return;
