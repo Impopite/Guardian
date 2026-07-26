@@ -67,7 +67,7 @@ public class BaseProtectManager extends ProtectManager {
     @Override
     public void saveBlockLog(Player player, Block block, Action action, BasicLocation location) {
         boolean staff = player.hasPermission(Permission.PROTECT_STAFF.getPermission());
-        BlockLog blockLog = new BlockLog(player.getUniqueId(), player.getName(), location, LocalDateTime.now(), staff, block.getType().toString(), block.getBlockData().toString(), action);
+        BlockLog blockLog = new BlockLog(player.getUniqueId(), player.getName(), location, LocalDateTime.now(), staff, block.getType().toString(), block.getBlockData().getAsString(), action);
 
         saveLogs(blockLog);
     }

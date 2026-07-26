@@ -232,7 +232,7 @@ public class BaseRollbackManager extends RollbackManager {
     private Material targetMaterial(BlockLog log) {
         String blockData = log.getBlockData();
         if (blockData != null && !blockData.isBlank())
-            return Bukkit.createBlockData(blockData).getMaterial();
+            return Bukkit.createBlockData(stripBlockData(blockData)).getMaterial();
         return Material.matchMaterial(log.getBlockType());
     }
 
@@ -244,7 +244,7 @@ public class BaseRollbackManager extends RollbackManager {
 
         String blockData = log.getBlockData();
         if (blockData != null && !blockData.isBlank()) {
-            BlockData data = Bukkit.createBlockData(blockData);
+            BlockData data = Bukkit.createBlockData(stripBlockData(blockData));
             block.setBlockData(data, false);
             return true;
         }
@@ -254,6 +254,13 @@ public class BaseRollbackManager extends RollbackManager {
 
         block.setType(targetType, false);
         return true;
+    }
+
+    private String stripBlockData(String raw) {
+        if (raw.startsWith("CraftBlockData{") && raw.endsWith("}")) {
+            return raw.substring(15, raw.length() - 1);
+        }
+        return raw;
     }
 
     private Container resolveContainer(BasicLocation location) {
@@ -295,9 +302,15 @@ public class BaseRollbackManager extends RollbackManager {
             if (current == null || current.getType().isAir() || !current.isSimilar(item)) continue;
 
             int toRemove = Math.min(remaining, current.getAmount());
-            current.setAmount(current.getAmount() - toRemove);
-            if (current.getAmount() <= 0) inventory.setItem(slot, null);
-            else inventory.setItem(slot, current);
+            int left = current.getAmount() - toRemove;
+
+            if (left <= 0) {
+                inventory.setItem(slot, null);
+            } else {
+                ItemStack clone = current.clone();
+                clone.setAmount(left);
+                inventory.setItem(slot, clone);
+            }
 
             removed += toRemove;
             remaining -= toRemove;
