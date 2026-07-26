@@ -20,7 +20,7 @@ inspect:
   disabled: "<error>Inspect disabilitato."
 
 command-usage:
-  inspect: "<normal>/inspect - Abilita o disabilita l'inspect."
+  inspect: "<normal>/protect inspect - Abilita o disabilita l'inspect."
   rollback: "<normal>/protect rollback <blocks|containers> <raggio> <tempo> - Rollback delle modifiche."
   reload: "<normal>/protect reload - Ricarica la configurazione."
   lookup: "<normal>/protect lookup <player> - Visualizza i log di un giocatore."
