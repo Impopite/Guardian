@@ -1,8 +1,8 @@
 package it.impo.guardian.manager;
 
 import it.impo.guardian.Guardian;
-import it.impo.guardian.api.data.Action.Action;
-import it.impo.guardian.api.data.Action.ContainerAction;
+import it.impo.guardian.api.data.action.Action;
+import it.impo.guardian.api.data.action.ContainerAction;
 import it.impo.guardian.api.data.BasicLocation;
 import it.impo.guardian.api.data.RollbackSummary;
 import it.impo.guardian.api.data.logs.impl.BlockLog;

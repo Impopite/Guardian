@@ -67,7 +67,7 @@ public final class Guardian extends JavaPlugin implements GuardianApi {
         getLogger().info(GREEN + "Databases loaded" + RESET);
         getLogger().info(GREEN + "Config loaded" + RESET);
         getLogger().info("");
-        getLogger().info(GREEN +  "enabled successfully in " + took + "ms" + RESET);
+        getLogger().info(GREEN + "enabled successfully in " + took + "ms" + RESET);
         getLogger().info(CYAN + "====================================" + RESET);
     }
 

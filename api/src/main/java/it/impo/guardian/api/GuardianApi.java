@@ -4,7 +4,7 @@ import it.impo.guardian.api.database.GuardianTable;
 import it.impo.guardian.api.manager.GuardianManager;
 import it.impo.guardian.api.manager.RollbackManager;
 
-public interface GuardianApi{
+public interface GuardianApi {
 
     GuardianTable getGuardianTable();
 

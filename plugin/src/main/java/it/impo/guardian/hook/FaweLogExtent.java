@@ -8,7 +8,7 @@ import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.block.BlockState;
 import com.sk89q.worldedit.world.block.BlockStateHolder;
 import it.impo.guardian.Guardian;
-import it.impo.guardian.api.data.Action.Action;
+import it.impo.guardian.api.data.action.Action;
 import it.impo.guardian.api.data.BasicLocation;
 import it.impo.guardian.api.data.logs.impl.BlockLog;
 

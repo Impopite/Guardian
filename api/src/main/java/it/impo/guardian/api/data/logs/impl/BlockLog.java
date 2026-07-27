@@ -1,6 +1,6 @@
 package it.impo.guardian.api.data.logs.impl;
 
-import it.impo.guardian.api.data.Action.Action;
+import it.impo.guardian.api.data.action.Action;
 import it.impo.guardian.api.data.BasicLocation;
 import it.impo.guardian.api.data.logs.Logs;
 

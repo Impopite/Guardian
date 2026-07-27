@@ -1,7 +1,7 @@
 package it.impo.guardian.database.impl;
 
 import com.zaxxer.hikari.HikariDataSource;
-import it.impo.guardian.api.data.Action.ItemAction;
+import it.impo.guardian.api.data.action.ItemAction;
 import it.impo.guardian.api.data.BasicLocation;
 import it.impo.guardian.api.data.logs.impl.ItemLog;
 import it.impo.guardian.api.database.impl.ItemLogTable;

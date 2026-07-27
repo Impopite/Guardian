@@ -1,9 +1,9 @@
 package it.impo.guardian.api.utils;
 
-import it.impo.guardian.api.data.Action.Action;
-import it.impo.guardian.api.data.Action.ContainerAction;
-import it.impo.guardian.api.data.Action.Interaction;
-import it.impo.guardian.api.data.Action.ItemAction;
+import it.impo.guardian.api.data.action.Action;
+import it.impo.guardian.api.data.action.ContainerAction;
+import it.impo.guardian.api.data.action.Interaction;
+import it.impo.guardian.api.data.action.ItemAction;
 import it.impo.guardian.api.data.logs.Logs;
 import it.impo.guardian.api.data.logs.impl.BlockLog;
 import it.impo.guardian.api.data.logs.impl.ContainerLog;
@@ -56,7 +56,7 @@ public class LogUtils {
                 case 'm' -> v * 60;
                 case 'h' -> v * 3600;
                 case 'd' -> v * 86400;
-                default  -> 0;
+                default -> 0;
             };
         }
         return seconds;
@@ -138,7 +138,6 @@ public class LogUtils {
     private static Component space() {
         return Component.text(" ");
     }
-
 
     private static Component formatBlockLog(BlockLog log, Player player) {
         String action = log.getAction() == Action.PLACE ? "+" : "-";

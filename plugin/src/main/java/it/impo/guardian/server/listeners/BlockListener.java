@@ -1,7 +1,7 @@
 package it.impo.guardian.server.listeners;
 
 import it.impo.guardian.Guardian;
-import it.impo.guardian.api.data.Action.Action;
+import it.impo.guardian.api.data.action.Action;
 import it.impo.guardian.api.data.BasicLocation;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;

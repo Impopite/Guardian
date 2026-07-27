@@ -1,4 +1,4 @@
-package it.impo.guardian.api.data.Action;
+package it.impo.guardian.api.data.action;
 
 public enum Interaction {
 
