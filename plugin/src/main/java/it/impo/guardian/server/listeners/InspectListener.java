@@ -2,13 +2,12 @@ package it.impo.guardian.server.listeners;
 
 import it.impo.guardian.Guardian;
 import it.impo.guardian.api.data.BasicLocation;
+import it.impo.guardian.api.utils.BlockUtils;
 import it.impo.guardian.config.constant.LangKey;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.Container;
-import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.Openable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -43,7 +42,7 @@ public class InspectListener implements Listener {
 
         Block block = event.getClickedBlock();
         Location loc = block.getLocation();
-        BasicLocation location = new BasicLocation(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        BasicLocation location = BasicLocation.from(loc);
 
         player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 0.5f, 1.0f);
 
@@ -54,8 +53,8 @@ public class InspectListener implements Listener {
 
         if (!(block.getState() instanceof Container)) {
             if (block.getBlockData() instanceof Openable) {
-                loc = resolveOpenableBlock(block).getLocation();
-                location = new BasicLocation(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+                loc = BlockUtils.resolveOpenableBlock(block).getLocation();
+                location = BasicLocation.from(loc);
                 plugin.getGuardianManager().showInteractLogs(player, location);
                 return;
             }
@@ -65,10 +64,5 @@ public class InspectListener implements Listener {
         }
 
         plugin.getGuardianManager().showContainerLogs(player, location);
-    }
-
-    private Block resolveOpenableBlock(Block block) {
-        if (!(block.getBlockData() instanceof Bisected bisected)) return block;
-        return bisected.getHalf() == Bisected.Half.TOP ? block.getRelative(BlockFace.DOWN) : block;
     }
 }

@@ -4,6 +4,7 @@ import it.impo.guardian.api.data.action.Action;
 import it.impo.guardian.api.data.action.ContainerAction;
 import it.impo.guardian.api.data.action.Interaction;
 import it.impo.guardian.api.data.action.ItemAction;
+import it.impo.guardian.api.data.BasicLocation;
 import it.impo.guardian.api.data.logs.Logs;
 import it.impo.guardian.api.data.logs.impl.BlockLog;
 import it.impo.guardian.api.data.logs.impl.ContainerLog;
@@ -21,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -224,38 +226,28 @@ public class LogUtils {
     }
 
     private static Component formatItemStackHistory(ContainerLog log, Player player, Plugin plugin) {
-        ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
-        String name = item != null ? prettyName(item.getType().name()) : "Unknown";
-        return line(
-                dateComponent(log.getDate().format(FORMATTER)),
-                space(),
-                Component.text(log.getPlayerName()).color(NamedTextColor.WHITE),
-                space(),
-                Component.text(log.getAction().getLabel()).color(NamedTextColor.GRAY),
-                space(),
-                itemComponent(item, name, player),
-                space(),
-                Component.text("x" + log.getAmount()).color(NamedTextColor.WHITE),
-                space(),
-                locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player)
-        );
+        return formatItemStackHistory(log.getItem(), log.getAction().getLabel(), log.getAmount(), log.getPlayerName(), log.getDate(), log.getLocation(), player, plugin);
     }
 
     private static Component formatItemStackHistory(ItemLog log, Player player, Plugin plugin) {
-        ItemStack item = ItemSerializer.safeItemFromBytes(log.getItem(), plugin);
+        return formatItemStackHistory(log.getItem(), log.getAction().getLabel(), log.getAmount(), log.getPlayerName(), log.getDate(), log.getLocation(), player, plugin);
+    }
+
+    private static Component formatItemStackHistory(byte[] itemBytes, String actionLabel, int amount, String playerName, LocalDateTime date, BasicLocation location, Player player, Plugin plugin) {
+        ItemStack item = ItemSerializer.safeItemFromBytes(itemBytes, plugin);
         String name = item != null ? prettyName(item.getType().name()) : "Unknown";
         return line(
-                dateComponent(log.getDate().format(FORMATTER)),
+                dateComponent(date.format(FORMATTER)),
                 space(),
-                Component.text(log.getPlayerName()).color(NamedTextColor.WHITE),
+                Component.text(playerName).color(NamedTextColor.WHITE),
                 space(),
-                Component.text(log.getAction().getLabel()).color(NamedTextColor.GRAY),
+                Component.text(actionLabel).color(NamedTextColor.GRAY),
                 space(),
                 itemComponent(item, name, player),
                 space(),
-                Component.text("x" + log.getAmount()).color(NamedTextColor.WHITE),
+                Component.text("x" + amount).color(NamedTextColor.WHITE),
                 space(),
-                locationComponent(log.getLocation().world(), log.getLocation().x(), log.getLocation().y(), log.getLocation().z(), player)
+                locationComponent(location.world(), location.x(), location.y(), location.z(), player)
         );
     }
 

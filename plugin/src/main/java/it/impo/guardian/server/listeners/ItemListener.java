@@ -27,7 +27,7 @@ public class ItemListener implements Listener {
         if (itemStack.getType().isAir()) return;
 
         Location loc = event.getItem().getLocation();
-        BasicLocation location = new BasicLocation(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        BasicLocation location = BasicLocation.from(loc);
 
         plugin.getGuardianManager().saveItemLog(player, itemStack, itemStack.getAmount(), ItemAction.PICKUP, location);
     }
@@ -39,7 +39,7 @@ public class ItemListener implements Listener {
         if (itemStack.getType().isAir()) return;
 
         Location loc = event.getItemDrop().getLocation();
-        BasicLocation location = new BasicLocation(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        BasicLocation location = BasicLocation.from(loc);
 
         plugin.getGuardianManager().saveItemLog(event.getPlayer(), itemStack, itemStack.getAmount(), ItemAction.DROP, location);
     }

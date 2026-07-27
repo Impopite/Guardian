@@ -5,13 +5,12 @@ import it.impo.guardian.api.data.action.ContainerAction;
 import it.impo.guardian.api.data.action.Interaction;
 import it.impo.guardian.api.data.BasicLocation;
 import it.impo.guardian.api.data.logs.LoggedInteraction;
+import it.impo.guardian.api.utils.BlockUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.Container;
 import org.bukkit.block.DoubleChest;
-import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.Openable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -52,7 +51,7 @@ public class ContainerListener implements Listener {
         if (containerBlock == null) return;
 
         Location loc = containerBlock.getLocation();
-        BasicLocation location = new BasicLocation(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        BasicLocation location = BasicLocation.from(loc);
 
         plugin.getGuardianManager().saveContainerLog(player, containerBlock, interaction.item(), interaction.amount(), interaction.action(), location);
     }
@@ -83,7 +82,7 @@ public class ContainerListener implements Listener {
                 : ((Container) holder).getBlock();
 
         Location loc = block.getLocation();
-        BasicLocation location = new BasicLocation(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        BasicLocation location = BasicLocation.from(loc);
 
         plugin.getGuardianManager().saveContainerLog(player, block, oldCursor, amount, ContainerAction.ADD, location);
     }
@@ -94,11 +93,11 @@ public class ContainerListener implements Listener {
         if (event.getHand() != EquipmentSlot.HAND) return;
         if (event.getClickedBlock() == null) return;
 
-        Block block = resolveOpenableBlock(event.getClickedBlock());
+        Block block = BlockUtils.resolveOpenableBlock(event.getClickedBlock());
         if (!(block.getBlockData() instanceof Openable openable)) return;
 
         Location loc = block.getLocation();
-        BasicLocation location = new BasicLocation(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+        BasicLocation location = BasicLocation.from(loc);
 
         Player player = event.getPlayer();
         boolean wasOpen = openable.isOpen();
@@ -109,11 +108,6 @@ public class ContainerListener implements Listener {
             Interaction action = updated.isOpen() ? Interaction.OPEN : Interaction.CLOSE;
             plugin.getGuardianManager().saveInteractLog(player, block, action, location);
         }, 1L);
-    }
-
-    private Block resolveOpenableBlock(Block block) {
-        if (!(block.getBlockData() instanceof Bisected bisected)) return block;
-        return bisected.getHalf() == Bisected.Half.TOP ? block.getRelative(BlockFace.DOWN) : block;
     }
 
     private LoggedInteraction resolveInteraction(InventoryClickEvent event, Player player, Inventory top) {

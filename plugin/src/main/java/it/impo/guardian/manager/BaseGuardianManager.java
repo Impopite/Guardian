@@ -35,7 +35,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.logging.Level;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -133,62 +136,30 @@ public class BaseGuardianManager extends GuardianManager {
     }
 
     private void showBlockLogs(Player player, BasicLocation location, int page) {
-        int pageNumber = Math.max(page, 1);
-        GuardianTable table = plugin.getGuardianTable();
-
-        table.getBlockLogTable().countLog(location).thenCompose(total -> {
-            if (total == 0) {
-                plugin.getLangLoader().send(player, LangKey.NO_INTERACTION);
-                return CompletableFuture.completedFuture(null);
-            }
-
-            int maxPage = Math.max(1, (int) Math.ceil((double) total / pageSize));
-            int clampedPage = Math.min(pageNumber, maxPage);
-            int offset = (clampedPage - 1) * pageSize;
-
-            return table.getBlockLogTable().inspectLog(location, pageSize, offset)
-                    .thenAccept(results -> sendInspect(player,
-                            results.stream()
-                                    .map(log -> LogUtils.formatLogs(log, player, plugin))
-                                    .collect(Collectors.toList()),
-                            clampedPage,
-                            maxPage,
-                            clicked -> showBlockLogs(clicked, location, clampedPage - 1),
-                            clicked -> showBlockLogs(clicked, location, clampedPage + 1)));
-        });
+        showLogs(player, location, page,
+                loc -> plugin.getGuardianTable().getBlockLogTable().countLog(loc),
+                (loc, offset) -> plugin.getGuardianTable().getBlockLogTable().inspectLog(loc, pageSize, offset),
+                (p, pg) -> showBlockLogs(p, location, pg));
     }
 
     private void showContainerLogs(Player player, BasicLocation location, int page) {
-        int pageNumber = Math.max(page, 1);
-        GuardianTable table = plugin.getGuardianTable();
-
-        table.getContainerLogTable().countLog(location).thenCompose(total -> {
-            if (total == 0) {
-                plugin.getLangLoader().send(player, LangKey.NO_INTERACTION);
-                return CompletableFuture.completedFuture(null);
-            }
-
-            int maxPage = Math.max(1, (int) Math.ceil((double) total / pageSize));
-            int clampedPage = Math.min(pageNumber, maxPage);
-            int offset = (clampedPage - 1) * pageSize;
-
-            return table.getContainerLogTable().inspectLog(location, pageSize, offset)
-                    .thenAccept(results -> sendInspect(player,
-                            results.stream()
-                                    .map(log -> LogUtils.formatLogs(log, player, plugin))
-                                    .collect(Collectors.toList()),
-                            clampedPage,
-                            maxPage,
-                            clicked -> showContainerLogs(clicked, location, clampedPage - 1),
-                            clicked -> showContainerLogs(clicked, location, clampedPage + 1)));
-        });
+        showLogs(player, location, page,
+                loc -> plugin.getGuardianTable().getContainerLogTable().countLog(loc),
+                (loc, offset) -> plugin.getGuardianTable().getContainerLogTable().inspectLog(loc, pageSize, offset),
+                (p, pg) -> showContainerLogs(p, location, pg));
     }
 
     private void showInteractLogs(Player player, BasicLocation location, int page) {
-        int pageNumber = Math.max(page, 1);
-        GuardianTable table = plugin.getGuardianTable();
+        showLogs(player, location, page,
+                loc -> plugin.getGuardianTable().getInteractLogTable().countLog(loc),
+                (loc, offset) -> plugin.getGuardianTable().getInteractLogTable().inspectLog(loc, pageSize, offset),
+                (p, pg) -> showInteractLogs(p, location, pg));
+    }
 
-        table.getInteractLogTable().countLog(location).thenCompose(total -> {
+    private <T extends Logs> void showLogs(Player player, BasicLocation location, int page, Function<BasicLocation, CompletableFuture<Integer>> countFn, BiFunction<BasicLocation, Integer, CompletableFuture<List<T>>> fetchFn, BiConsumer<Player, Integer> selfCall) {
+        int pageNumber = Math.max(page, 1);
+
+        countFn.apply(location).thenCompose(total -> {
             if (total == 0) {
                 plugin.getLangLoader().send(player, LangKey.NO_INTERACTION);
                 return CompletableFuture.completedFuture(null);
@@ -198,15 +169,15 @@ public class BaseGuardianManager extends GuardianManager {
             int clampedPage = Math.min(pageNumber, maxPage);
             int offset = (clampedPage - 1) * pageSize;
 
-            return table.getInteractLogTable().inspectLog(location, pageSize, offset)
+            return fetchFn.apply(location, offset)
                     .thenAccept(results -> sendInspect(player,
                             results.stream()
                                     .map(log -> LogUtils.formatLogs(log, player, plugin))
                                     .collect(Collectors.toList()),
                             clampedPage,
                             maxPage,
-                            clicked -> showInteractLogs(clicked, location, clampedPage - 1),
-                            clicked -> showInteractLogs(clicked, location, clampedPage + 1)));
+                            clicked -> selfCall.accept(clicked, clampedPage - 1),
+                            clicked -> selfCall.accept(clicked, clampedPage + 1)));
         });
     }
 
@@ -284,23 +255,14 @@ public class BaseGuardianManager extends GuardianManager {
                 int end = Math.min(offset + pageSize, allLogs.size());
                 List<Logs> pageLogs = allLogs.subList(start, end);
 
-                pageLogs.forEach(log -> sender.sendMessage(LogUtils.formatHistory(log, sender, plugin)));
-
-                Component prev = Component.text("« Previous")
-                        .color(clampedPage > 1 ? NamedTextColor.GREEN : NamedTextColor.GRAY)
-                        .clickEvent(clampedPage > 1 ? ClickEvent.callback(audience -> showPlayerLogs(sender, playerName, clampedPage - 1)) : null);
-
-                Component next = Component.text("Next »")
-                        .color(clampedPage < maxPage ? NamedTextColor.GREEN : NamedTextColor.GRAY)
-                        .clickEvent(clampedPage < maxPage ? ClickEvent.callback(audience -> showPlayerLogs(sender, playerName, clampedPage + 1)) : null);
-
-                Component footer = Component.text("Page " + clampedPage + "/" + maxPage + "  ")
-                        .color(NamedTextColor.GRAY)
-                        .append(prev)
-                        .append(Component.text("  "))
-                        .append(next);
-
-                sender.sendMessage(footer);
+                sendInspect(sender,
+                        pageLogs.stream()
+                                .map(log -> LogUtils.formatHistory(log, sender, plugin))
+                                .collect(Collectors.toList()),
+                        clampedPage,
+                        maxPage,
+                        clicked -> showPlayerLogs(clicked, playerName, clampedPage - 1),
+                        clicked -> showPlayerLogs(clicked, playerName, clampedPage + 1));
             });
         });
     }

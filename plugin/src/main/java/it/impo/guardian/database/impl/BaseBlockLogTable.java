@@ -192,12 +192,7 @@ public class BaseBlockLogTable extends BlockLogTable {
                 ps.setInt(6, offset);
                 try (var rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        BasicLocation logLocation = new BasicLocation(
-                                rs.getString("world"),
-                                rs.getInt("x"),
-                                rs.getInt("y"),
-                                rs.getInt("z")
-                        );
+                        BasicLocation logLocation = BasicLocation.from(rs);
 
                         LocalDateTime date = rs.getTimestamp("date").toLocalDateTime();
                         Action action = Action.valueOf(rs.getString("action"));
@@ -247,12 +242,7 @@ public class BaseBlockLogTable extends BlockLogTable {
 
                 try (var rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        BasicLocation logLocation = new BasicLocation(
-                                rs.getString("world"),
-                                rs.getInt("x"),
-                                rs.getInt("y"),
-                                rs.getInt("z")
-                        );
+                        BasicLocation logLocation = BasicLocation.from(rs);
 
                         LocalDateTime date = rs.getTimestamp("date").toLocalDateTime();
                         Action action = Action.valueOf(rs.getString("action"));
@@ -305,12 +295,7 @@ public class BaseBlockLogTable extends BlockLogTable {
                 ps.setInt(3, offset);
                 try (var rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        BasicLocation logLocation = new BasicLocation(
-                                rs.getString("world"),
-                                rs.getInt("x"),
-                                rs.getInt("y"),
-                                rs.getInt("z")
-                        );
+                        BasicLocation logLocation = BasicLocation.from(rs);
 
                         LocalDateTime date = rs.getTimestamp("date").toLocalDateTime();
                         Action action = Action.valueOf(rs.getString("action"));

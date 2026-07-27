@@ -180,12 +180,7 @@ public class BaseInteractLogTable extends InteractLogTable {
                     while (rs.next()) {
                         UUID uuid = UUID.fromString(rs.getString("user_uuid"));
 
-                        BasicLocation logLocation = new BasicLocation(
-                                rs.getString("world"),
-                                rs.getInt("x"),
-                                rs.getInt("y"),
-                                rs.getInt("z")
-                        );
+                        BasicLocation logLocation = BasicLocation.from(rs);
 
                         LocalDateTime date = rs.getTimestamp("date").toLocalDateTime();
                         Interaction action = Interaction.valueOf(rs.getString("action"));
@@ -239,12 +234,7 @@ public class BaseInteractLogTable extends InteractLogTable {
                     while (rs.next()) {
                         UUID uuid = UUID.fromString(rs.getString("user_uuid"));
 
-                        BasicLocation logLocation = new BasicLocation(
-                                rs.getString("world"),
-                                rs.getInt("x"),
-                                rs.getInt("y"),
-                                rs.getInt("z")
-                        );
+                        BasicLocation logLocation = BasicLocation.from(rs);
 
                         LocalDateTime date = rs.getTimestamp("date").toLocalDateTime();
                         Interaction action = Interaction.valueOf(rs.getString("action"));

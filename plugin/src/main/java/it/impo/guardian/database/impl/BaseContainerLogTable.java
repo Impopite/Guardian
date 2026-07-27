@@ -197,12 +197,7 @@ public class BaseContainerLogTable extends ContainerLogTable {
                     while (rs.next()) {
                         UUID uuid = UUID.fromString(rs.getString("user_uuid"));
 
-                        BasicLocation logLocation = new BasicLocation(
-                                rs.getString("world"),
-                                rs.getInt("x"),
-                                rs.getInt("y"),
-                                rs.getInt("z")
-                        );
+                        BasicLocation logLocation = BasicLocation.from(rs);
 
                         LocalDateTime date = rs.getTimestamp("date").toLocalDateTime();
                         ContainerAction action = ContainerAction.valueOf(rs.getString("action"));
@@ -256,12 +251,7 @@ public class BaseContainerLogTable extends ContainerLogTable {
                     while (rs.next()) {
                         UUID uuid = UUID.fromString(rs.getString("user_uuid"));
 
-                        BasicLocation logLocation = new BasicLocation(
-                                rs.getString("world"),
-                                rs.getInt("x"),
-                                rs.getInt("y"),
-                                rs.getInt("z")
-                        );
+                        BasicLocation logLocation = BasicLocation.from(rs);
 
                         LocalDateTime date = rs.getTimestamp("date").toLocalDateTime();
                         ContainerAction action = ContainerAction.valueOf(rs.getString("action"));
@@ -318,12 +308,7 @@ public class BaseContainerLogTable extends ContainerLogTable {
                     while (rs.next()) {
                         UUID uuid = UUID.fromString(rs.getString("user_uuid"));
 
-                        BasicLocation logLocation = new BasicLocation(
-                                rs.getString("world"),
-                                rs.getInt("x"),
-                                rs.getInt("y"),
-                                rs.getInt("z")
-                        );
+                        BasicLocation logLocation = BasicLocation.from(rs);
 
                         LocalDateTime date = rs.getTimestamp("date").toLocalDateTime();
                         ContainerAction action = ContainerAction.valueOf(rs.getString("action"));
