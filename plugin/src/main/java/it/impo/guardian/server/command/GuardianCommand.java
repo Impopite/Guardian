@@ -5,6 +5,7 @@ import it.impo.guardian.Guardian;
 import it.impo.guardian.api.utils.Permission;
 import it.impo.guardian.config.LangLoader;
 import it.impo.guardian.config.constant.LangKey;
+import it.impo.guardian.server.command.subcommands.HelpCommand;
 import it.impo.guardian.server.command.subcommands.InspectCommand;
 import it.impo.guardian.server.command.subcommands.LookupCommand;
 import it.impo.guardian.server.command.subcommands.ReloadCommand;
@@ -28,6 +29,7 @@ public class GuardianCommand {
     protected CommandAPICommand create() {
         return new CommandAPICommand("guardian")
                 .withSubcommands(
+                        new HelpCommand(plugin).get(),
                         new InspectCommand(plugin).get(),
                         new RollbackCommand(plugin).get(),
                         new ReloadCommand(plugin).get(),
@@ -40,11 +42,7 @@ public class GuardianCommand {
                         lang.send(sender, LangKey.NO_PERMISSION);
                         return;
                     }
-                    lang.send(sender, LangKey.INSPECT_COMMAND_USAGE);
-                    lang.send(sender, LangKey.ROLLBACK_COMMAND_USAGE);
-                    lang.send(sender, LangKey.RELOAD_COMMAND_USAGE);
-                    lang.send(sender, LangKey.LOOKUP_COMMAND_USAGE);
-                    lang.send(sender, LangKey.STATS_COMMAND_USAGE);
+                    lang.send(sender, LangKey.USE_HELP);
                 });
     }
 }

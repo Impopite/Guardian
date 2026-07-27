@@ -42,6 +42,15 @@ public enum LangKey {
     STATS_FIRST_SEEN("stats.first-seen"),
     STATS_LAST_SEEN("stats.last-seen"),
 
+    USE_HELP("message.use-help"),
+
+    HELP_SHOW("help.show"),
+    HELP_INSPECT("help.inspect"),
+    HELP_ROLLBACK("help.rollback"),
+    HELP_LOOKUP("help.lookup"),
+    HELP_STATS("help.stats"),
+    HELP_RELOAD("help.reload"),
+
     PREFIX("prefix");
 
     private final String path;

@@ -93,6 +93,10 @@ public class LangLoader {
         return langConfig.getString(key.getPath(), "").isEmpty();
     }
 
+    public @NotNull String getRaw(@NotNull LangKey key) {
+        return langConfig.getString(key.getPath(), "");
+    }
+
     private @NotNull Map<String, String> buildPalette() {
         Map<String, String> map = new HashMap<>();
         ConfigurationSection vars = langConfig.getConfigurationSection("vars");

@@ -38,7 +38,7 @@ public final class Guardian extends JavaPlugin implements GuardianApi {
 
         getLogger().info("");
         getLogger().info(CYAN + "====================================" + RESET);
-        getLogger().info(CYAN + projectName + RESET);
+        getLogger().info(CYAN + "   " + projectName + RESET);
         getLogger().info(GRAY + "   Developed by " + WHITE + "zImpoo" + RESET);
         getLogger().info(CYAN + "====================================" + RESET);
 
@@ -80,7 +80,7 @@ public final class Guardian extends JavaPlugin implements GuardianApi {
 
         getLogger().info("");
         getLogger().info(RED + "====================================" + RESET);
-        getLogger().info(RED + projectName + RESET);
+        getLogger().info(RED + "   " + projectName + RESET);
         getLogger().info(GRAY + "   Developed by " + WHITE + "zImpoo" + RESET);
         getLogger().info(RED + "====================================" + RESET);
         getLogger().info(RED + "Plugin disabled safely." + RESET);

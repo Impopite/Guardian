@@ -12,6 +12,7 @@ message:
   console-cant-do-command: "<error>Solo un player può eseguire questo comando"
   player-not-found: "<error>Player non trovato."
   update-available: "<success>Una nuova versione è disponibile! (<latest_version>) - <normal>https://modrinth.com/plugin/guardian"
+  use-help: "<normal>Usa <white>/guardian help<normal> per vedere i comandi disponibili."
 
 inspect:
   no-interaction: "<error>Non ci sono interazioni con questo blocco."
@@ -53,3 +54,11 @@ stats:
   interacts: " <normal>Interazioni: <white><count>"
   first-seen: " <normal>Prima attività: <white><date>"
   last-seen: " <normal>Ultima attività: <white><date>"
+
+help:
+  show: "Mostra questo messaggio di aiuto"
+  inspect: "Attiva o disattiva la modalità inspect"
+  rollback: "Annulla le modifiche in un raggio"
+  lookup: "Visualizza i log di un giocatore"
+  stats: "Visualizza le statistiche di un giocatore"
+  reload: "Ricarica la configurazione"

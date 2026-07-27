@@ -12,6 +12,7 @@ message:
   console-cant-do-command: "<error>Only players can execute this command"
   player-not-found: "<error>Player not found."
   update-available: "<success>A new version is available! (<latest_version>) - <normal>https://modrinth.com/plugin/guardian"
+  use-help: "<normal>Use <white>/guardian help<normal> to see available commands."
 
 inspect:
   no-interaction: "<error>No interactions with this block."
@@ -53,3 +54,11 @@ stats:
   interacts: " <normal>Interactions: <white><count>"
   first-seen: " <normal>First activity: <white><date>"
   last-seen: " <normal>Last activity: <white><date>"
+
+help:
+  show: "Show this help message"
+  inspect: "Toggle inspect mode"
+  rollback: "Rollback changes in a radius"
+  lookup: "View a player's logs"
+  stats: "View player statistics"
+  reload: "Reload the configuration"
