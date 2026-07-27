@@ -21,11 +21,7 @@ inspect:
   disabled: "<error>Inspect disabilitato."
 
 command-usage:
-  inspect: "<normal>/guardian inspect - Abilita o disabilita l'inspect."
   rollback: "<normal>/guardian rollback <blocks|containers> <raggio> <tempo> - Rollback delle modifiche."
-  reload: "<normal>/guardian reload - Ricarica la configurazione."
-  lookup: "<normal>/guardian lookup <player> - Visualizza i log di un giocatore."
-  stats: "<normal>/guardian stats <player> - Statistiche di un giocatore."
 
 rollback:
   invalid-time: "<error>Tempo non valido. Usa formati come <white>15m<error>, <white>2h<error>, <white>1d<error> o <white>1h30m<error>."

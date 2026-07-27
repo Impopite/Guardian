@@ -6,10 +6,7 @@ import it.impo.guardian.api.utils.BlockUtils;
 import it.impo.guardian.config.constant.LangKey;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
-import org.bukkit.block.Container;
-import org.bukkit.block.DoubleChest;
+import org.bukkit.block.*;
 import org.bukkit.block.data.Openable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,6 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.Inventory;
 
 public class InspectListener implements Listener {
 
@@ -53,7 +51,8 @@ public class InspectListener implements Listener {
             return;
         }
 
-        if (!(block.getState() instanceof Container)) {
+        BlockState state = block.getState();
+        if (!(state instanceof Container)) {
             if (block.getBlockData() instanceof Openable) {
                 loc = BlockUtils.resolveOpenableBlock(block).getLocation();
                 location = BasicLocation.from(loc);
@@ -65,8 +64,8 @@ public class InspectListener implements Listener {
             return;
         }
 
-        if (block.getState() instanceof Chest chest) {
-            org.bukkit.inventory.Inventory holder = chest.getInventory();
+        if (state instanceof Chest chest) {
+            Inventory holder = chest.getInventory();
             if (holder.getHolder() instanceof DoubleChest doubleChest) {
                 Block left = doubleChest.getLeftSide() instanceof Container c ? c.getBlock() : block;
                 loc = left.getLocation();

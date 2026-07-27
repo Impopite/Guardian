@@ -34,7 +34,7 @@ public class HelpCommand {
 
     private Component helpLine(String command, LangLoader lang, LangKey key, String fallback) {
         String desc = lang.getRaw(key);
-        if (desc == null || desc.isEmpty()) desc = fallback;
+        if (desc.isEmpty()) desc = fallback;
         Component prefix = Component.text("» ").color(NamedTextColor.DARK_GRAY);
         Component cmd = Component.text(command).color(NamedTextColor.GRAY);
         Component hoverText = Component.text(desc).color(NamedTextColor.GRAY);

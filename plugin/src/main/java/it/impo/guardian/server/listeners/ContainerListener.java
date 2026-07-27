@@ -47,7 +47,7 @@ public class ContainerListener implements Listener {
         LoggedInteraction interaction = resolveInteraction(event, player, top);
         if (interaction == null) return;
 
-        Block containerBlock = resolveContainerBlock(holder, player);
+        Block containerBlock = resolveContainerBlock(holder);
         if (containerBlock == null) return;
 
         Location loc = containerBlock.getLocation();
@@ -78,7 +78,7 @@ public class ContainerListener implements Listener {
         if (amount <= 0) return;
 
         Block block = holder instanceof DoubleChest doubleChest
-                ? resolveClickedBlock(doubleChest, player)
+                ? resolveClickedBlock(doubleChest)
                 : ((Container) holder).getBlock();
 
         Location loc = block.getLocation();
@@ -163,9 +163,9 @@ public class ContainerListener implements Listener {
         return itemStack != null && !itemStack.getType().isAir();
     }
 
-    private Block resolveContainerBlock(InventoryHolder holder, Player player) {
+    private Block resolveContainerBlock(InventoryHolder holder) {
         if (holder instanceof DoubleChest doubleChest) {
-            return resolveClickedBlock(doubleChest, player);
+            return resolveClickedBlock(doubleChest);
         }
         if (holder instanceof Container container) {
             return container.getBlock();
@@ -173,7 +173,7 @@ public class ContainerListener implements Listener {
         return null;
     }
 
-    private Block resolveClickedBlock(DoubleChest doubleChest, Player player) {
+    private Block resolveClickedBlock(DoubleChest doubleChest) {
         Block left = doubleChest.getLeftSide() instanceof Container c ? c.getBlock() : null;
         Block right = doubleChest.getRightSide() instanceof Container c ? c.getBlock() : null;
 

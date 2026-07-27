@@ -38,12 +38,7 @@ public class BaseRollbackManager extends RollbackManager {
 
     @Override
     public void rollbackBlocks(Player player, int radius, Duration duration) {
-        BasicLocation center = new BasicLocation(
-                player.getLocation().getWorld().getName(),
-                player.getLocation().getBlockX(),
-                player.getLocation().getBlockY(),
-                player.getLocation().getBlockZ()
-        );
+        BasicLocation center = centerFrom(player);
         LocalDateTime since = LocalDateTime.now().minus(duration);
 
         plugin.getGuardianTable().getBlockLogTable().rollbackLogs(center, radius, since).thenAccept(logs ->
@@ -80,12 +75,7 @@ public class BaseRollbackManager extends RollbackManager {
 
     @Override
     public void rollbackContainers(Player player, int radius, Duration duration) {
-        BasicLocation center = new BasicLocation(
-                player.getLocation().getWorld().getName(),
-                player.getLocation().getBlockX(),
-                player.getLocation().getBlockY(),
-                player.getLocation().getBlockZ()
-        );
+        BasicLocation center = centerFrom(player);
         LocalDateTime since = LocalDateTime.now().minus(duration);
 
         plugin.getGuardianTable().getContainerLogTable().rollbackLogs(center, radius, since).thenAccept(logs ->
@@ -260,6 +250,10 @@ public class BaseRollbackManager extends RollbackManager {
             return raw.substring(15, raw.length() - 1);
         }
         return raw;
+    }
+
+    private BasicLocation centerFrom(Player player) {
+        return BasicLocation.from(player.getLocation());
     }
 
     private Container resolveContainer(BasicLocation location) {

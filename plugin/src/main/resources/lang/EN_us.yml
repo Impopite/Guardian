@@ -21,11 +21,7 @@ inspect:
   disabled: "<error>Inspect disabled."
 
 command-usage:
-  inspect: "<normal>/guardian inspect - Toggle inspect mode."
   rollback: "<normal>/guardian rollback <blocks|containers> <radius> <time> - Rollback changes."
-  reload: "<normal>/guardian reload - Reload the configuration."
-  lookup: "<normal>/guardian lookup <player> - View a player's logs."
-  stats: "<normal>/guardian stats <player> - Player statistics."
 
 rollback:
   invalid-time: "<error>Invalid time. Use formats like <white>15m<error>, <white>2h<error>, <white>1d<error> or <white>1h30m<error>."
