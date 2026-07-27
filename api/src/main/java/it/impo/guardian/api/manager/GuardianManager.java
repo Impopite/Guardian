@@ -1,0 +1,41 @@
+package it.impo.guardian.api.manager;
+
+import it.impo.guardian.api.data.Action.Action;
+import it.impo.guardian.api.data.Action.ContainerAction;
+import it.impo.guardian.api.data.Action.Interaction;
+import it.impo.guardian.api.data.Action.ItemAction;
+import it.impo.guardian.api.data.BasicLocation;
+import it.impo.guardian.api.data.logs.Logs;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+public abstract class GuardianManager {
+
+    public abstract void saveLogs(Logs logs);
+
+    public abstract void saveBlockLog(Player player, Block block, Action action, BasicLocation location);
+
+    public abstract void saveContainerLog(Player player, Block block, ItemStack itemStack, int amount, ContainerAction action, BasicLocation location);
+
+    public abstract void saveItemLog(Player player, ItemStack itemStack, int amount, ItemAction action, BasicLocation location);
+
+    public abstract void saveInteractLog(Player player, Block block, Interaction interaction, BasicLocation location);
+
+    public abstract boolean toggleInspect(Player player);
+
+    public abstract void showBlockLogs(Player player, BasicLocation location);
+
+    public abstract void showContainerLogs(Player player, BasicLocation location);
+
+    public abstract void showInteractLogs(Player player, BasicLocation location);
+
+    public abstract boolean isInspecting(Player player);
+
+    public abstract void showPlayerLogs(Player sender, String playerName, int page);
+
+    public abstract void showPlayerStats(Player sender, String playerName);
+
+    public abstract void purgeOldLogs(int days);
+
+}

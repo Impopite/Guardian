@@ -1,6 +1,6 @@
 # Plugin developed by zImpoo [Telegram: @tentava | Discord: Impopite]
 
-prefix: "<#00B4EE>ᴘʀᴏᴛᴇᴄᴛ<#3C3C3C>» "
+prefix: "<#00B4EE>ɢᴜᴀʀᴅɪᴀɴ<#3C3C3C>» "
 
 vars:
   normal: "<#9A9A9A>"
@@ -11,7 +11,7 @@ message:
   no-permission: "<error>You don't have enough permissions!"
   console-cant-do-command: "<error>Only players can execute this command"
   player-not-found: "<error>Player not found."
-  update-available: "<success>A new version is available! (<latest_version>) - <normal>https://modrinth.com/plugin/protect"
+  update-available: "<success>A new version is available! (<latest_version>) - <normal>https://modrinth.com/plugin/guardian"
 
 inspect:
   no-interaction: "<error>No interactions with this block."
@@ -20,11 +20,11 @@ inspect:
   disabled: "<error>Inspect disabled."
 
 command-usage:
-  inspect: "<normal>/protect inspect - Toggle inspect mode."
-  rollback: "<normal>/protect rollback <blocks|containers> <radius> <time> - Rollback changes."
-  reload: "<normal>/protect reload - Reload the configuration."
-  lookup: "<normal>/protect lookup <player> - View a player's logs."
-  stats: "<normal>/protect stats <player> - Player statistics."
+  inspect: "<normal>/guardian inspect - Toggle inspect mode."
+  rollback: "<normal>/guardian rollback <blocks|containers> <radius> <time> - Rollback changes."
+  reload: "<normal>/guardian reload - Reload the configuration."
+  lookup: "<normal>/guardian lookup <player> - View a player's logs."
+  stats: "<normal>/guardian stats <player> - Player statistics."
 
 rollback:
   invalid-time: "<error>Invalid time. Use formats like <white>15m<error>, <white>2h<error>, <white>1d<error> or <white>1h30m<error>."

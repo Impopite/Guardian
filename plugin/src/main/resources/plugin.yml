@@ -1,8 +1,9 @@
-name: Protect
+name: Guardian
 version: '1.0.0'
 
-main: it.impo.protect.Protect
+main: it.impo.guardian.Guardian
 api-version: '1.21.8'
 load: POSTWORLD
 
+depend: [CommandAPI]
 softdepend: [FastAsyncWorldEdit]

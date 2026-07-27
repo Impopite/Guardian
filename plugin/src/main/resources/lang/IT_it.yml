@@ -1,6 +1,6 @@
 # Plugin developed by zImpoo [Telegram: @tentava | Discord: Impopite]
 
-prefix: "<#00B4EE>ᴘʀᴏᴛᴇᴄᴛ<#3C3C3C>» "
+prefix: "<#00B4EE>ɢᴜᴀʀᴅɪᴀɴ<#3C3C3C>» "
 
 vars:
   normal: "<#9A9A9A>"
@@ -11,7 +11,7 @@ message:
   no-permission: "<error>Non hai abbastanza permessi!"
   console-cant-do-command: "<error>Solo un player può eseguire questo comando"
   player-not-found: "<error>Player non trovato."
-  update-available: "<success>Una nuova versione è disponibile! (<latest_version>) - <normal>https://modrinth.com/plugin/protect"
+  update-available: "<success>Una nuova versione è disponibile! (<latest_version>) - <normal>https://modrinth.com/plugin/guardian"
 
 inspect:
   no-interaction: "<error>Non ci sono interazioni con questo blocco."
@@ -20,11 +20,11 @@ inspect:
   disabled: "<error>Inspect disabilitato."
 
 command-usage:
-  inspect: "<normal>/protect inspect - Abilita o disabilita l'inspect."
-  rollback: "<normal>/protect rollback <blocks|containers> <raggio> <tempo> - Rollback delle modifiche."
-  reload: "<normal>/protect reload - Ricarica la configurazione."
-  lookup: "<normal>/protect lookup <player> - Visualizza i log di un giocatore."
-  stats: "<normal>/protect stats <player> - Statistiche di un giocatore."
+  inspect: "<normal>/guardian inspect - Abilita o disabilita l'inspect."
+  rollback: "<normal>/guardian rollback <blocks|containers> <raggio> <tempo> - Rollback delle modifiche."
+  reload: "<normal>/guardian reload - Ricarica la configurazione."
+  lookup: "<normal>/guardian lookup <player> - Visualizza i log di un giocatore."
+  stats: "<normal>/guardian stats <player> - Statistiche di un giocatore."
 
 rollback:
   invalid-time: "<error>Tempo non valido. Usa formati come <white>15m<error>, <white>2h<error>, <white>1d<error> o <white>1h30m<error>."
@@ -46,7 +46,7 @@ lookup:
 
 stats:
   no-logs: "<error>Nessun log trovato per questo giocatore."
-  header: "<#00B4EE>ᴘʀᴏᴛᴇᴄᴛ <normal>- Statistiche di <white><player><normal>:"
+  header: "<#00B4EE>ɢᴜᴀʀᴅɪᴀɴ <normal>- Statistiche di <white><player><normal>:"
   blocks: " <normal>Blocchi: <white><count>"
   containers: " <normal>Contenitori: <white><count>"
   items: " <normal>Items: <white><count>"

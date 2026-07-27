@@ -1,6 +1,6 @@
-# Protect
+# Guardian
 
-[![Version](https://img.shields.io/badge/version-1.0-blue)](https://github.com/Impopite/Protect/releases)
+[![Version](https://img.shields.io/badge/version-1.0-blue)](https://github.com/Impopite/Guardian/releases)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-21+-orange)](https://adoptium.net/)
 [![Paper](https://img.shields.io/badge/Paper-1.21+-red)](https://papermc.io/)
@@ -38,10 +38,10 @@ A comprehensive grief protection and logging plugin for Minecraft servers, built
 
 ## Installation
 
-1. Download the latest `Protect.jar` from the [releases page](https://modrinth.com/plugin/protect)
+1. Download the latest `Guardian.jar` from the [releases page](https://modrinth.com/plugin/guardian)
 2. Place the JAR in your server's `plugins/` folder
 3. Start or restart the server
-4. Edit `plugins/Protect/config.yml` with your database credentials
+4. Edit `plugins/Guardian/config.yml` with your database credentials
 5. Reload or restart the server to apply changes
 
 ---
@@ -50,14 +50,14 @@ A comprehensive grief protection and logging plugin for Minecraft servers, built
 
 | Command | Description | Permission |
 |---------|-------------|------------|
-| `/protect` | Show all available subcommands | `protect.staff` |
-| `/protect inspect` | Toggle inspect mode | `protect.inspect` |
-| `/protect rollback blocks <radius> <time>` | Rollback block changes | `protect.rollback` |
-| `/protect rollback containers <radius> <time>` | Rollback container changes | `protect.rollback` |
-| `/protect lookup <player>` | View all logs for a player | `protect.inspect` |
-| `/protect stats <player>` | View player statistics | `protect.inspect` |
-| `/protect reload` | Reload the configuration | `protect.staff` |
-| `/inspect` | Alias for `/protect inspect` | `protect.inspect` |
+| `/guardian` | Show all available subcommands | `guardian.staff` |
+| `/guardian inspect` | Toggle inspect mode | `guardian.inspect` |
+| `/guardian rollback blocks <radius> <time>` | Rollback block changes | `guardian.rollback` |
+| `/guardian rollback containers <radius> <time>` | Rollback container changes | `guardian.rollback` |
+| `/guardian lookup <player>` | View all logs for a player | `guardian.inspect` |
+| `/guardian stats <player>` | View player statistics | `guardian.inspect` |
+| `/guardian reload` | Reload the configuration | `guardian.staff` |
+| `/inspect` | Alias for `/guardian inspect` | `guardian.inspect` |
 
 ### Time Format
 
@@ -71,9 +71,9 @@ Examples: `15m`, `1h30m`, `2d`, `30s`, `1h30m45s`
 
 | Permission | Description |
 |------------|-------------|
-| `protect.staff` | Access to root `/protect` and `/protect reload`. Also marks logs as staff actions. |
-| `protect.inspect` | Toggle inspect mode, use `/protect lookup` and `/protect stats` |
-| `protect.rollback` | Use rollback commands for blocks and containers |
+| `guardian.staff` | Access to root `/guardian` and `/guardian reload`. Also marks logs as staff actions. |
+| `guardian.inspect` | Toggle inspect mode, use `/guardian lookup` and `/guardian stats` |
+| `guardian.rollback` | Use rollback commands for blocks and containers |
 
 ---
 
@@ -105,13 +105,13 @@ cleanup:
 
 Full documentation including commands, permissions, configuration, and API reference:
 
-**[DOCUMENTATION](https://impoo.gitbook.io/protect)**
+**[DOCUMENTATION](https://impoo.gitbook.io/guardian)**
 
 ---
 
 ## Bug Reports & Feature Requests
 
-Found a bug or have a suggestion? Open an issue on [GitHub Issues](https://github.com/Impopite/Protect/issues).
+Found a bug or have a suggestion? Open an issue on [GitHub Issues](https://github.com/Impopite/Guardian/issues).
 
 ---
 
