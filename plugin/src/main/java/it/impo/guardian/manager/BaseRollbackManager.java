@@ -127,7 +127,6 @@ public class BaseRollbackManager extends RollbackManager {
 
                         if (affectedAmount < log.getAmount()) partial.incrementAndGet();
                         applied.incrementAndGet();
-                        container.update(true, false);
                     }
 
                     sendContainerSummary(player, new RollbackSummary(filteredLogs.size(), applied.get(), skipped.get(), partial.get()));

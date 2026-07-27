@@ -125,6 +125,12 @@ public class ContainerListener implements Listener {
             return new LoggedInteraction(ContainerAction.REMOVE, currentItem, currentItem.getAmount());
         }
 
+        if (event.getClick() == ClickType.MIDDLE && clickedInTop) {
+            ItemStack currentItem = event.getCurrentItem();
+            if (!isUsable(currentItem)) return null;
+            return new LoggedInteraction(ContainerAction.REMOVE, currentItem, currentItem.getAmount());
+        }
+
         if (isShift && clickedInBottom) {
             ItemStack currentItem = event.getCurrentItem();
             if (!isUsable(currentItem)) return null;
@@ -174,9 +180,6 @@ public class ContainerListener implements Listener {
         if (left == null) return right;
         if (right == null) return left;
 
-        double distLeft = left.getLocation().distanceSquared(player.getLocation());
-        double distRight = right.getLocation().distanceSquared(player.getLocation());
-
-        return distLeft <= distRight ? left : right;
+        return left;
     }
 }

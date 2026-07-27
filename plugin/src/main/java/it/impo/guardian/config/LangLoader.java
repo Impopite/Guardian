@@ -89,6 +89,10 @@ public class LangLoader {
         sendRaw(sender, key, TagResolver.empty());
     }
 
+    public void sendComponent(@NotNull CommandSender sender, @NotNull Component component) {
+        adventure.sender(sender).sendMessage(component);
+    }
+
     public boolean isEmpty(@NotNull LangKey key) {
         return langConfig.getString(key.getPath(), "").isEmpty();
     }
