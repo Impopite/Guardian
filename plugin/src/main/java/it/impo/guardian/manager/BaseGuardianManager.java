@@ -35,6 +35,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -55,12 +56,16 @@ public class BaseGuardianManager extends GuardianManager {
         if (logs == null) return;
         GuardianTable table = plugin.getGuardianTable();
 
-        switch (logs) {
+        CompletableFuture<Boolean> future = switch (logs) {
             case BlockLog blockLog -> table.getBlockLogTable().addLog(blockLog);
             case ContainerLog containerLog -> table.getContainerLogTable().addLog(containerLog);
             case ItemLog itemLog -> table.getItemLogTable().addLog(itemLog);
             case InteractLog interactLog -> table.getInteractLogTable().addLog(interactLog);
-            default -> {}
+            default -> null;
+        };
+
+        if (future != null) {
+            handleResult(future, "save " + logs.getClass().getSimpleName());
         }
     }
 
@@ -345,6 +350,20 @@ public class BaseGuardianManager extends GuardianManager {
 
     @Override
     public void purgeOldLogs(int days) {
-        plugin.getGuardianTable().removeOldLogsAll(days);
+        GuardianTable table = plugin.getGuardianTable();
+        handleResult(table.getBlockLogTable().removeOldLog(days), "purge block log");
+        handleResult(table.getContainerLogTable().removeOldLog(days), "purge container log");
+        handleResult(table.getItemLogTable().removeOldLog(days), "purge item log");
+        handleResult(table.getInteractLogTable().removeOldLog(days), "purge interact log");
+    }
+
+    private void handleResult(CompletableFuture<Boolean> future, String context) {
+        future.whenComplete((success, throwable) -> {
+            if (throwable != null) {
+                plugin.getLogger().log(Level.SEVERE, "[Guardian] Unexpected error during " + context, throwable);
+            } else if (!success) {
+                plugin.getLogger().warning("[Guardian] Operation failed: " + context);
+            }
+        });
     }
 }
