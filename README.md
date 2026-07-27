@@ -38,7 +38,7 @@ A comprehensive grief protection and logging plugin for Minecraft servers, built
 
 ## Installation
 
-1. Download the latest `Guardian.jar` from the [releases page](https://modrinth.com/plugin/guardian)
+1. Download the latest `Guardian.jar` from the [releases page](https://modrinth.com/plugin/guardianmc)
 2. Place the JAR in your server's `plugins/` folder
 3. Start or restart the server
 4. Edit `plugins/Guardian/config.yml` with your database credentials
