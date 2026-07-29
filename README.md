@@ -44,60 +44,13 @@ A comprehensive grief protection and logging plugin for Minecraft servers, built
 4. Edit `plugins/Guardian/config.yml` with your database credentials
 5. Reload or restart the server to apply changes
 
----
-
-## Commands
-
-| Command | Description | Permission |
-|---------|-------------|------------|
-| `/guardian` | Show all available subcommands | `guardian.staff` |
-| `/guardian inspect` | Toggle inspect mode | `guardian.inspect` |
-| `/guardian rollback blocks <radius> <time>` | Rollback block changes | `guardian.rollback` |
-| `/guardian rollback containers <radius> <time>` | Rollback container changes | `guardian.rollback` |
-| `/guardian lookup <player>` | View all logs for a player | `guardian.inspect` |
-| `/guardian stats <player>` | View player statistics | `guardian.inspect` |
-| `/guardian reload` | Reload the configuration | `guardian.staff` |
-| `/inspect` | Alias for `/guardian inspect` | `guardian.inspect` |
+--- 
 
 ### Time Format
 
 The time argument supports combinations of `s` (seconds), `m` (minutes), `h` (hours), `d` (days).
 
 Examples: `15m`, `1h30m`, `2d`, `30s`, `1h30m45s`
-
----
-
-## Permissions
-
-| Permission | Description |
-|------------|-------------|
-| `guardian.staff` | Access to root `/guardian` and `/guardian reload`. Also marks logs as staff actions. |
-| `guardian.inspect` | Toggle inspect mode, use `/guardian lookup` and `/guardian stats` |
-| `guardian.rollback` | Use rollback commands for blocks and containers |
-
----
-
-## Configuration
-
-```yaml
-generic:
-  lang: IT_it              # Language file (available: EN_us, IT_it)
-
-database:
-  host: "localhost"
-  username: "root"
-  password: ""
-  port: 3306
-  name: "ImpooProjects"
-  ssl: false
-
-inspect:
-  page-size: 10             # Log entries per page
-
-cleanup:
-  interval-hours: 24        # Auto-cleanup interval
-  retention-days: 60        # Delete logs older than this
-```
 
 ---
 
