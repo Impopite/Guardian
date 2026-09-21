@@ -28,6 +28,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Utilities to parse time inputs and to format logs as Adventure {@link Component}s
+ * for the inspect and lookup layouts.
+ */
 public class LogUtils {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss");
@@ -44,6 +48,14 @@ public class LogUtils {
         return sb.toString();
     }
 
+    /**
+     * Parses a compact time string such as {@code "10s"}, {@code "5m"}, {@code "2h"} or
+     * {@code "1d"} (and combinations like {@code "1h30m"}) into seconds.
+     *
+     * @param input the input to parse
+     * @return the total amount of seconds, or {@code 0} if the input is {@code null},
+     *         blank or invalid
+     */
     public static long parseTime(String input) {
         if (input == null || input.isBlank()) return 0;
         input = input.toLowerCase().trim();
@@ -64,11 +76,26 @@ public class LogUtils {
         return seconds;
     }
 
+    /**
+     * Checks whether a string is a valid Guardian time input, i.e. one or more
+     * number+unit pairs made only of the suffixes {@code s}, {@code m}, {@code h} and {@code d}.
+     *
+     * @param input the input to validate
+     * @return {@code true} if the input is a valid time string
+     */
     public static boolean isValidTimeInput(String input) {
         if (input == null || input.isBlank()) return false;
         return STRICT_TIME_PATTERN.matcher(input.toLowerCase().trim()).matches();
     }
 
+    /**
+     * Formats a log into the interactive one-time line used by the inspect feature.
+     *
+     * @param logs   the log to format
+     * @param player the player that will receive the message (used for teleport callbacks)
+     * @param plugin the plugin used to deserialize items
+     * @return the formatted component, or an empty component for unknown log types
+     */
     public static Component formatLogs(Logs logs, Player player, Plugin plugin) {
         return switch (logs) {
             case BlockLog log -> formatBlockLog(log, player);
@@ -79,6 +106,15 @@ public class LogUtils {
         };
     }
 
+    /**
+     * Formats a log into the line used by the history/lookup feature, showing the plain
+     * action label instead of the compact +/- symbol.
+     *
+     * @param logs   the log to format
+     * @param player the player that will receive the message (used for teleport callbacks)
+     * @param plugin the plugin used to deserialize items
+     * @return the formatted component, or an empty component for unknown log types
+     */
     public static Component formatHistory(Logs logs, Player player, Plugin plugin) {
         return switch (logs) {
             case BlockLog log -> formatBlockHistory(log, player);
