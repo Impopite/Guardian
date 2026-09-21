@@ -26,6 +26,7 @@ jobs:
 
       - name: Build jars
         run: |
+          chmod +x gradlew
           ./gradlew :plugin:shadowJar :api:sourceJar :api:javadocJar --no-daemon
 
       - name: Upload assets to release
