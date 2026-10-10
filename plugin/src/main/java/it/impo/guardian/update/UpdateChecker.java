@@ -17,7 +17,7 @@ import java.util.logging.Level;
 
 public class UpdateChecker {
 
-    private static final String API_URL = "https://api.modrinth.com/v2/project/Guardian/version";
+    private static final String API_URL = "https://api.modrinth.com/v2/project/Guardianmc/version";
 
     private final Guardian plugin;
     private final HttpClient httpClient;
