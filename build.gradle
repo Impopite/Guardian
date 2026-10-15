@@ -47,7 +47,7 @@ subprojects {
 
         implementation("net.kyori:adventure-platform-bukkit:4.3.1")
         compileOnly "io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT"
-        compileOnly("dev.jorel:commandapi-paper-core:11.2.0")
+        implementation("dev.jorel:commandapi-paper-shade:12.1.0")
         compileOnly("com.sk89q.worldedit:worldedit-bukkit:7.3.19")
     }
 }
