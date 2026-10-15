@@ -38,9 +38,6 @@ subprojects {
         maven {
             url = 'https://maven.enginehub.org/repo/'
         }
-        maven {
-            url = 'https://repo.jorel.dev/'
-        }
     }
 
     dependencies {
