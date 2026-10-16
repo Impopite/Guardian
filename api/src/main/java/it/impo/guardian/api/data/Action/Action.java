@@ -5,9 +5,13 @@ package it.impo.guardian.api.data.action;
  */
 public enum Action {
 
-    /** The block was placed in the world. */
+    /**
+     * The block was placed in the world.
+     */
     PLACE("Block placed"),
-    /** The block was broken/removed. */
+    /**
+     * The block was broken/removed.
+     */
     BREAK("Block broken");
 
     private final String label;

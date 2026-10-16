@@ -5,9 +5,13 @@ package it.impo.guardian.api.data.action;
  */
 public enum Interaction {
 
-    /** The block was opened, e.g. a door or a trapdoor. */
+    /**
+     * The block was opened, e.g. a door or a trapdoor.
+     */
     OPEN("Opened"),
-    /** The block was closed. */
+    /**
+     * The block was closed.
+     */
     CLOSE("Closed");
 
     private final String label;

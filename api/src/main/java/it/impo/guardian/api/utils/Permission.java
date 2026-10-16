@@ -4,11 +4,17 @@ package it.impo.guardian.api.utils;
  * The permissions used by Guardian to gate its staff features.
  */
 public enum Permission {
-    /** Grants access to the staff oriented features of Guardian. */
+    /**
+     * Grants access to the staff oriented features of Guardian.
+     */
     GUARDIAN_STAFF("staff"),
-    /** Grants access to the inspect feature. */
+    /**
+     * Grants access to the inspect feature.
+     */
     GUARDIAN_INSPECT("inspect"),
-    /** Grants access to the rollback feature. */
+    /**
+     * Grants access to the rollback feature.
+     */
     GUARDIAN_ROLLBACK("rollback"),
     ;
 

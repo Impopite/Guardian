@@ -1,8 +1,8 @@
 package it.impo.guardian.api.data.logs.impl;
 
-import it.impo.guardian.api.data.action.ContainerAction;
 import it.impo.guardian.api.data.BasicLocation;
 import it.impo.guardian.api.data.ContainerType;
+import it.impo.guardian.api.data.action.ContainerAction;
 import it.impo.guardian.api.data.logs.Logs;
 
 import java.time.LocalDateTime;

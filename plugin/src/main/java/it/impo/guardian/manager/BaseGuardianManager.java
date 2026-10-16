@@ -1,12 +1,12 @@
 package it.impo.guardian.manager;
 
 import it.impo.guardian.Guardian;
+import it.impo.guardian.api.data.BasicLocation;
+import it.impo.guardian.api.data.ContainerType;
 import it.impo.guardian.api.data.action.Action;
 import it.impo.guardian.api.data.action.ContainerAction;
 import it.impo.guardian.api.data.action.Interaction;
 import it.impo.guardian.api.data.action.ItemAction;
-import it.impo.guardian.api.data.BasicLocation;
-import it.impo.guardian.api.data.ContainerType;
 import it.impo.guardian.api.data.logs.Logs;
 import it.impo.guardian.api.data.logs.impl.BlockLog;
 import it.impo.guardian.api.data.logs.impl.ContainerLog;
@@ -35,11 +35,11 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.logging.Level;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class BaseGuardianManager extends GuardianManager {

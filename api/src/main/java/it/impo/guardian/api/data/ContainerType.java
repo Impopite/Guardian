@@ -7,18 +7,32 @@ package it.impo.guardian.api.data;
  * rollback.</p>
  */
 public enum ContainerType {
-    /** A regular chest. */
+    /**
+     * A regular chest.
+     */
     CHEST,
-    /** A trapped chest. */
+    /**
+     * A trapped chest.
+     */
     TRAPPED_CHEST,
-    /** A barrel. */
+    /**
+     * A barrel.
+     */
     BARREL,
-    /** A hopper. */
+    /**
+     * A hopper.
+     */
     HOPPER,
-    /** A dispenser. */
+    /**
+     * A dispenser.
+     */
     DISPENSER,
-    /** A dropper. */
+    /**
+     * A dropper.
+     */
     DROPPER,
-    /** Any other block acting as a container that is not explicitly mapped. */
+    /**
+     * Any other block acting as a container that is not explicitly mapped.
+     */
     UNKNOWN
 }

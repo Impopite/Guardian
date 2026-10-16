@@ -5,12 +5,7 @@ import it.impo.guardian.Guardian;
 import it.impo.guardian.api.utils.Permission;
 import it.impo.guardian.config.LangLoader;
 import it.impo.guardian.config.constant.LangKey;
-import it.impo.guardian.server.command.subcommands.HelpCommand;
-import it.impo.guardian.server.command.subcommands.InspectCommand;
-import it.impo.guardian.server.command.subcommands.LookupCommand;
-import it.impo.guardian.server.command.subcommands.ReloadCommand;
-import it.impo.guardian.server.command.subcommands.RollbackCommand;
-import it.impo.guardian.server.command.subcommands.StatsCommand;
+import it.impo.guardian.server.command.subcommands.*;
 
 public class GuardianCommand {
 

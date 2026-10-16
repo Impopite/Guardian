@@ -1,8 +1,8 @@
 package it.impo.guardian.database.impl;
 
 import com.zaxxer.hikari.HikariDataSource;
-import it.impo.guardian.api.data.action.ItemAction;
 import it.impo.guardian.api.data.BasicLocation;
+import it.impo.guardian.api.data.action.ItemAction;
 import it.impo.guardian.api.data.logs.impl.ItemLog;
 import it.impo.guardian.api.database.impl.ItemLogTable;
 import org.intellij.lang.annotations.Language;
@@ -28,31 +28,31 @@ public class BaseItemLogTable extends ItemLogTable {
 
     @Language("SQL")
     private static final String CREATE_ITEM_LOG_TABLE = """
-        CREATE TABLE IF NOT EXISTS guardian_item_log (
-            id        INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            user_uuid VARCHAR(36)  NOT NULL,
-            username  VARCHAR(16)  NOT NULL,
-            world     VARCHAR(32)  NOT NULL,
-            x         INT          NOT NULL,
-            y         INT          NOT NULL,
-            z         INT          NOT NULL,
-            item      LONGBLOB     NOT NULL,
-            amount    INT          NOT NULL,
-            action    VARCHAR(8)   NOT NULL,
-            staff     TINYINT(1)   NOT NULL DEFAULT 0,
-            date      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        
-            INDEX idx_item_location_date (world, x, y, z, date),
-            INDEX idx_item_user_date     (user_uuid, username, date),
-            INDEX idx_item_date          (date)
-        );
-        """;
+            CREATE TABLE IF NOT EXISTS guardian_item_log (
+                id        INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                user_uuid VARCHAR(36)  NOT NULL,
+                username  VARCHAR(16)  NOT NULL,
+                world     VARCHAR(32)  NOT NULL,
+                x         INT          NOT NULL,
+                y         INT          NOT NULL,
+                z         INT          NOT NULL,
+                item      LONGBLOB     NOT NULL,
+                amount    INT          NOT NULL,
+                action    VARCHAR(8)   NOT NULL,
+                staff     TINYINT(1)   NOT NULL DEFAULT 0,
+                date      DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            
+                INDEX idx_item_location_date (world, x, y, z, date),
+                INDEX idx_item_user_date     (user_uuid, username, date),
+                INDEX idx_item_date          (date)
+            );
+            """;
 
     @Language("SQL")
     private static final String ADD_ITEM_LOG = """
-        INSERT INTO guardian_item_log (user_uuid, username, world, x, y, z, item, amount, action, staff)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """;
+            INSERT INTO guardian_item_log (user_uuid, username, world, x, y, z, item, amount, action, staff)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """;
 
     @Language("SQL")
     private static final String REMOVE_ITEM_LOG = "DELETE FROM guardian_item_log WHERE id = ?";
@@ -65,24 +65,24 @@ public class BaseItemLogTable extends ItemLogTable {
 
     @Language("SQL")
     private static final String INSPECT_ITEM_LOGS = """
-        SELECT id, user_uuid, username, world, x, y, z, item, amount, action, staff, date
-        FROM guardian_item_log
-        WHERE world = ? AND x = ? AND y = ? AND z = ?
-        ORDER BY date DESC
-        LIMIT ? OFFSET ?
-        """;
+            SELECT id, user_uuid, username, world, x, y, z, item, amount, action, staff, date
+            FROM guardian_item_log
+            WHERE world = ? AND x = ? AND y = ? AND z = ?
+            ORDER BY date DESC
+            LIMIT ? OFFSET ?
+            """;
 
     @Language("SQL")
     private static final String COUNT_ITEM_LOG_BY_PLAYER = "SELECT COUNT(*) FROM guardian_item_log WHERE username = ?";
 
     @Language("SQL")
     private static final String SEARCH_ITEM_LOG_BY_PLAYER = """
-        SELECT id, user_uuid, username, world, x, y, z, item, amount, action, staff, date
-        FROM guardian_item_log
-        WHERE username = ?
-        ORDER BY date DESC
-        LIMIT ? OFFSET ?
-        """;
+            SELECT id, user_uuid, username, world, x, y, z, item, amount, action, staff, date
+            FROM guardian_item_log
+            WHERE username = ?
+            ORDER BY date DESC
+            LIMIT ? OFFSET ?
+            """;
 
     public BaseItemLogTable(HikariDataSource dataSource) {
         this.dataSource = dataSource;

@@ -1,9 +1,9 @@
 package it.impo.guardian.server.listeners;
 
 import it.impo.guardian.Guardian;
+import it.impo.guardian.api.data.BasicLocation;
 import it.impo.guardian.api.data.action.ContainerAction;
 import it.impo.guardian.api.data.action.Interaction;
-import it.impo.guardian.api.data.BasicLocation;
 import it.impo.guardian.api.data.logs.LoggedInteraction;
 import it.impo.guardian.api.utils.BlockUtils;
 import org.bukkit.Bukkit;
@@ -152,7 +152,8 @@ public class ContainerListener implements Listener {
         }
 
         ItemStack cursor = event.getCursor();
-        if (isUsable(cursor)) return new LoggedInteraction(ContainerAction.ADD, cursor, isRight ? 1 : cursor.getAmount());
+        if (isUsable(cursor))
+            return new LoggedInteraction(ContainerAction.ADD, cursor, isRight ? 1 : cursor.getAmount());
 
         ItemStack currentItem = event.getCurrentItem();
         if (!isUsable(currentItem)) return null;

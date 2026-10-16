@@ -5,9 +5,13 @@ package it.impo.guardian.api.data.action;
  */
 public enum ContainerAction {
 
-    /** An item was added to the container. */
+    /**
+     * An item was added to the container.
+     */
     ADD("Item added from container"),
-    /** An item was removed from the container. */
+    /**
+     * An item was removed from the container.
+     */
     REMOVE("Item removed from container");
 
     private final String label;

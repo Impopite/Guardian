@@ -1,10 +1,10 @@
 package it.impo.guardian.api.utils;
 
+import it.impo.guardian.api.data.BasicLocation;
 import it.impo.guardian.api.data.action.Action;
 import it.impo.guardian.api.data.action.ContainerAction;
 import it.impo.guardian.api.data.action.Interaction;
 import it.impo.guardian.api.data.action.ItemAction;
-import it.impo.guardian.api.data.BasicLocation;
 import it.impo.guardian.api.data.logs.Logs;
 import it.impo.guardian.api.data.logs.impl.BlockLog;
 import it.impo.guardian.api.data.logs.impl.ContainerLog;
@@ -54,7 +54,7 @@ public class LogUtils {
      *
      * @param input the input to parse
      * @return the total amount of seconds, or {@code 0} if the input is {@code null},
-     *         blank or invalid
+     * blank or invalid
      */
     public static long parseTime(String input) {
         if (input == null || input.isBlank()) return 0;

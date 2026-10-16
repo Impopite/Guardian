@@ -1,8 +1,8 @@
 package it.impo.guardian.database.impl;
 
 import com.zaxxer.hikari.HikariDataSource;
-import it.impo.guardian.api.data.action.Interaction;
 import it.impo.guardian.api.data.BasicLocation;
+import it.impo.guardian.api.data.action.Interaction;
 import it.impo.guardian.api.data.logs.impl.InteractLog;
 import it.impo.guardian.api.database.impl.InteractLogTable;
 import org.intellij.lang.annotations.Language;
@@ -28,30 +28,30 @@ public class BaseInteractLogTable extends InteractLogTable {
 
     @Language("SQL")
     private static final String CREATE_INTERACT_LOG_TABLE = """
-        CREATE TABLE IF NOT EXISTS guardian_interact_log (
-            id         INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            user_uuid  VARCHAR(36)  NOT NULL,
-            username   VARCHAR(16)  NOT NULL,
-            world      VARCHAR(32)  NOT NULL,
-            x          INT          NOT NULL,
-            y          INT          NOT NULL,
-            z          INT          NOT NULL,
-            block_type VARCHAR(64)  NOT NULL,
-            action     VARCHAR(8)   NOT NULL,
-            staff      TINYINT(1)   NOT NULL DEFAULT 0,
-            date       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        
-            INDEX idx_interact_location_date (world, x, y, z, date),
-            INDEX idx_interact_user_date     (user_uuid, username, date),
-            INDEX idx_interact_date          (date)
-        );
-        """;
+            CREATE TABLE IF NOT EXISTS guardian_interact_log (
+                id         INT          NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                user_uuid  VARCHAR(36)  NOT NULL,
+                username   VARCHAR(16)  NOT NULL,
+                world      VARCHAR(32)  NOT NULL,
+                x          INT          NOT NULL,
+                y          INT          NOT NULL,
+                z          INT          NOT NULL,
+                block_type VARCHAR(64)  NOT NULL,
+                action     VARCHAR(8)   NOT NULL,
+                staff      TINYINT(1)   NOT NULL DEFAULT 0,
+                date       DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            
+                INDEX idx_interact_location_date (world, x, y, z, date),
+                INDEX idx_interact_user_date     (user_uuid, username, date),
+                INDEX idx_interact_date          (date)
+            );
+            """;
 
     @Language("SQL")
     private static final String ADD_INTERACT_LOG = """
-        INSERT INTO guardian_interact_log (user_uuid, username, world, x, y, z, block_type, action, staff)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """;
+            INSERT INTO guardian_interact_log (user_uuid, username, world, x, y, z, block_type, action, staff)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """;
 
     @Language("SQL")
     private static final String REMOVE_INTERACT_LOG = "DELETE FROM guardian_interact_log WHERE id = ?";
@@ -64,24 +64,24 @@ public class BaseInteractLogTable extends InteractLogTable {
 
     @Language("SQL")
     private static final String INSPECT_INTERACT_LOGS = """
-        SELECT id, user_uuid, username, world, x, y, z, block_type, action, staff, date
-        FROM guardian_interact_log
-        WHERE world = ? AND x = ? AND y = ? AND z = ?
-        ORDER BY date DESC
-        LIMIT ? OFFSET ?
-        """;
+            SELECT id, user_uuid, username, world, x, y, z, block_type, action, staff, date
+            FROM guardian_interact_log
+            WHERE world = ? AND x = ? AND y = ? AND z = ?
+            ORDER BY date DESC
+            LIMIT ? OFFSET ?
+            """;
 
     @Language("SQL")
     private static final String COUNT_INTERACT_LOG_BY_PLAYER = "SELECT COUNT(*) FROM guardian_interact_log WHERE username = ?";
 
     @Language("SQL")
     private static final String SEARCH_INTERACT_LOG_BY_PLAYER = """
-        SELECT id, user_uuid, username, world, x, y, z, block_type, action, staff, date
-        FROM guardian_interact_log
-        WHERE username = ?
-        ORDER BY date DESC
-        LIMIT ? OFFSET ?
-        """;
+            SELECT id, user_uuid, username, world, x, y, z, block_type, action, staff, date
+            FROM guardian_interact_log
+            WHERE username = ?
+            ORDER BY date DESC
+            LIMIT ? OFFSET ?
+            """;
 
     public BaseInteractLogTable(HikariDataSource dataSource) {
         this.dataSource = dataSource;

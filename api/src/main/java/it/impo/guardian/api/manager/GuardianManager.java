@@ -1,10 +1,10 @@
 package it.impo.guardian.api.manager;
 
+import it.impo.guardian.api.data.BasicLocation;
 import it.impo.guardian.api.data.action.Action;
 import it.impo.guardian.api.data.action.ContainerAction;
 import it.impo.guardian.api.data.action.Interaction;
 import it.impo.guardian.api.data.action.ItemAction;
-import it.impo.guardian.api.data.BasicLocation;
 import it.impo.guardian.api.data.logs.Logs;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

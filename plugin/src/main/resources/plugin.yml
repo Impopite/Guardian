@@ -5,5 +5,5 @@ main: it.impo.guardian.Guardian
 api-version: '1.21.8'
 load: POSTWORLD
 
-depend: [CommandAPI]
-softdepend: [FastAsyncWorldEdit]
+depend: [ CommandAPI ]
+softdepend: [ FastAsyncWorldEdit ]

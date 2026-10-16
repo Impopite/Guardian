@@ -4,11 +4,7 @@ import it.impo.guardian.Guardian;
 import it.impo.guardian.api.database.GuardianTable;
 import it.impo.guardian.hook.FaweHook;
 import it.impo.guardian.server.command.GuardianCommand;
-import it.impo.guardian.server.listeners.BlockListener;
-import it.impo.guardian.server.listeners.ContainerListener;
-import it.impo.guardian.server.listeners.InspectListener;
-import it.impo.guardian.server.listeners.ItemListener;
-import it.impo.guardian.server.listeners.JoinListener;
+import it.impo.guardian.server.listeners.*;
 
 import java.sql.SQLException;
 

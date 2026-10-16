@@ -5,9 +5,13 @@ package it.impo.guardian.api.data.action;
  */
 public enum ItemAction {
 
-    /** The item was picked up by the player. */
+    /**
+     * The item was picked up by the player.
+     */
     PICKUP("Item picked up"),
-    /** The item was dropped by the player. */
+    /**
+     * The item was dropped by the player.
+     */
     DROP("Item dropped");
 
     private final String label;
